@@ -518,20 +518,29 @@ body {
    ======================================================== */
 .letter {
   position: absolute;
-  top: 8px;
+  top: 12px;
   left: 5%;
   width: 90%;
-  min-height: 230px;
-  max-height: 230px;
+  height: 175px;
+  min-height: 175px;
+  max-height: 175px;
   background: var(--cream-paper);
   border-radius: 12px;
   box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.06);
   z-index: 2;
   overflow: hidden;
   transition: transform 0.9s cubic-bezier(0.2, 0.8, 0.2, 1), 
+              top 0.9s cubic-bezier(0.2, 0.8, 0.2, 1),
               max-height 0.8s ease 0.4s, 
               box-shadow 0.5s;
   padding: 24px 20px;
+}
+
+.envelope-wrapper:not(.open) .letter {
+  height: 175px;
+  min-height: 175px;
+  max-height: 175px;
+  top: 12px;
 }
 
 .letter-inner {
@@ -633,6 +642,7 @@ body {
   position: absolute;
   top: -260px;
   height: auto;
+  min-height: auto;
   max-height: 2500px;
   overflow: visible;
   z-index: 10;
@@ -652,8 +662,10 @@ body {
 }
 
 .envelope-wrapper.closing .letter {
-  top: 8px !important;
-  max-height: 230px !important;
+  top: 12px !important;
+  height: 175px !important;
+  min-height: 175px !important;
+  max-height: 175px !important;
   opacity: 0 !important;
   overflow: hidden !important;
   transition: all 0.7s cubic-bezier(0.4, 0, 0.2, 1) !important;
@@ -1496,8 +1508,36 @@ body {
   .seal { top: 95px; width: 64px; height: 64px; }
   .seal-inner { width: 46px; height: 46px; }
 
+  /* Carta en celular: se mantiene 100% contenida dentro del bolsillo sin asomarse */
+  .letter {
+    top: 10px;
+    height: 150px;
+    min-height: 150px;
+    max-height: 150px;
+  }
+
+  .envelope-wrapper:not(.open) .letter {
+    top: 10px;
+    height: 150px;
+    min-height: 150px;
+    max-height: 150px;
+  }
+
   .envelope-wrapper.open { margin-top: 260px; }
-  .envelope-wrapper.open .letter { top: -270px; padding: 20px 16px; }
+  .envelope-wrapper.open .letter { 
+    top: -270px; 
+    height: auto;
+    min-height: auto;
+    max-height: 2500px;
+    padding: 20px 16px; 
+  }
+
+  .envelope-wrapper.closing .letter {
+    top: 10px !important;
+    height: 150px !important;
+    min-height: 150px !important;
+    max-height: 150px !important;
+  }
 
   .letter-title { font-size: 2.1rem; }
   .letter-content { font-size: 0.9rem; }
