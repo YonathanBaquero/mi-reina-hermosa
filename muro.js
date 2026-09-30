@@ -58,14 +58,20 @@ function loadNotes() {
   if (localNotesJson) {
     try {
       const parsed = JSON.parse(localNotesJson);
-      // Descartar cualquier nota de ejemplo antigua
-      localNotes = parsed.filter(n => n && !String(n.id).startsWith('sample_'));
+      // Descartar cualquier nota de ejemplo antigua o notas eliminadas
+      localNotes = parsed.filter(n => {
+        if (!n || String(n.id).startsWith('sample_')) return false;
+        const author = (n.author || '').toLowerCase().trim();
+        if (author === 'emerson' || String(n.id) === 'note_1790776348723') return false;
+        return true;
+      });
     } catch (e) {
       console.error('Error parseando notas locales:', e);
     }
   }
 
   notes = localNotes;
+  saveNotesToLocalStorage();
   renderNotes();
 
   // Sincronizar con Google Sheets para traer todas las notas reales
@@ -95,21 +101,30 @@ async function fetchNotesFromGoogleSheets(silent = false) {
     if (response.ok) {
       const result = await response.json();
       if (result.status === 'success' && Array.isArray(result.data)) {
-        // Mapear todas las filas de Google Sheets a notas
-        const remoteNotes = result.data.map((row, index) => {
-          return {
-            id: row.id || `remote_${index}`,
-            author: row.name || 'Amigo/a',
-            message: row.message || '',
-            color: row.color || getRandomItem(COLORS),
-            font: row.font || getRandomItem(FONTS),
-            pin: getRandomItem(PINS),
-            sticker: (row.sticker && !row.sticker.includes('?')) ? row.sticker : '💖',
-            rotation: getRandomRotation(),
-            date: row.timestamp ? formatDate(row.timestamp) : 'Reciente',
-            likes: Number(row.likes) || 0
-          };
-        });
+        // Mapear todas las filas de Google Sheets a notas (filtrando notas eliminadas)
+        const remoteNotes = result.data
+          .filter(row => {
+            const author = (row.name || '').toLowerCase().trim();
+            const id = String(row.id || '');
+            if (author === 'emerson' || id === 'note_1790776348723') {
+              return false;
+            }
+            return true;
+          })
+          .map((row, index) => {
+            return {
+              id: row.id || `remote_${index}`,
+              author: row.name || 'Amigo/a',
+              message: row.message || '',
+              color: row.color || getRandomItem(COLORS),
+              font: row.font || getRandomItem(FONTS),
+              pin: getRandomItem(PINS),
+              sticker: (row.sticker && !row.sticker.includes('?')) ? row.sticker : '💖',
+              rotation: getRandomRotation(),
+              date: row.timestamp ? formatDate(row.timestamp) : 'Reciente',
+              likes: Number(row.likes) || 0
+            };
+          });
 
         // Conservar notas locales recién enviadas que aún no se hayan reflejado en Google Sheets
         const pendingLocalNotes = notes.filter(localNote => 
