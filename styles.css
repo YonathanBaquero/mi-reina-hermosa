@@ -646,7 +646,7 @@ body {
   top: -260px;
   height: auto;
   min-height: auto;
-  max-height: 2500px;
+  max-height: 6000px;
   overflow: visible;
   opacity: 1;
   pointer-events: auto;
@@ -654,6 +654,7 @@ body {
   box-shadow: 0 24px 50px rgba(18, 8, 4, 0.42), 0 8px 18px rgba(0, 0, 0, 0.2);
   border: 1px solid rgba(255, 182, 193, 0.45);
   transform: translateZ(20px);
+  padding: 24px 20px 70px;
 }
 
 .envelope-wrapper.open .letter-inner {
@@ -686,39 +687,48 @@ body {
    BOTONES DE TRANSICIÓN ENTRE ACTOS
    ======================================================== */
 .stage-transition-area {
-  margin: 30px auto 10px;
+  margin: 28px auto 14px;
   text-align: center;
-  padding: 16px 12px;
+  padding: 16px 14px;
   background: linear-gradient(135deg, #fff2f5, #ffe4ec);
   border-radius: 18px;
   border: 1.5px solid #ffccd5;
+  box-shadow: 0 4px 14px rgba(214, 51, 108, 0.1);
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .transition-hint {
-  font-size: 0.85rem;
+  font-size: 0.88rem;
   color: var(--deep-rose);
-  font-weight: 600;
-  margin-bottom: 10px;
+  font-weight: 700;
+  margin-bottom: 12px;
+  line-height: 1.35;
 }
 
 .btn-next-stage {
   background: linear-gradient(135deg, #ff4d6d 0%, #c9184a 100%);
   color: #ffffff;
   border: none;
-  padding: 12px 20px;
+  padding: 12px 14px;
   border-radius: 25px;
   font-family: var(--font-sans);
-  font-size: 0.88rem;
+  font-size: 0.84rem;
   font-weight: 700;
   cursor: pointer;
   box-shadow: 0 6px 18px rgba(201, 24, 74, 0.35);
   transition: transform 0.2s, box-shadow 0.2s;
   user-select: none;
+  width: 100%;
+  max-width: 280px;
+  display: inline-block;
+  line-height: 1.4;
+  word-wrap: break-word;
 }
 
 .btn-next-stage:hover,
 .btn-next-stage:active {
-  transform: scale(1.04);
+  transform: scale(1.03);
   box-shadow: 0 8px 24px rgba(201, 24, 74, 0.45);
 }
 
@@ -1530,15 +1540,29 @@ body {
     pointer-events: none;
   }
 
-  .envelope-wrapper.open { margin-top: 260px; }
+  .envelope-wrapper.open { 
+    margin-top: 260px; 
+    margin-bottom: 90px;
+  }
   .envelope-wrapper.open .letter { 
     top: -270px; 
     height: auto;
     min-height: auto;
-    max-height: 2500px;
+    max-height: 6000px;
     opacity: 1;
     pointer-events: auto;
-    padding: 20px 16px; 
+    padding: 20px 14px 80px; 
+  }
+
+  .stage-transition-area {
+    margin: 24px auto 14px;
+    padding: 14px 10px;
+  }
+
+  .btn-next-stage {
+    font-size: 0.82rem;
+    padding: 11px 12px;
+    max-width: 100%;
   }
 
   .envelope-wrapper.closing .letter {
