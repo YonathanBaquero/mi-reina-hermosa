@@ -106,6 +106,7 @@ document.addEventListener('DOMContentLoaded', () => {
   initFormInteractivity();
   initConfigModal();
   initSearch();
+  initShareWhatsApp();
   loadNotes();
 });
 
@@ -504,6 +505,18 @@ function initSearch() {
       renderNotes(e.target.value);
     });
   }
+}
+
+// Compartir en WhatsApp con texto e invitación automática
+function initShareWhatsApp() {
+  const btnShare = document.getElementById('btnShareWhatsApp');
+  if (!btnShare) return;
+
+  btnShare.addEventListener('click', () => {
+    const pageUrl = window.location.href;
+    const msg = encodeURIComponent('¡Hola! Te invito a dejarle una notita con tu mensaje de feliz cumpleaños a mi reina hermosa en este muro interactivo: ' + pageUrl);
+    window.open(`https://api.whatsapp.com/send?text=${msg}`, '_blank');
+  });
 }
 
 // ========================================================

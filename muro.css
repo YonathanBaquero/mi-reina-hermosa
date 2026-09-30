@@ -128,6 +128,19 @@ body {
   100% { transform: scale(1) rotate(360deg); }
 }
 
+.btn-share-wa {
+  background: #25d366 !important;
+  border-color: #25d366 !important;
+  color: #fff !important;
+}
+
+.btn-share-wa:hover,
+.btn-share-wa:active {
+  background: #1ebe5d !important;
+  border-color: #1ebe5d !important;
+  transform: scale(1.1) !important;
+}
+
 /* ========================================================
    MARCO DE MADERA Y SUPERFICIE DE CORCHO
    ======================================================== */
