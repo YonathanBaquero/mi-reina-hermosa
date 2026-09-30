@@ -70,11 +70,19 @@ function loadNotes() {
     }
   }
 
-  notes = localNotes;
+  // Deduplicar notas locales por id para limpiar cualquier duplicado previo del navegador
+  const uniqueLocalMap = new Map();
+  localNotes.forEach(n => {
+    if (n && n.id) {
+      uniqueLocalMap.set(String(n.id), n);
+    }
+  });
+
+  notes = Array.from(uniqueLocalMap.values());
   saveNotesToLocalStorage();
   renderNotes();
 
-  // Sincronizar con Google Sheets para traer todas las notas reales
+  // Sincronizar inmediatamente con Google Sheets para aplicar ediciones
   if (GOOGLE_SCRIPT_URL) {
     fetchNotesFromGoogleSheets();
   }
@@ -84,7 +92,7 @@ function saveNotesToLocalStorage() {
   localStorage.setItem('muro_cumpleanos_notes', JSON.stringify(notes));
 }
 
-// Obtener notas desde Google Sheets (sin límite y sin problemas de caché en móvil)
+// Obtener notas desde Google Sheets (sin límite, deduplicadas por ID y reflejando ediciones)
 async function fetchNotesFromGoogleSheets(silent = false) {
   const syncInd = document.getElementById('syncIndicator');
   if (syncInd && !silent) syncInd.style.display = 'block';
@@ -112,28 +120,53 @@ async function fetchNotesFromGoogleSheets(silent = false) {
             return true;
           })
           .map((row, index) => {
+            const noteId = String(row.id || `remote_${index}`);
+            const existing = notes.find(n => String(n.id) === noteId);
+
             return {
-              id: row.id || `remote_${index}`,
+              id: noteId,
               author: row.name || 'Amigo/a',
               message: row.message || '',
-              color: row.color || getRandomItem(COLORS),
-              font: row.font || getRandomItem(FONTS),
-              pin: getRandomItem(PINS),
-              sticker: (row.sticker && !row.sticker.includes('?')) ? row.sticker : '💖',
-              rotation: getRandomRotation(),
-              date: row.timestamp ? formatDate(row.timestamp) : 'Reciente',
-              likes: Number(row.likes) || 0
+              color: row.color || (existing ? existing.color : getRandomItem(COLORS)),
+              font: row.font || (existing ? existing.font : getRandomItem(FONTS)),
+              pin: (existing && existing.pin) ? existing.pin : getRandomItem(PINS),
+              sticker: (row.sticker && !row.sticker.includes('?')) ? row.sticker : (existing ? existing.sticker : '💖'),
+              rotation: (existing && existing.rotation !== undefined) ? existing.rotation : getRandomRotation(),
+              date: row.timestamp ? formatDate(row.timestamp) : (existing ? existing.date : 'Reciente'),
+              likes: Number(row.likes) || (existing ? existing.likes : 0)
             };
           });
 
-        // Conservar notas locales recién enviadas que aún no se hayan reflejado en Google Sheets
-        const pendingLocalNotes = notes.filter(localNote => 
-          String(localNote.id).startsWith('note_') && 
-          !remoteNotes.some(r => r.message === localNote.message && r.author === localNote.author)
-        );
+        // Obtener la lista final deduplicada donde Google Sheets es la fuente oficial
+        const finalNotes = [];
+        const seenIds = new Set();
 
-        // El tablero muestra todas las notas sin ningún límite
-        notes = [...pendingLocalNotes, ...remoteNotes];
+        // 1. Si hay notas locales recién enviadas (< 45s) aún no recibidas en remoteNotes, mantenerlas temporalmente al inicio
+        const now = Date.now();
+        notes.forEach(localNote => {
+          const lId = String(localNote.id);
+          const inRemote = remoteNotes.some(r => String(r.id) === lId);
+          if (!inRemote) {
+            const parts = lId.split('_');
+            const time = parts.length > 1 ? Number(parts[1]) : 0;
+            if (time && (now - time < 45000) && !seenIds.has(lId)) {
+              seenIds.add(lId);
+              finalNotes.push(localNote);
+            }
+          }
+        });
+
+        // 2. Agregar las notas de Google Sheets con cualquier edición reflejada directamente en la misma nota
+        remoteNotes.forEach(rNote => {
+          const rId = String(rNote.id);
+          if (!seenIds.has(rId)) {
+            seenIds.add(rId);
+            finalNotes.push(rNote);
+          }
+        });
+
+        // El tablero actualiza la nota existente sin crear duplicados
+        notes = finalNotes;
         saveNotesToLocalStorage();
         renderNotes();
       }
