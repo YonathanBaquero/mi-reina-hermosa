@@ -78,8 +78,8 @@ body {
 .garden-decor {
   position: fixed;
   bottom: 0;
-  width: 165px;
-  height: 205px;
+  width: 195px;
+  height: 235px;
   pointer-events: none;
   z-index: 7;
   opacity: 0.95;
@@ -819,6 +819,74 @@ body {
 .polaroid-flip-card:nth-child(5) .polaroid-card-inner { transform: rotate(-2deg); }
 .polaroid-flip-card:nth-child(6) .polaroid-card-inner { transform: rotate(1.5deg); }
 
+/* Pin de girasol dorado en cada foto Polaroid */
+.polaroid-sunflower-pin {
+  position: absolute;
+  top: -10px;
+  right: 10px;
+  font-size: 1.45rem;
+  z-index: 20;
+  filter: drop-shadow(0 2px 5px rgba(180, 83, 9, 0.45));
+  transform-origin: center bottom;
+  animation: pinSunflowerSway 3.6s ease-in-out infinite alternate;
+  pointer-events: none;
+}
+
+@keyframes pinSunflowerSway {
+  0% { transform: rotate(-8deg) scale(1); }
+  100% { transform: rotate(10deg) scale(1.08); }
+}
+
+/* Balanceo tierno del girasol junto al puercoespín */
+.hedgehog-sunflower-bloom {
+  transform-origin: 0 0;
+  animation: hgFlowerBreeze 4s ease-in-out infinite alternate;
+}
+
+@keyframes hgFlowerBreeze {
+  0% { transform: rotate(-5deg); }
+  100% { transform: rotate(6deg); }
+}
+
+/* Girasoles decorando los sellos de cera */
+.seal-sunflower .seal-heart {
+  font-size: 1.6rem;
+  filter: drop-shadow(0 2px 4px rgba(146, 64, 14, 0.4));
+  animation: sealSunflowerGlow 2.5s ease-in-out infinite alternate;
+}
+
+@keyframes sealSunflowerGlow {
+  0% { transform: scale(0.96) rotate(-4deg); filter: drop-shadow(0 0 4px rgba(251, 191, 36, 0.4)); }
+  100% { transform: scale(1.08) rotate(4deg); filter: drop-shadow(0 0 10px rgba(245, 158, 11, 0.8)); }
+}
+
+/* Divisores de texto embellecidos con girasoles */
+.sunflower-divider {
+  font-size: 1.12rem;
+  letter-spacing: 5px;
+  color: #d97706;
+  filter: drop-shadow(0 1px 3px rgba(217, 119, 6, 0.3));
+}
+
+/* Corona floral de girasoles */
+.sunflower-crown {
+  font-size: 1.55rem;
+  letter-spacing: 4px;
+  margin-bottom: 8px;
+  filter: drop-shadow(0 3px 6px rgba(217, 119, 6, 0.3));
+  animation: crownFloat 3s ease-in-out infinite alternate;
+}
+
+@keyframes crownFloat {
+  0% { transform: translateY(0); }
+  100% { transform: translateY(-4px); }
+}
+
+/* Girasoles al pie del pastel */
+.cake-sunflower-base {
+  filter: drop-shadow(0 2px 5px rgba(60, 30, 10, 0.25));
+}
+
 .polaroid-flip-card.flipped .polaroid-card-inner {
   transform: rotateY(180deg) scale(1.02);
   box-shadow: 0 14px 32px rgba(214, 51, 108, 0.22);
@@ -1424,7 +1492,7 @@ body {
   .letter-content { font-size: 0.9rem; }
   .polaroid-card { max-width: 220px; }
   
-  .side-vines { width: 34px; opacity: 0.65; left: -4px; }
-  .side-vine-right { right: -4px; left: auto; }
-  .garden-decor { width: 105px; height: 145px; }
+  .side-vines { width: 38px; opacity: 0.75; left: -2px; }
+  .side-vine-right { right: -2px; left: auto; }
+  .garden-decor { width: 125px; height: 165px; }
 }
