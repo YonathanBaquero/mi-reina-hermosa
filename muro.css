@@ -1,0 +1,944 @@
+/* ========================================================
+   MURO DE MENSAJES Y DESEOS DE CUMPLEAÑOS (CORKBOARD THEME)
+   Tablero de corcho clásico con chinchetas y notas post-it
+   ======================================================== */
+
+:root {
+  --wood-dark: #3e2415;
+  --wood-mid: #5d3822;
+  --wood-light: #7c4b2e;
+  --cork-base: #c79762;
+  --cork-dark: #b58049;
+  --cork-light: #d8aa77;
+  
+  --font-main: 'Montserrat', sans-serif;
+  --primary-rose: #d6336c;
+  --primary-pink: #ff4d6d;
+  --deep-rose: #a61e4d;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  -webkit-tap-highlight-color: transparent;
+}
+
+body {
+  font-family: var(--font-main);
+  background-color: #2b170c;
+  background-image: 
+    radial-gradient(rgba(0,0,0,0.4) 0%, rgba(0,0,0,0.85) 100%),
+    url('fondo-madera.jpg');
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+  color: #333;
+  min-height: 100vh;
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  overflow-x: hidden;
+  padding-bottom: 90px;
+}
+
+/* ========================================================
+   BARRA SUPERIOR (HEADER)
+   ======================================================== */
+.board-top-bar {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: rgba(35, 18, 10, 0.88);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border-bottom: 2px solid rgba(212, 175, 55, 0.35);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.45);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 18px;
+}
+
+.btn-back-letter {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: linear-gradient(135deg, #ff4d6d, #c9184a);
+  color: #ffffff;
+  text-decoration: none;
+  font-weight: 700;
+  font-size: 0.84rem;
+  padding: 8px 16px;
+  border-radius: 20px;
+  box-shadow: 0 3px 10px rgba(201, 24, 74, 0.35);
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.btn-back-letter:hover,
+.btn-back-letter:active {
+  transform: scale(1.04);
+  box-shadow: 0 5px 15px rgba(201, 24, 74, 0.5);
+}
+
+.board-badge {
+  font-family: 'Great Vibes', 'Dancing Script', cursive;
+  font-size: 1.4rem;
+  color: #ffd166;
+  text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+  font-weight: 700;
+}
+
+.top-bar-right {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.btn-icon-top {
+  background: rgba(255, 255, 255, 0.15);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  color: #fff;
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  font-size: 1.1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.btn-icon-top:hover,
+.btn-icon-top:active {
+  background: rgba(255, 255, 255, 0.3);
+  transform: scale(1.08);
+}
+
+.btn-icon-top.playing {
+  background: #ff4d6d;
+  border-color: #ffd166;
+  animation: pulseRotate 4s linear infinite;
+}
+
+@keyframes pulseRotate {
+  0% { transform: scale(1) rotate(0deg); }
+  50% { transform: scale(1.08) rotate(180deg); }
+  100% { transform: scale(1) rotate(360deg); }
+}
+
+/* ========================================================
+   MARCO DE MADERA Y SUPERFICIE DE CORCHO
+   ======================================================== */
+.board-wrapper {
+  flex: 1;
+  width: 100%;
+  max-width: 1300px;
+  margin: 20px auto;
+  padding: 0 16px;
+}
+
+.corkboard-frame {
+  position: relative;
+  background: 
+    /* Textura de grano de corcho procedural con gradientes */
+    radial-gradient(#ab7640 15%, transparent 16%),
+    radial-gradient(#8a5322 15%, transparent 16%),
+    radial-gradient(rgba(255, 255, 255, 0.12) 15%, transparent 18%),
+    radial-gradient(rgba(0, 0, 0, 0.18) 15%, transparent 18%),
+    linear-gradient(135deg, #c79762 0%, #b8824f 50%, #a4703d 100%);
+  background-position: 0 0, 8px 8px, 4px 4px, 12px 12px, 0 0;
+  background-size: 16px 16px, 16px 16px, 16px 16px, 16px 16px, 100% 100%;
+  
+  /* Marco de madera 3D esculpido */
+  border: 18px solid #4a2814;
+  border-image: linear-gradient(to bottom right, #6d3d20 0%, #4a2814 50%, #30170a 100%) 18;
+  border-radius: 12px;
+  
+  /* Sombra interna del marco proyectada sobre el corcho */
+  box-shadow: 
+    inset 0 0 35px rgba(25, 10, 4, 0.75),
+    inset 0 0 12px rgba(0, 0, 0, 0.6),
+    0 20px 50px rgba(0, 0, 0, 0.7),
+    0 4px 12px rgba(0, 0, 0, 0.5);
+  
+  padding: 24px 20px 40px;
+  min-height: 600px;
+}
+
+/* ========================================================
+   LETRERO SUPERIOR COLGADO
+   ======================================================== */
+.board-banner {
+  position: relative;
+  max-width: 680px;
+  margin: 0 auto 25px;
+  background: #fffdf7;
+  border: 2px solid #e0c9a6;
+  border-radius: 12px;
+  padding: 16px 20px;
+  text-align: center;
+  box-shadow: 
+    0 8px 24px rgba(45, 20, 8, 0.28),
+    0 2px 6px rgba(0, 0, 0, 0.15);
+  transform: rotate(-0.5deg);
+}
+
+.banner-pin {
+  position: absolute;
+  top: -12px;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 30%, #ff4d6d, #b5173d);
+  box-shadow: 
+    0 4px 8px rgba(0, 0, 0, 0.45),
+    inset 0 2px 3px rgba(255, 255, 255, 0.8),
+    inset 0 -2px 3px rgba(0, 0, 0, 0.4);
+  z-index: 2;
+}
+
+.banner-pin-left { left: 24px; }
+.banner-pin-right { right: 24px; }
+
+.banner-title {
+  font-family: 'Great Vibes', 'Dancing Script', cursive;
+  font-size: 2.1rem;
+  color: var(--deep-rose);
+  margin-bottom: 4px;
+  line-height: 1.15;
+}
+
+.banner-subtitle {
+  font-size: 0.92rem;
+  color: #55414e;
+  line-height: 1.45;
+}
+
+.banner-subtitle strong {
+  color: #c9184a;
+}
+
+/* ========================================================
+   CONTROLES (BÚSQUEDA Y CONTADOR)
+   ======================================================== */
+.board-controls {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 14px;
+  max-width: 900px;
+  margin: 0 auto 28px;
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  padding: 10px 18px;
+  border-radius: 30px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+  border: 1px solid rgba(224, 201, 166, 0.6);
+}
+
+.search-box {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex: 1;
+  min-width: 220px;
+}
+
+.search-icon { font-size: 1rem; opacity: 0.7; }
+
+.search-box input {
+  width: 100%;
+  border: none;
+  background: transparent;
+  font-family: var(--font-main);
+  font-size: 0.9rem;
+  color: #333;
+  outline: none;
+}
+
+.stats-counter {
+  font-size: 0.86rem;
+  font-weight: 600;
+  color: #6a4025;
+}
+
+.badge-count {
+  background: var(--primary-pink);
+  color: #fff;
+  padding: 2px 8px;
+  border-radius: 12px;
+  font-weight: 700;
+}
+
+.sync-indicator {
+  text-align: center;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #ffd166;
+  background: rgba(0, 0, 0, 0.55);
+  padding: 6px 14px;
+  border-radius: 20px;
+  width: fit-content;
+  margin: 0 auto 18px;
+}
+
+/* ========================================================
+   SUPERFICIE DEL TABLERO Y CUADRÍCULA DE POST-ITS
+   ======================================================== */
+.corkboard-surface {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 30px 24px;
+  padding: 10px 8px 30px;
+}
+
+/* ESTADO VACÍO */
+.board-empty-state {
+  grid-column: 1 / -1;
+  text-align: center;
+  padding: 60px 20px;
+  background: rgba(255, 255, 255, 0.9);
+  border-radius: 16px;
+  max-width: 480px;
+  margin: 20px auto;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.2);
+}
+
+.empty-icon { font-size: 3rem; margin-bottom: 12px; }
+.board-empty-state h3 { color: var(--deep-rose); margin-bottom: 8px; font-size: 1.25rem; }
+.board-empty-state p { color: #666; font-size: 0.9rem; line-height: 1.5; }
+
+/* ========================================================
+   NOTAS POST-IT (STICKY NOTES)
+   ======================================================== */
+.postit-note {
+  position: relative;
+  min-height: 220px;
+  padding: 28px 18px 18px;
+  border-radius: 2px 2px 14px 2px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  cursor: default;
+  user-select: none;
+  
+  /* Sombra 3D multicapa simulando papel doblado */
+  box-shadow: 
+    0 10px 22px rgba(20, 8, 3, 0.28),
+    0 3px 6px rgba(0, 0, 0, 0.16);
+  
+  transform: rotate(var(--rot, 0deg));
+  transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.3s ease, z-index 0.1s;
+  animation: pinPop 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) backwards;
+}
+
+.postit-note:hover,
+.postit-note:focus-within {
+  transform: translateY(-8px) scale(1.04) rotate(0deg) !important;
+  box-shadow: 
+    0 18px 38px rgba(20, 8, 3, 0.4),
+    0 6px 12px rgba(0, 0, 0, 0.2);
+  z-index: 20;
+}
+
+@keyframes pinPop {
+  0% { transform: scale(0.3) rotate(15deg); opacity: 0; }
+  70% { transform: scale(1.08) rotate(var(--rot, 0deg)); }
+  100% { transform: scale(1) rotate(var(--rot, 0deg)); opacity: 1; }
+}
+
+/* Pliegue de la esquina inferior derecha */
+.postit-note::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: 0;
+  height: 0;
+  border-style: solid;
+  border-width: 0 0 16px 16px;
+  border-color: transparent transparent rgba(0, 0, 0, 0.15) transparent;
+  pointer-events: none;
+}
+
+/* ========================================================
+   CHINCHETA / PUSHPIN 3D
+   ======================================================== */
+.pushpin {
+  position: absolute;
+  top: -10px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  z-index: 5;
+  box-shadow: 
+    0 5px 10px rgba(0, 0, 0, 0.45),
+    inset 0 2px 3px rgba(255, 255, 255, 0.75),
+    inset 0 -2px 3px rgba(0, 0, 0, 0.45);
+}
+
+.pushpin::after {
+  content: '';
+  position: absolute;
+  bottom: -4px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 6px;
+  height: 5px;
+  background: #bbb;
+  border-radius: 0 0 2px 2px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
+}
+
+/* Colores de Chinchetas */
+.pin-red { background: radial-gradient(circle at 35% 30%, #ff5252, #d32f2f, #8b0000); }
+.pin-blue { background: radial-gradient(circle at 35% 30%, #448aff, #1976d2, #0d47a1); }
+.pin-yellow { background: radial-gradient(circle at 35% 30%, #fff176, #fbc02d, #f57f17); }
+.pin-green { background: radial-gradient(circle at 35% 30%, #69f0ae, #388e3c, #1b5e20); }
+.pin-purple { background: radial-gradient(circle at 35% 30%, #e040fb, #7b1fa2, #4a148c); }
+.pin-orange { background: radial-gradient(circle at 35% 30%, #ffab40, #f57c00, #e65100); }
+.pin-gold { background: radial-gradient(circle at 35% 30%, #fff3b0, #d4af37, #8c6d1f); }
+
+/* ========================================================
+   COLORES DE LOS POST-ITS
+   ======================================================== */
+.note-yellow { background: linear-gradient(135deg, #fffde7 0%, #fff9a6 50%, #fff176 100%); color: #3e3215; }
+.note-pink   { background: linear-gradient(135deg, #fff0f3 0%, #ffccd5 50%, #ffb3c1 100%); color: #4a1824; }
+.note-green  { background: linear-gradient(135deg, #f1f8e9 0%, #dcedc8 50%, #c5e1a5 100%); color: #213812; }
+.note-blue   { background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 50%, #90caf9 100%); color: #102a43; }
+.note-purple { background: linear-gradient(135deg, #f3e5f5 0%, #e1bee7 50%, #ce93d8 100%); color: #3b1444; }
+.note-peach  { background: linear-gradient(135deg, #fff3e0 0%, #ffe0b2 50%, #ffcc80 100%); color: #4e2908; }
+.note-lilac  { background: linear-gradient(135deg, #fce4ec 0%, #f8bbd0 50%, #f48fb1 100%); color: #4a1226; }
+.note-lemon  { background: linear-gradient(135deg, #fffde7 0%, #fff59d 50%, #ffee58 100%); color: #423805; }
+
+/* ========================================================
+   FUENTES MANUSCRITAS PERSONALIZADAS
+   ======================================================== */
+.font-caveat   { font-family: 'Caveat', cursive; font-size: 1.35rem; line-height: 1.35; font-weight: 600; }
+.font-dancing  { font-family: 'Dancing Script', cursive; font-size: 1.3rem; line-height: 1.35; font-weight: 700; }
+.font-patrick  { font-family: 'Patrick Hand', cursive; font-size: 1.25rem; line-height: 1.35; font-weight: 600; }
+.font-kalam    { font-family: 'Kalam', cursive; font-size: 1.2rem; line-height: 1.4; font-weight: 700; }
+.font-indie    { font-family: 'Indie Flower', cursive; font-size: 1.15rem; line-height: 1.4; font-weight: 600; }
+.font-shadows  { font-family: 'Shadows Into Light', cursive; font-size: 1.25rem; line-height: 1.35; font-weight: 600; }
+.font-gochi    { font-family: 'Gochi Hand', cursive; font-size: 1.25rem; line-height: 1.35; font-weight: 600; }
+.font-pacifico { font-family: 'Pacifico', cursive; font-size: 1.1rem; line-height: 1.45; }
+.font-marck    { font-family: 'Marck Script', cursive; font-size: 1.3rem; line-height: 1.35; }
+.font-sacramento { font-family: 'Sacramento', cursive; font-size: 1.55rem; line-height: 1.3; font-weight: 700; }
+
+/* Contenido de la Nota */
+.note-sticker {
+  position: absolute;
+  top: 10px;
+  right: 12px;
+  font-size: 1.4rem;
+  filter: drop-shadow(0 2px 4px rgba(0,0,0,0.15));
+}
+
+.note-body {
+  margin: 10px 0 16px;
+  word-break: break-word;
+  white-space: pre-line;
+}
+
+.note-footer {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  border-top: 1px dashed rgba(0, 0, 0, 0.15);
+  padding-top: 8px;
+  margin-top: auto;
+}
+
+.note-author {
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 700;
+  font-size: 0.82rem;
+  color: rgba(0, 0, 0, 0.8);
+  max-width: 65%;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.note-actions {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.btn-like {
+  background: rgba(255, 255, 255, 0.55);
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  border-radius: 12px;
+  padding: 3px 8px;
+  font-size: 0.76rem;
+  font-weight: 700;
+  color: #d6336c;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  transition: transform 0.15s, background 0.15s;
+}
+
+.btn-like:hover,
+.btn-like:active {
+  background: rgba(255, 255, 255, 0.9);
+  transform: scale(1.1);
+}
+
+.btn-like.liked {
+  background: #ff4d6d;
+  color: #fff;
+  border-color: #ff4d6d;
+}
+
+/* ========================================================
+   BOTÓN FLOTANTE (FAB)
+   ======================================================== */
+.fab-wrapper {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  z-index: 90;
+}
+
+.btn-fab {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: linear-gradient(135deg, #ff4d6d 0%, #c9184a 100%);
+  color: #ffffff;
+  border: none;
+  padding: 14px 24px;
+  border-radius: 35px;
+  font-family: var(--font-main);
+  font-size: 1rem;
+  font-weight: 800;
+  cursor: pointer;
+  box-shadow: 
+    0 10px 25px rgba(201, 24, 74, 0.55),
+    0 4px 10px rgba(0, 0, 0, 0.3);
+  transition: transform 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.25s ease;
+  animation: pulseFab 2.5s infinite ease-in-out;
+}
+
+.btn-fab:hover,
+.btn-fab:active {
+  transform: scale(1.08) translateY(-3px);
+  box-shadow: 
+    0 14px 30px rgba(201, 24, 74, 0.7),
+    0 6px 14px rgba(0, 0, 0, 0.35);
+}
+
+.fab-icon { font-size: 1.3rem; }
+
+@keyframes pulseFab {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.04); }
+}
+
+/* ========================================================
+   MODALES (CREAR NOTA Y CONFIGURACIÓN)
+   ======================================================== */
+.modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(15, 8, 4, 0.75);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+}
+
+.modal-backdrop.open {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.modal-card {
+  background: #ffffff;
+  border-radius: 20px;
+  width: 100%;
+  max-width: 540px;
+  max-height: 92vh;
+  overflow-y: auto;
+  box-shadow: 0 25px 60px rgba(0, 0, 0, 0.5);
+  transform: scale(0.92) translateY(20px);
+  transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.modal-backdrop.open .modal-card {
+  transform: scale(1) translateY(0);
+}
+
+.modal-card-sm { max-width: 440px; }
+
+.modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 18px 22px;
+  border-bottom: 1.5px solid #f0e4d7;
+  background: #fff9f5;
+  border-radius: 20px 20px 0 0;
+}
+
+.modal-header-title {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.modal-header-title h2 {
+  font-size: 1.25rem;
+  color: var(--deep-rose);
+  font-weight: 700;
+}
+
+.btn-close-modal {
+  background: none;
+  border: none;
+  font-size: 1.8rem;
+  color: #999;
+  cursor: pointer;
+  line-height: 1;
+  padding: 0 4px;
+}
+
+.btn-close-modal:hover { color: #333; }
+
+.modal-body {
+  padding: 22px;
+}
+
+/* Formulario */
+.form-group {
+  margin-bottom: 18px;
+}
+
+.form-label {
+  display: block;
+  font-size: 0.88rem;
+  font-weight: 700;
+  color: #4a3427;
+  margin-bottom: 7px;
+}
+
+.required-star { color: #e63946; }
+
+.form-input,
+.form-textarea,
+.form-select {
+  width: 100%;
+  padding: 12px 14px;
+  border: 1.5px solid #e0cbb7;
+  border-radius: 10px;
+  font-family: var(--font-main);
+  font-size: 0.92rem;
+  color: #333;
+  outline: none;
+  transition: border-color 0.2s, box-shadow 0.2s;
+  background: #fffdfb;
+}
+
+.form-input:focus,
+.form-textarea:focus,
+.form-select:focus {
+  border-color: var(--primary-pink);
+  box-shadow: 0 0 0 3px rgba(255, 77, 109, 0.18);
+}
+
+.form-textarea { resize: vertical; }
+
+.char-counter {
+  text-align: right;
+  font-size: 0.75rem;
+  color: #888;
+  margin-top: 4px;
+}
+
+/* Paleta de Colores de Post-it */
+.color-palette {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.color-swatch {
+  width: 34px;
+  height: 34px;
+  border-radius: 8px;
+  border: 2px solid transparent;
+  cursor: pointer;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+  transition: transform 0.2s, border-color 0.2s;
+}
+
+.color-swatch:hover { transform: scale(1.15); }
+.color-swatch.active {
+  border-color: var(--deep-rose);
+  transform: scale(1.15);
+  box-shadow: 0 3px 10px rgba(166, 30, 77, 0.35);
+}
+
+.swatch-yellow { background: #fff59d; }
+.swatch-pink   { background: #ffccd5; }
+.swatch-green  { background: #c8e6c9; }
+.swatch-blue   { background: #bbdefb; }
+.swatch-purple { background: #e1bee7; }
+.swatch-peach  { background: #ffe0b2; }
+.swatch-lilac  { background: #f8bbd0; }
+.swatch-lemon  { background: #fff9c4; }
+
+/* Selector de Stickers */
+.sticker-selector {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.btn-sticker {
+  background: #f7f1eb;
+  border: 1.5px solid #e0cbb7;
+  border-radius: 8px;
+  font-size: 1.3rem;
+  width: 38px;
+  height: 38px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: transform 0.2s, background 0.2s, border-color 0.2s;
+}
+
+.btn-sticker:hover { transform: scale(1.15); }
+.btn-sticker.active {
+  background: #ffe3ec;
+  border-color: var(--primary-pink);
+  transform: scale(1.15);
+}
+
+/* Vista previa de la nota en el modal */
+.preview-area {
+  margin: 18px 0 22px;
+  background: #f4ede4;
+  border: 1.5px dashed #d5beaa;
+  border-radius: 12px;
+  padding: 16px;
+}
+
+.preview-title {
+  display: block;
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: #6a4f3d;
+  margin-bottom: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.preview-note-wrapper {
+  display: flex;
+  justify-content: center;
+}
+
+.preview-note {
+  width: 100%;
+  max-width: 280px;
+  pointer-events: none;
+}
+
+/* Botones del Modal */
+.modal-actions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 12px;
+  margin-top: 10px;
+}
+
+.btn-cancel {
+  background: #f0f0f0;
+  border: none;
+  padding: 11px 18px;
+  border-radius: 10px;
+  font-family: var(--font-main);
+  font-weight: 600;
+  font-size: 0.88rem;
+  color: #666;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.btn-cancel:hover { background: #e0e0e0; }
+
+.btn-submit {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: linear-gradient(135deg, #ff4d6d 0%, #c9184a 100%);
+  color: #ffffff;
+  border: none;
+  padding: 12px 24px;
+  border-radius: 12px;
+  font-family: var(--font-main);
+  font-weight: 700;
+  font-size: 0.92rem;
+  cursor: pointer;
+  box-shadow: 0 4px 15px rgba(201, 24, 74, 0.4);
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.btn-submit:hover,
+.btn-submit:active {
+  transform: scale(1.03);
+  box-shadow: 0 6px 20px rgba(201, 24, 74, 0.55);
+}
+
+.btn-submit:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* ========================================================
+   CONFIGURACIÓN DE GOOGLE SHEETS MODAL
+   ======================================================== */
+.config-instructions {
+  font-size: 0.9rem;
+  color: #444;
+  line-height: 1.5;
+  margin-bottom: 16px;
+}
+
+.config-help {
+  background: #fff8e6;
+  border-left: 4px solid #ffb703;
+  padding: 10px 14px;
+  border-radius: 6px;
+  font-size: 0.82rem;
+  color: #6b4c00;
+  margin-bottom: 18px;
+  line-height: 1.45;
+}
+
+/* ========================================================
+   NOTIFICACIÓN TOAST FLOTANTE
+   ======================================================== */
+.toast-notification {
+  position: fixed;
+  bottom: 24px;
+  left: 50%;
+  transform: translateX(-50%) translateY(100px);
+  background: #1e130c;
+  color: #ffffff;
+  border: 1.5px solid #d4af37;
+  padding: 12px 22px;
+  border-radius: 25px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
+  z-index: 2000;
+  opacity: 0;
+  pointer-events: none;
+  transition: transform 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0.35s ease;
+}
+
+.toast-notification.show {
+  transform: translateX(-50%) translateY(0);
+  opacity: 1;
+}
+
+.toast-icon { font-size: 1.2rem; }
+
+/* ========================================================
+   ADAPTACIONES MÓVILES (RESPONSIVE)
+   ======================================================== */
+@media (max-width: 600px) {
+  .board-top-bar {
+    padding: 8px 12px;
+  }
+  
+  .btn-back-letter .text {
+    display: none;
+  }
+  
+  .board-badge {
+    font-size: 1.15rem;
+  }
+
+  .board-wrapper {
+    padding: 0 8px;
+    margin: 12px auto;
+  }
+
+  .corkboard-frame {
+    border-width: 10px;
+    padding: 16px 10px 30px;
+    border-radius: 8px;
+  }
+
+  .board-banner {
+    padding: 12px 14px;
+    margin-bottom: 18px;
+  }
+
+  .banner-title {
+    font-size: 1.65rem;
+  }
+
+  .banner-subtitle {
+    font-size: 0.82rem;
+  }
+
+  .corkboard-surface {
+    grid-template-columns: 1fr;
+    gap: 22px;
+    padding: 6px 4px 20px;
+  }
+
+  .postit-note {
+    min-height: 190px;
+    padding: 24px 14px 14px;
+  }
+
+  .fab-wrapper {
+    bottom: 18px;
+    right: 18px;
+  }
+
+  .btn-fab {
+    padding: 12px 18px;
+    font-size: 0.9rem;
+  }
+
+  .modal-card {
+    border-radius: 16px;
+    max-height: 94vh;
+  }
+
+  .modal-header {
+    padding: 14px 16px;
+  }
+
+  .modal-body {
+    padding: 16px;
+  }
+}

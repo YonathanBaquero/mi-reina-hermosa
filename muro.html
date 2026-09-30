@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Muro de Felicitaciones 🎂 ¡Feliz Cumpleaños, Mi Reina!</title>
+  <meta name="description" content="Muro interactivo de notas y felicitaciones de cumpleaños con mensajes de amor y cariño de todos.">
+  <meta name="theme-color" content="#5a3825">
+
+  <!-- Fuentes de Google: Variedad de tipografías manuscritas auténticas y sans-serif moderna -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&family=Dancing+Script:wght@600;700&family=Gochi+Hand&family=Indie+Flower&family=Kalam:wght@700&family=Marck+Script&family=Montserrat:wght@400;500;600;700;800&family=Pacifico&family=Patrick+Hand&family=Sacramento&family=Shadows+Into+Light&display=swap" rel="stylesheet">
+
+  <!-- Librería ligera de confeti para celebrar cada mensaje -->
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
+  <link rel="stylesheet" href="muro.css?v=v2026-muro1">
+</head>
+<body>
+
+  <!-- Barra de navegación y accesos superiores -->
+  <header class="board-top-bar">
+    <div class="top-bar-left">
+      <a href="index.html" class="btn-back-letter" title="Volver a la carta interactiva">
+        <span class="icon">💌</span>
+        <span class="text">Ver Carta y Sorpresas</span>
+      </a>
+    </div>
+
+    <div class="top-bar-center">
+      <span class="board-badge">🌻 Muro de Cumpleaños 🌻</span>
+    </div>
+
+    <div class="top-bar-right">
+      <button id="musicToggleBtn" class="btn-icon-top" aria-label="Música de fondo" title="Música de fondo">
+        <span class="icon">🎵</span>
+      </button>
+      <button id="btnOpenConfig" class="btn-icon-top" aria-label="Conectar Google Sheets" title="Configurar Google Sheets">
+        <span class="icon">⚙️</span>
+      </button>
+    </div>
+  </header>
+
+  <!-- Audio de fondo (opcional con loop) -->
+  <audio id="bgMusic" src="musica.mp3" loop preload="auto"></audio>
+
+  <!-- Contenedor Principal: Marco de Madera y Tablero de Corcho -->
+  <main class="board-wrapper">
+    <div class="corkboard-frame">
+      
+      <!-- Letrero Superior Colgado con Cuerditas en el Corcho -->
+      <header class="board-banner">
+        <div class="banner-pin banner-pin-left"></div>
+        <div class="banner-pin banner-pin-right"></div>
+        <div class="banner-content">
+          <h1 class="banner-title">Muro de Deseos & Felicitaciones 🎂</h1>
+          <p class="banner-subtitle">
+            ¡Deja tu notita de felicitación para <strong>la reina del día</strong>! Cada persona tiene su propio color y estilo de letra ✨
+          </p>
+        </div>
+      </header>
+
+      <!-- Barra de Filtros y Búsqueda -->
+      <section class="board-controls">
+        <div class="search-box">
+          <span class="search-icon">🔍</span>
+          <input type="text" id="searchInput" placeholder="Buscar por nombre o mensaje..." aria-label="Buscar notas">
+        </div>
+        <div class="stats-counter" id="statsCounter">
+          <span class="badge-count" id="notesCount">0</span> mensajes en el corcho 📌
+        </div>
+      </section>
+
+      <!-- Estado de Carga / Sincronización -->
+      <div id="syncIndicator" class="sync-indicator" style="display: none;">
+        <span class="spinner">⏳</span> Sincronizando con Google Sheets...
+      </div>
+
+      <!-- El Tablero de Corcho con la cuadrícula de Notas Post-it -->
+      <div class="corkboard-surface" id="corkboardSurface">
+        <!-- Las notas se inyectan dinámicamente con muro.js -->
+        <div class="board-empty-state" id="emptyState" style="display: none;">
+          <div class="empty-icon">📌</div>
+          <h3>¡Sé la primera persona en dejar un mensaje!</h3>
+          <p>Toca el botón flotante rosado de abajo para pegar tu notita en el corcho.</p>
+        </div>
+      </div>
+
+    </div>
+  </main>
+
+  <!-- Botón Flotante para Agregar Mensaje (FAB) -->
+  <aside class="fab-wrapper">
+    <button type="button" class="btn-fab" id="btnOpenModal" aria-label="Dejar un mensaje">
+      <span class="fab-icon">📌</span>
+      <span class="fab-text">Dejar mi Mensaje</span>
+    </button>
+  </aside>
+
+  <!-- MODAL INTERACTIVO PARA CREAR NOTA -->
+  <div class="modal-backdrop" id="modalBackdrop" role="dialog" aria-modal="true" aria-hidden="true">
+    <div class="modal-card">
+      
+      <div class="modal-header">
+        <div class="modal-header-title">
+          <span class="modal-icon">✏️</span>
+          <h2>Escribe tu Felicitación</h2>
+        </div>
+        <button type="button" class="btn-close-modal" id="btnCloseModal" aria-label="Cerrar ventana">&times;</button>
+      </div>
+
+      <div class="modal-body">
+        
+        <!-- Formulario -->
+        <form id="noteForm" class="note-form" novalidate>
+
+          <!-- 1. Nombre o Apodo -->
+          <div class="form-group">
+            <label for="authorName" class="form-label">
+              <span>¿Quién escribe este mensaje?</span>
+              <span class="required-star">*</span>
+            </label>
+            <input type="text" id="authorName" class="form-input" placeholder="Tu nombre o apodo (ej. Tu tía Carmen, Carlos, Tu esposo...)" maxlength="50" required autocomplete="name">
+          </div>
+
+          <!-- 2. Mensaje -->
+          <div class="form-group">
+            <label for="messageText" class="form-label">
+              <span>Tu mensaje o felicitación para la cumpleañera:</span>
+              <span class="required-star">*</span>
+            </label>
+            <textarea id="messageText" class="form-textarea" placeholder="Escribe tus mejores deseos, un recuerdo bonito o un mensaje lleno de cariño..." rows="4" maxlength="320" required></textarea>
+            <div class="char-counter"><span id="charCount">0</span>/320 caracteres</div>
+          </div>
+
+          <!-- 3. Selector de Color del Post-it -->
+          <div class="form-group">
+            <label class="form-label">Elige el color de tu notita:</label>
+            <div class="color-palette" id="colorPalette">
+              <!-- Opciones generadas en JS o estáticas -->
+              <button type="button" class="color-swatch swatch-yellow active" data-color="yellow" title="Amarillo Canario"></button>
+              <button type="button" class="color-swatch swatch-pink" data-color="pink" title="Rosa Romántico"></button>
+              <button type="button" class="color-swatch swatch-green" data-color="green" title="Verde Menta"></button>
+              <button type="button" class="color-swatch swatch-blue" data-color="blue" title="Azul Cielo"></button>
+              <button type="button" class="color-swatch swatch-purple" data-color="purple" title="Lavanda Dulce"></button>
+              <button type="button" class="color-swatch swatch-peach" data-color="peach" title="Melocotón Cálido"></button>
+              <button type="button" class="color-swatch swatch-lilac" data-color="lilac" title="Lila Fresa"></button>
+              <button type="button" class="color-swatch swatch-lemon" data-color="lemon" title="Limón Pastel"></button>
+            </div>
+          </div>
+
+          <!-- 4. Selector de Estilo de Letra (Tipografía Manuscrita) -->
+          <div class="form-group">
+            <label for="fontSelect" class="form-label">Elige tu estilo de letra personalizada:</label>
+            <select id="fontSelect" class="form-select">
+              <option value="caveat" selected>✍️ Caveat (Espontánea y cariñosa)</option>
+              <option value="dancing">💃 Dancing Script (Elegante y fluida)</option>
+              <option value="patrick">✏️ Patrick Hand (Clara y tierna)</option>
+              <option value="kalam">🖊️ Kalam (Marcador artístico)</option>
+              <option value="indie">🌸 Indie Flower (Alegre y juvenil)</option>
+              <option value="shadows">🌟 Shadows Into Light (Fina y personal)</option>
+              <option value="gochi">🎈 Gochi Hand (Divertida y redondita)</option>
+              <option value="pacifico">🌊 Pacifico (Pincel grueso vintage)</option>
+              <option value="marck">💌 Marck Script (Pluma caligráfica clásica)</option>
+              <option value="sacramento">💍 Sacramento (Cursiva romántica delicada)</option>
+            </select>
+          </div>
+
+          <!-- 5. Selector de Estampita / Emoji -->
+          <div class="form-group">
+            <label class="form-label">Agrega un sticker o detalle:</label>
+            <div class="sticker-selector" id="stickerSelector">
+              <button type="button" class="btn-sticker active" data-sticker="💖">💖</button>
+              <button type="button" class="btn-sticker" data-sticker="🎂">🎂</button>
+              <button type="button" class="btn-sticker" data-sticker="🌻">🌻</button>
+              <button type="button" class="btn-sticker" data-sticker="🎉">🎉</button>
+              <button type="button" class="btn-sticker" data-sticker="🥂">🥂</button>
+              <button type="button" class="btn-sticker" data-sticker="🦔">🦔</button>
+              <button type="button" class="btn-sticker" data-sticker="⭐">⭐</button>
+              <button type="button" class="btn-sticker" data-sticker="💌">💌</button>
+              <button type="button" class="btn-sticker" data-sticker="👑">👑</button>
+            </div>
+          </div>
+
+          <!-- Vista Previa en Vivo de la Nota -->
+          <div class="preview-area">
+            <span class="preview-title">Vista Previa de tu Notita:</span>
+            <div class="preview-note-wrapper">
+              <div class="postit-note preview-note note-yellow font-caveat" id="previewNote">
+                <div class="pushpin pin-red" id="previewPin"></div>
+                <div class="note-sticker" id="previewSticker">💖</div>
+                <div class="note-body" id="previewBody">
+                  "¡Feliz cumpleaños mi reina! Que todos tus sueños se hagan realidad hoy y siempre..."
+                </div>
+                <div class="note-footer">
+                  <span class="note-author" id="previewAuthor">— Tu nombre</span>
+                  <span class="note-date">Hoy</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Botones de Acción -->
+          <div class="modal-actions">
+            <button type="button" class="btn-cancel" id="btnCancelNote">Cancelar</button>
+            <button type="submit" class="btn-submit" id="btnSubmitNote">
+              <span class="btn-submit-icon">📌</span>
+              <span class="btn-submit-text">Pegar mi Notita en el Muro</span>
+            </button>
+          </div>
+
+        </form>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL DE CONFIGURACIÓN DE GOOGLE SHEETS -->
+  <div class="modal-backdrop" id="configBackdrop" role="dialog" aria-modal="true" aria-hidden="true">
+    <div class="modal-card modal-card-sm">
+      <div class="modal-header">
+        <div class="modal-header-title">
+          <span class="modal-icon">⚙️</span>
+          <h2>Conectar con Google Sheets</h2>
+        </div>
+        <button type="button" class="btn-close-modal" id="btnCloseConfig">&times;</button>
+      </div>
+      <div class="modal-body">
+        <p class="config-instructions">
+          Para que los mensajes de amigos y familiares se guarden en tu propia <strong>Hoja de Cálculo de Google</strong> en tiempo real, pega aquí la URL de tu Web App de Google Apps Script:
+        </p>
+        <div class="form-group">
+          <label for="scriptUrlInput" class="form-label">URL de Google Apps Script (Web App):</label>
+          <input type="url" id="scriptUrlInput" class="form-input" placeholder="https://script.google.com/macros/s/.../exec">
+        </div>
+        <div class="config-help">
+          <p>💡 <em>¿Aún no la has creado?</em> Sigue la guía paso a paso en el archivo <code>google-apps-script.js</code> incluido en el proyecto. ¡Solo toma 2 minutos!</p>
+        </div>
+        <div class="modal-actions">
+          <button type="button" class="btn-cancel" id="btnCancelConfig">Cerrar</button>
+          <button type="button" class="btn-submit" id="btnSaveConfig">Guardar y Conectar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast de Notificaciones -->
+  <div class="toast-notification" id="toastNotification" role="alert" aria-live="assertive">
+    <span class="toast-icon">✨</span>
+    <span class="toast-message" id="toastMessage">¡Tu nota fue pegada con éxito en el corcho!</span>
+  </div>
+
+  <!-- Script principal del Muro -->
+  <script src="muro.js?v=v2026-muro1"></script>
+</body>
+</html>

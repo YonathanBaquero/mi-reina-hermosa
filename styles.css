@@ -247,6 +247,34 @@ body {
   50% { transform: scale(1.08); }
 }
 
+.muro-nav-toggle {
+  position: fixed;
+  top: 18px;
+  right: 70px;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.92);
+  border: 1.5px solid #d4af37;
+  color: #b8860b;
+  box-shadow: 0 4px 15px rgba(184, 134, 11, 0.25);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 100;
+  font-size: 1.25rem;
+  text-decoration: none;
+  transition: transform 0.2s, background 0.3s, box-shadow 0.2s;
+}
+
+.muro-nav-toggle:hover,
+.muro-nav-toggle:active {
+  transform: scale(1.08);
+  background: #fff8e6;
+  box-shadow: 0 6px 18px rgba(184, 134, 11, 0.4);
+}
+
 /* ========================================================
    ESCENARIO Y GESTIÓN DE ETAPAS (ACTOS 1, 2 Y 3)
    ======================================================== */
@@ -1478,6 +1506,34 @@ body {
 .btn-replay:active {
   background: #ffe3ec;
   transform: scale(1.04);
+}
+
+.btn-muro-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  background: linear-gradient(135deg, #ff4d6d 0%, #c9184a 100%);
+  color: #ffffff;
+  border: 1.5px solid #ffccd5;
+  padding: 12px 22px;
+  border-radius: 25px;
+  font-family: var(--font-sans);
+  font-size: 0.9rem;
+  font-weight: 700;
+  text-decoration: none;
+  cursor: pointer;
+  box-shadow: 0 6px 18px rgba(201, 24, 74, 0.4);
+  transition: all 0.25s ease;
+  max-width: 320px;
+  text-align: center;
+  line-height: 1.35;
+}
+
+.btn-muro-link:hover,
+.btn-muro-link:active {
+  transform: scale(1.04);
+  box-shadow: 0 8px 24px rgba(201, 24, 74, 0.55);
 }
 
 /* Firma y dedicatoria final al pie del pastel */

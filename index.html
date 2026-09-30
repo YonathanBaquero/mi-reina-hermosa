@@ -20,7 +20,7 @@
   <link rel="preload" as="image" href="fondo-madera.jpg">
   <link rel="preload" as="fetch" href="musica.mp3" crossorigin>
 
-  <link rel="stylesheet" href="styles.css?v=v2026-fix3">
+  <link rel="stylesheet" href="styles.css?v=v2026-muro1">
 </head>
 <body>
   <!-- Luces de hadas (Fairy Lights) románticas y titilantes -->
@@ -48,6 +48,11 @@
   <!-- Jardín floral inferior exuberante -->
   <div class="garden-decor garden-left" id="gardenLeft"></div>
   <div class="garden-decor garden-right" id="gardenRight"></div>
+
+  <!-- Botón de acceso al Muro de Felicitaciones -->
+  <a href="muro.html" id="muroNavBtn" class="muro-nav-toggle" aria-label="Muro de Felicitaciones" title="Ver el Muro de Felicitaciones 📌">
+    <span class="icon">📌</span>
+  </a>
 
   <!-- Botón de música: Caminar de tu mano - Río Roma ft. Fonseca -->
   <button id="musicBtn" class="music-toggle" aria-label="Reproducir música" title="Caminar de tu mano - Río Roma ft. Fonseca">
@@ -686,8 +691,11 @@
             <p class="cake-signature-name">Tu ingeniero ❤️</p>
           </div>
 
-          <!-- Botón para revivir toda la experiencia -->
-          <div class="replay-wrapper" style="margin-top: 25px;">
+          <!-- Botón para ver el Muro de Felicitaciones y revivir la experiencia -->
+          <div class="replay-wrapper" style="margin-top: 25px; display: flex; flex-direction: column; gap: 14px; align-items: center;">
+            <a href="muro.html" class="btn-muro-link" id="btnGoToMuro">
+              <span>📌 Ver y Dejar Mensajes en el Muro de Felicitaciones 💌</span>
+            </a>
             <button type="button" class="btn-replay" id="btnReplay">
               <span>🌻 Volver a ver todas tus sorpresas 💌</span>
             </button>
@@ -699,6 +707,6 @@
 
   </main>
 
-  <script src="script.js?v=v2026-fix3"></script>
+  <script src="script.js?v=v2026-muro1"></script>
 </body>
 </html>
