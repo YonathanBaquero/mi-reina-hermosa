@@ -6,9 +6,8 @@
 // ========================================================
 // 1. CONFIGURACIÓN DE GOOGLE SHEETS
 // ========================================================
-// Pega aquí la URL de tu Web App de Google Apps Script cuando la crees:
-// Ejemplo: 'https://script.google.com/macros/s/AKfycb.../exec'
-let GOOGLE_SCRIPT_URL = localStorage.getItem('google_script_muro_url') || '';
+const DEFAULT_GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyi8QXpqj3oZ9XUQA26P9qwRSgtzVJAIbewABI5OaKNA6AgtT-1SV-B_4RBMR4ogXzu/exec';
+let GOOGLE_SCRIPT_URL = localStorage.getItem('google_script_muro_url') || DEFAULT_GOOGLE_SCRIPT_URL;
 
 // Paletas de colores y fuentes disponibles
 const COLORS = ['yellow', 'pink', 'green', 'blue', 'purple', 'peach', 'lilac', 'lemon'];
@@ -168,7 +167,7 @@ async function fetchNotesFromGoogleSheets() {
             color: row.color || getRandomItem(COLORS),
             font: row.font || getRandomItem(FONTS),
             pin: getRandomItem(PINS),
-            sticker: row.sticker || '💖',
+            sticker: (row.sticker && !row.sticker.includes('?')) ? row.sticker : '💖',
             rotation: getRandomRotation(),
             date: row.timestamp ? formatDate(row.timestamp) : 'Reciente',
             likes: Number(row.likes) || 0
@@ -176,10 +175,10 @@ async function fetchNotesFromGoogleSheets() {
         });
 
         if (remoteNotes.length > 0) {
-          // Fusionar notas remotas evitando duplicados
+          // Fusionar notas remotas: primero los mensajes reales recibidos de amigos y familiares
           const existingIds = new Set(remoteNotes.map(n => n.id));
           const keepLocal = notes.filter(n => !existingIds.has(n.id) && n.id.startsWith('sample_'));
-          notes = [...keepLocal, ...remoteNotes];
+          notes = [...remoteNotes, ...keepLocal];
           saveNotesToLocalStorage();
           renderNotes();
         }
