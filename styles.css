@@ -1,0 +1,1288 @@
+:root {
+  --primary-pink: #ff6b8b;
+  --deep-rose: #d6336c;
+  --soft-rose: #ffe3ec;
+  --envelope-color: #f7cad0;
+  --envelope-dark: #f0a8b4;
+  --envelope-shadow: rgba(186, 75, 100, 0.22);
+  --gold-accent: #d4af37;
+  --cream-paper: #fffdf9;
+  --text-dark: #3a2e39;
+  --text-muted: #7d6b7d;
+  --font-script: 'Great Vibes', cursive;
+  --font-hand: 'Dancing Script', cursive;
+  --font-sans: 'Montserrat', sans-serif;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  -webkit-tap-highlight-color: transparent;
+}
+
+body {
+  min-height: 100vh;
+  min-height: 100dvh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: linear-gradient(135deg, #fffdf4 0%, #fff2f5 35%, #fffbe6 70%, #ffeaf0 100%);
+  font-family: var(--font-sans);
+  color: var(--text-dark);
+  overflow-x: hidden;
+  position: relative;
+  touch-action: manipulation;
+}
+
+/* ========================================================
+   DECORACIONES DE GIRASOLES (SUNFLOWERS)
+   ======================================================== */
+
+/* 1. Guirnalda superior de girasoles */
+.top-flower-garland {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 68px;
+  pointer-events: none;
+  z-index: 7;
+  opacity: 0.96;
+  filter: drop-shadow(0 4px 12px rgba(0, 0, 0, 0.08));
+}
+
+/* 2. Enredaderas laterales de girasoles */
+.side-vines {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  width: 90px;
+  pointer-events: none;
+  z-index: 6;
+  opacity: 0.95;
+  filter: drop-shadow(0 4px 12px rgba(0, 0, 0, 0.08));
+  transition: opacity 1s ease;
+}
+
+.side-vine-left {
+  left: 0;
+}
+
+.side-vine-right {
+  right: 0;
+  transform: scaleX(-1);
+}
+
+/* 3. Jardín de girasoles en las esquinas inferiores */
+.garden-decor {
+  position: fixed;
+  bottom: -15px;
+  width: 170px;
+  height: 230px;
+  pointer-events: none;
+  z-index: 7;
+  opacity: 0.95;
+  filter: drop-shadow(0 6px 16px rgba(0, 0, 0, 0.12));
+  transition: opacity 1.2s ease-in, transform 1.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.garden-left {
+  left: -20px;
+  transform: translateY(20px) scale(0.95);
+}
+
+.garden-right {
+  right: -20px;
+  transform: translateY(20px) scaleX(-1) scale(0.95);
+}
+
+.garden-decor.bloomed {
+  opacity: 1;
+  transform: translateY(0) scale(1.05);
+}
+
+.garden-right.bloomed {
+  transform: translateY(0) scaleX(-1) scale(1.05);
+}
+
+/* ========================================================
+   LUCES DE HADAS Y PARTÍCULAS
+   ======================================================== */
+.fairy-lights {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 40px;
+  display: flex;
+  justify-content: space-around;
+  pointer-events: none;
+  z-index: 8;
+  border-top: 2px dashed rgba(255, 215, 0, 0.5);
+}
+
+.light {
+  width: 14px;
+  height: 20px;
+  border-radius: 50% 50% 45% 45%;
+  background: #fff3b0;
+  box-shadow: 0 0 14px 4px rgba(255, 220, 100, 0.8), 0 0 24px 8px rgba(255, 180, 0, 0.4);
+  position: relative;
+  transform-origin: top center;
+  animation: lightSway 3s ease-in-out infinite alternate, lightGlow 2s ease-in-out infinite alternate;
+}
+
+.light::before {
+  content: '';
+  position: absolute;
+  top: -4px;
+  left: 3px;
+  width: 8px;
+  height: 4px;
+  background: #555;
+  border-radius: 2px;
+}
+
+.light-1 { animation-delay: 0s, 0.2s; }
+.light-2 { animation-delay: 0.5s, 0.8s; background: #ffe4e6; box-shadow: 0 0 14px 4px rgba(255, 150, 180, 0.8); }
+.light-3 { animation-delay: 1.2s, 0.1s; }
+.light-4 { animation-delay: 0.3s, 1.5s; background: #ffd166; }
+.light-5 { animation-delay: 0.8s, 0.4s; background: #ffe4e6; box-shadow: 0 0 14px 4px rgba(255, 150, 180, 0.8); }
+.light-6 { animation-delay: 1.5s, 1.1s; }
+.light-7 { animation-delay: 0.2s, 0.6s; background: #ffd166; }
+.light-8 { animation-delay: 0.9s, 1.3s; }
+
+@keyframes lightSway {
+  0% { transform: rotate(-8deg); }
+  100% { transform: rotate(8deg); }
+}
+
+@keyframes lightGlow {
+  0% { opacity: 0.7; transform: scale(0.95); }
+  100% { opacity: 1; transform: scale(1.05); }
+}
+
+#particles-container {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 5;
+  overflow: hidden;
+}
+
+.floating-particle {
+  position: absolute;
+  pointer-events: none;
+  animation: floatUp 5.5s ease-in forwards;
+  will-change: transform, opacity;
+}
+
+@keyframes floatUp {
+  0% {
+    transform: translateY(0) scale(0.6) rotate(0deg);
+    opacity: 0;
+  }
+  15% { opacity: 0.95; }
+  85% { opacity: 0.85; }
+  100% {
+    transform: translateY(-110vh) scale(1.15) rotate(35deg);
+    opacity: 0;
+  }
+}
+
+/* Pétalos de flores cayendo suavemente */
+.falling-petal {
+  position: absolute;
+  pointer-events: none;
+  animation: petalFall 6.5s linear forwards;
+  will-change: transform, opacity;
+}
+
+@keyframes petalFall {
+  0% {
+    transform: translateY(-50px) rotate(0deg) translateX(0);
+    opacity: 0;
+  }
+  10% { opacity: 0.85; }
+  90% { opacity: 0.8; }
+  100% {
+    transform: translateY(105vh) rotate(360deg) translateX(60px);
+    opacity: 0;
+  }
+}
+
+/* Botón flotante de música */
+.music-toggle {
+  position: fixed;
+  top: 18px;
+  right: 18px;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.92);
+  border: 1.5px solid var(--primary-pink);
+  color: var(--deep-rose);
+  box-shadow: 0 4px 15px rgba(214, 51, 108, 0.25);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 100;
+  font-size: 1.2rem;
+  transition: transform 0.2s, background 0.3s;
+}
+
+.music-toggle:active { transform: scale(0.92); }
+.music-toggle.playing {
+  animation: pulseMusic 1.5s infinite ease-in-out;
+  background: #ffe3ec;
+}
+
+@keyframes pulseMusic {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.08); }
+}
+
+/* ========================================================
+   ESCENARIO Y GESTIÓN DE ETAPAS (ACTOS 1, 2 Y 3)
+   ======================================================== */
+.scene {
+  width: 100%;
+  max-width: 500px;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  z-index: 10;
+  perspective: 1200px;
+}
+
+.stage {
+  width: 100%;
+  display: none;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transform: scale(0.95);
+  transition: opacity 0.6s ease, transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.stage.stage-active {
+  display: flex;
+  opacity: 1;
+  transform: scale(1);
+}
+
+.stage.stage-fading-out {
+  opacity: 0;
+  transform: scale(0.92);
+  pointer-events: none;
+}
+
+/* ========================================================
+   ESTRUCTURA DEL SOBRE
+   ======================================================== */
+.envelope-wrapper {
+  position: relative;
+  width: 100%;
+  max-width: 380px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  cursor: pointer;
+  transition: margin-top 0.8s cubic-bezier(0.34, 1.56, 0.64, 1), transform 0.5s ease;
+}
+
+.envelope {
+  position: relative;
+  width: 100%;
+  height: 250px;
+  background: var(--envelope-color);
+  border-radius: 0 0 16px 16px;
+  box-shadow: 0 15px 35px var(--envelope-shadow);
+  transform-style: preserve-3d;
+}
+
+/* Tema Sobre 2 (Tonos Rosa Cálido y Dorado) */
+.envelope-theme-rose .envelope {
+  background: #f4a6b2;
+}
+
+.envelope-theme-rose .flap.top-flap {
+  border-top-color: #f4a6b2;
+}
+
+.envelope-theme-rose .pocket.front-pocket {
+  border-left-color: #f4a6b2;
+  border-right-color: #f4a6b2;
+  border-bottom-color: #e88c99;
+}
+
+.envelope-back {
+  position: absolute;
+  inset: 0;
+  background: var(--envelope-dark);
+  border-radius: 12px;
+  z-index: 1;
+}
+
+.flap.top-flap {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 0;
+  height: 0;
+  border-left: 190px solid transparent;
+  border-right: 190px solid transparent;
+  border-top: 140px solid var(--envelope-color);
+  transform-origin: top center;
+  transition: transform 0.7s cubic-bezier(0.4, 0, 0.2, 1), z-index 0.2s 0.3s;
+  z-index: 6;
+  filter: drop-shadow(0 3px 5px rgba(0, 0, 0, 0.08));
+}
+
+.pocket.front-pocket {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 0;
+  height: 0;
+  border-left: 190px solid var(--envelope-color);
+  border-right: 190px solid var(--envelope-color);
+  border-bottom: 130px solid #f9afbb;
+  border-top: 120px solid transparent;
+  border-radius: 0 0 16px 16px;
+  z-index: 4;
+  pointer-events: none;
+}
+
+/* Sellos de Cera */
+.seal {
+  position: absolute;
+  top: 105px;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 68px;
+  height: 68px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #ff4d6d, #c9184a);
+  box-shadow: 0 6px 18px rgba(201, 24, 74, 0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 7;
+  cursor: pointer;
+  transition: transform 0.3s ease, opacity 0.4s ease;
+}
+
+.seal.seal-gold {
+  background: linear-gradient(135deg, #d4af37, #b8860b);
+  box-shadow: 0 6px 18px rgba(184, 134, 11, 0.45);
+}
+
+.seal:hover {
+  transform: translate(-50%, -50%) scale(1.08);
+}
+
+.seal-inner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.seal-heart { font-size: 1.4rem; line-height: 1; }
+.seal-text {
+  color: #fff;
+  font-size: 0.62rem;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  margin-top: 2px;
+  text-transform: uppercase;
+}
+
+.seal-pulse {
+  position: absolute;
+  inset: -6px;
+  border-radius: 50%;
+  border: 2px solid var(--primary-pink);
+  animation: pulseRipple 1.8s infinite ease-out;
+  pointer-events: none;
+}
+
+.seal-gold .seal-pulse {
+  border-color: #ffd166;
+}
+
+@keyframes pulseRipple {
+  0% { transform: scale(0.9); opacity: 0.8; }
+  100% { transform: scale(1.4); opacity: 0; }
+}
+
+.open-instruction {
+  margin-top: 25px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--deep-rose);
+  background: rgba(255, 255, 255, 0.85);
+  padding: 8px 18px;
+  border-radius: 20px;
+  box-shadow: 0 4px 12px rgba(214, 51, 108, 0.12);
+  animation: bounceHint 2s infinite ease-in-out;
+  transition: opacity 0.5s ease;
+  text-align: center;
+}
+
+@keyframes bounceHint {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-6px); }
+}
+
+/* ========================================================
+   LA CARTA DESLIZANTE
+   ======================================================== */
+.letter {
+  position: absolute;
+  top: 8px;
+  left: 5%;
+  width: 90%;
+  min-height: 230px;
+  max-height: 230px;
+  background: var(--cream-paper);
+  border-radius: 12px;
+  box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.06);
+  z-index: 2;
+  overflow: hidden;
+  transition: transform 0.9s cubic-bezier(0.2, 0.8, 0.2, 1), 
+              max-height 0.8s ease 0.4s, 
+              box-shadow 0.5s;
+  padding: 24px 20px;
+}
+
+.letter-inner {
+  opacity: 0;
+  transition: opacity 0.6s ease 0.3s;
+}
+
+.letter-header {
+  text-align: center;
+  margin-bottom: 16px;
+}
+
+.letter-date {
+  font-size: 0.8rem;
+  color: var(--deep-rose);
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  font-weight: 700;
+}
+
+.letter-title {
+  font-family: var(--font-script);
+  font-size: 2.5rem;
+  color: var(--deep-rose);
+  margin: 4px 0 2px;
+  line-height: 1.1;
+  text-shadow: 1px 1px 2px rgba(214, 51, 108, 0.1);
+}
+
+.divider {
+  font-size: 0.9rem;
+  color: var(--primary-pink);
+  margin: 6px 0;
+}
+
+.letter-content {
+  font-size: 0.95rem;
+  line-height: 1.7;
+  color: #443542;
+}
+
+.greeting {
+  font-family: var(--font-hand);
+  font-size: 1.55rem;
+  color: var(--deep-rose);
+  margin-bottom: 10px;
+  font-weight: 700;
+}
+
+.body-text {
+  margin-bottom: 16px;
+  text-align: justify;
+}
+
+.letter-footer {
+  margin-top: 24px;
+  text-align: right;
+  padding-bottom: 12px;
+}
+
+.signature { font-size: 0.9rem; color: var(--text-muted); }
+.signature-name {
+  font-family: var(--font-hand);
+  font-size: 1.6rem;
+  color: var(--deep-rose);
+  font-weight: 700;
+}
+
+/* ========================================================
+   ESTADOS DE APERTURA Y CIERRE DE SOBRES
+   ======================================================== */
+.envelope-wrapper.open {
+  margin-top: 240px;
+  margin-bottom: 60px;
+}
+
+.envelope-wrapper.open .flap.top-flap {
+  transform: rotateX(180deg);
+  z-index: 1;
+}
+
+.envelope-wrapper.open .seal {
+  opacity: 0;
+  pointer-events: none;
+  transform: translate(-50%, -100%) scale(0.5);
+}
+
+.envelope-wrapper.open .open-instruction {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.envelope-wrapper.open .letter {
+  position: absolute;
+  top: -260px;
+  height: auto;
+  max-height: 2500px;
+  overflow: visible;
+  z-index: 10;
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.18);
+  border: 1px solid rgba(255, 182, 193, 0.4);
+}
+
+.envelope-wrapper.open .letter-inner {
+  opacity: 1;
+}
+
+/* ANIMACIÓN DE CIERRE DEL SOBRE */
+.envelope-wrapper.closing {
+  margin-top: 0 !important;
+  transition: margin-top 0.8s cubic-bezier(0.4, 0, 0.2, 1) !important;
+}
+
+.envelope-wrapper.closing .letter {
+  top: 8px !important;
+  max-height: 230px !important;
+  opacity: 0 !important;
+  overflow: hidden !important;
+  transition: all 0.7s cubic-bezier(0.4, 0, 0.2, 1) !important;
+}
+
+.envelope-wrapper.closing .flap.top-flap {
+  transform: rotateX(0deg) !important;
+  z-index: 6 !important;
+  transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1) 0.4s !important;
+}
+
+/* ========================================================
+   BOTONES DE TRANSICIÓN ENTRE ACTOS
+   ======================================================== */
+.stage-transition-area {
+  margin: 30px auto 10px;
+  text-align: center;
+  padding: 16px 12px;
+  background: linear-gradient(135deg, #fff2f5, #ffe4ec);
+  border-radius: 18px;
+  border: 1.5px solid #ffccd5;
+}
+
+.transition-hint {
+  font-size: 0.85rem;
+  color: var(--deep-rose);
+  font-weight: 600;
+  margin-bottom: 10px;
+}
+
+.btn-next-stage {
+  background: linear-gradient(135deg, #ff4d6d 0%, #c9184a 100%);
+  color: #ffffff;
+  border: none;
+  padding: 12px 20px;
+  border-radius: 25px;
+  font-family: var(--font-sans);
+  font-size: 0.88rem;
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: 0 6px 18px rgba(201, 24, 74, 0.35);
+  transition: transform 0.2s, box-shadow 0.2s;
+  user-select: none;
+}
+
+.btn-next-stage:hover,
+.btn-next-stage:active {
+  transform: scale(1.04);
+  box-shadow: 0 8px 24px rgba(201, 24, 74, 0.45);
+}
+
+.btn-gold-stage {
+  background: linear-gradient(135deg, #d4af37 0%, #b8860b 100%);
+  box-shadow: 0 6px 18px rgba(184, 134, 11, 0.35);
+}
+
+/* ========================================================
+   PUERCOESPÍN ANIMADO
+   ======================================================== */
+.hedgehog-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin: 10px auto 16px;
+  position: relative;
+  cursor: pointer;
+  user-select: none;
+  width: fit-content;
+}
+
+.hedgehog-svg {
+  width: 130px;
+  height: auto;
+  filter: drop-shadow(0 6px 12px rgba(140, 88, 53, 0.15));
+  animation: hedgehogBreathe 3.5s ease-in-out infinite;
+  transform-origin: bottom center;
+  transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.hedgehog-container:hover .hedgehog-svg,
+.hedgehog-container:active .hedgehog-svg {
+  transform: scale(1.08);
+}
+
+.hedgehog-container.bounce .hedgehog-svg {
+  animation: hedgehogJump 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+@keyframes hedgehogBreathe {
+  0%, 100% { transform: translateY(0) scale(1, 1); }
+  50% { transform: translateY(-4px) scale(1.02, 0.98); }
+}
+
+@keyframes hedgehogJump {
+  0% { transform: translateY(0) scale(1); }
+  35% { transform: translateY(-18px) scale(1.12, 0.9); }
+  65% { transform: translateY(-4px) scale(0.95, 1.05); }
+  100% { transform: translateY(0) scale(1); }
+}
+
+.hedgehog-eyes {
+  animation: hedgehogBlink 4s infinite;
+  transform-origin: center;
+}
+
+@keyframes hedgehogBlink {
+  0%, 94%, 98%, 100% { transform: scaleY(1); }
+  96% { transform: scaleY(0.08); }
+}
+
+.hedgehog-snout {
+  animation: snoutWiggle 2.5s infinite ease-in-out;
+  transform-origin: 102px 104px;
+}
+
+@keyframes snoutWiggle {
+  0%, 100% { transform: translateY(0) rotate(0deg); }
+  25% { transform: translateY(-1.5px) rotate(-2deg); }
+  75% { transform: translateY(-1.5px) rotate(2deg); }
+}
+
+.held-heart {
+  animation: heartPulse 1.8s infinite ease-in-out;
+  transform-origin: 102px 132px;
+}
+
+@keyframes heartPulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.12); }
+}
+
+.hat-pom {
+  animation: pomWobble 2s infinite ease-in-out;
+  transform-origin: 102px 14px;
+}
+
+@keyframes pomWobble {
+  0%, 100% { transform: rotate(0); }
+  50% { transform: rotate(8deg); }
+}
+
+.hedgehog-tooltip {
+  position: absolute;
+  top: -24px;
+  background: #ffffff;
+  color: var(--deep-rose);
+  padding: 4px 12px;
+  border-radius: 12px;
+  font-size: 0.78rem;
+  font-weight: 600;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  border: 1px solid #ffd1dc;
+  white-space: nowrap;
+  opacity: 0;
+  transform: translateY(6px);
+  transition: opacity 0.3s, transform 0.3s;
+  pointer-events: none;
+  z-index: 15;
+}
+
+.hedgehog-container:hover .hedgehog-tooltip,
+.hedgehog-container.show-bubble .hedgehog-tooltip {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ========================================================
+   POLAROIDS GIRATORIAS 3D
+   ======================================================== */
+.photo-section-header {
+  text-align: center;
+  margin: 22px 0 14px;
+}
+
+.photo-section-title {
+  font-family: var(--font-hand);
+  font-size: 1.5rem;
+  color: var(--deep-rose);
+  font-weight: 700;
+}
+
+.photo-subtitle {
+  font-size: 0.78rem;
+  color: var(--text-muted);
+  margin-top: 2px;
+}
+
+.polaroid-flip-gallery {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 22px;
+  margin: 15px 0 25px;
+}
+
+.polaroid-flip-card {
+  width: 100%;
+  max-width: 260px;
+  height: 310px;
+  perspective: 1000px;
+  cursor: pointer;
+}
+
+.polaroid-card-inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  text-align: center;
+  transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+  transform-style: preserve-3d;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+}
+
+.polaroid-flip-card:nth-child(1) .polaroid-card-inner { transform: rotate(-2deg); }
+.polaroid-flip-card:nth-child(2) .polaroid-card-inner { transform: rotate(2deg); }
+.polaroid-flip-card:nth-child(3) .polaroid-card-inner { transform: rotate(-1.5deg); }
+.polaroid-flip-card:nth-child(4) .polaroid-card-inner { transform: rotate(2deg); }
+.polaroid-flip-card:nth-child(5) .polaroid-card-inner { transform: rotate(-2deg); }
+.polaroid-flip-card:nth-child(6) .polaroid-card-inner { transform: rotate(1.5deg); }
+
+.polaroid-flip-card.flipped .polaroid-card-inner {
+  transform: rotateY(180deg) scale(1.02);
+  box-shadow: 0 14px 32px rgba(214, 51, 108, 0.22);
+}
+
+.polaroid-front, .polaroid-back {
+  position: absolute;
+  inset: 0;
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+  border-radius: 8px;
+  padding: 12px 12px 18px 12px;
+}
+
+.polaroid-front {
+  background: #ffffff;
+  display: flex;
+  flex-direction: column;
+}
+
+.polaroid-front .polaroid-img-wrapper {
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  border-radius: 6px;
+  overflow: hidden;
+  background: #fff0f3;
+  border: 1px solid #ffd1dc;
+  box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.05);
+}
+
+.polaroid-front .polaroid-img-wrapper img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.polaroid-caption {
+  margin-top: 10px;
+  text-align: center;
+  font-family: var(--font-hand);
+  font-size: 1.25rem;
+  color: var(--text-dark);
+}
+
+.polaroid-back {
+  background: linear-gradient(135deg, #fff7f9, #ffe8ee);
+  border: 2px dashed #f9afbb;
+  transform: rotateY(180deg);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+}
+
+.back-content .back-icon { font-size: 2rem; margin-bottom: 8px; display: block; }
+.back-content h4 {
+  font-family: var(--font-hand);
+  font-size: 1.35rem;
+  color: var(--deep-rose);
+  margin-bottom: 8px;
+}
+.back-content p {
+  font-size: 0.88rem;
+  line-height: 1.5;
+  color: #55414e;
+  font-style: italic;
+}
+
+/* ========================================================
+   RAZONES POR LAS QUE TE AMO Y CONTADOR
+   ======================================================== */
+.reasons-box {
+  background: linear-gradient(135deg, #fff2f5, #ffe4ec);
+  border: 1.5px solid #ffccd5;
+  border-radius: 16px;
+  padding: 20px 16px;
+  margin: 20px 0;
+  text-align: center;
+  box-shadow: 0 4px 15px rgba(214, 51, 108, 0.08);
+}
+
+.reasons-header { margin-bottom: 12px; }
+.reasons-badge {
+  background: linear-gradient(135deg, #ff4d6d, #d6336c);
+  color: #fff;
+  font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  padding: 5px 16px;
+  border-radius: 20px;
+  box-shadow: 0 3px 8px rgba(214, 51, 108, 0.25);
+  display: inline-block;
+}
+
+.reason-display {
+  font-family: var(--font-hand);
+  font-size: 1.28rem;
+  color: #3b2a38;
+  min-height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1.45;
+  margin: 10px 0 16px;
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.reason-display.fade {
+  opacity: 0;
+  transform: translateY(-8px);
+}
+
+.btn-new-reason {
+  background: #ffffff;
+  color: var(--deep-rose);
+  border: 1px solid var(--primary-pink);
+  padding: 9px 20px;
+  border-radius: 25px;
+  font-family: var(--font-sans);
+  font-size: 0.84rem;
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(214, 51, 108, 0.15);
+  transition: transform 0.2s, background 0.3s;
+}
+
+.btn-new-reason:hover,
+.btn-new-reason:active {
+  transform: scale(1.05);
+  background: #ffe3ec;
+}
+
+.reasons-controls {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 6px;
+  flex-wrap: wrap;
+}
+
+.btn-reason-nav {
+  background: #ffffff;
+  color: var(--deep-rose);
+  border: 1px solid var(--primary-pink);
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  font-size: 0.85rem;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: 0 3px 8px rgba(214, 51, 108, 0.15);
+  transition: transform 0.2s, background 0.2s;
+  flex-shrink: 0;
+}
+
+.btn-reason-nav:active {
+  transform: scale(0.92);
+}
+
+.btn-reason-nav:hover {
+  background: #ffe3ec;
+}
+
+.reasons-dots {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 7px;
+  margin-top: 14px;
+}
+
+.reason-dot {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: #fbc4ab;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.reason-dot.active {
+  background: #d6336c;
+  transform: scale(1.35);
+  box-shadow: 0 0 8px rgba(214, 51, 108, 0.6);
+}
+
+.btn-toggle-all-reasons {
+  background: transparent;
+  border: none;
+  color: #723d46;
+  font-family: var(--font-sans);
+  font-size: 0.82rem;
+  font-weight: 600;
+  cursor: pointer;
+  text-decoration: underline;
+  padding: 6px 10px;
+  transition: color 0.2s;
+}
+
+.btn-toggle-all-reasons:hover {
+  color: #d6336c;
+}
+
+.reasons-full-list {
+  text-align: left;
+  margin: 16px auto 0;
+  padding: 14px 16px 14px 34px;
+  font-family: var(--font-hand);
+  font-size: 1.15rem;
+  color: #402835;
+  line-height: 1.5;
+  background: rgba(255, 255, 255, 0.7);
+  border-radius: 12px;
+  border: 1px dashed #ffb3c1;
+}
+
+.reasons-full-list li {
+  margin-bottom: 12px;
+  padding-left: 4px;
+}
+
+.love-counter-box {
+  background: linear-gradient(135deg, #fdfbf7, #fff6f8);
+  border: 1.5px solid #e8d0a9;
+  border-radius: 14px;
+  padding: 18px 16px;
+  margin: 15px 0 20px;
+  text-align: center;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.05);
+}
+
+.counter-stars { color: var(--gold-accent); letter-spacing: 4px; font-size: 0.85rem; }
+.counter-title {
+  font-family: var(--font-hand);
+  font-size: 1.35rem;
+  color: var(--deep-rose);
+  font-weight: 700;
+  margin: 4px 0 6px;
+}
+.counter-stat { font-size: 0.92rem; color: #443542; line-height: 1.4; }
+.counter-highlight { font-weight: 700; color: var(--deep-rose); }
+.counter-footer { font-size: 0.8rem; color: var(--text-muted); font-style: italic; margin-top: 6px; }
+
+/* ========================================================
+   ACTO 3: ESCENA FINAL DEL PASTEL GIGANTE
+   ======================================================== */
+.final-cake-wrapper {
+  width: 100%;
+  max-width: 440px;
+  margin: 20px auto;
+  animation: cakeEntrance 1s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+@keyframes cakeEntrance {
+  0% { transform: scale(0.7) translateY(40px); opacity: 0; }
+  100% { transform: scale(1) translateY(0); opacity: 1; }
+}
+
+.cake-card-frame {
+  text-align: center;
+  padding: 30px 20px 26px;
+  background: linear-gradient(135deg, #fff5f7 0%, #ffe9ee 100%);
+  border: 2.5px solid #ffccd5;
+  border-radius: 28px;
+  box-shadow: 0 16px 45px rgba(214, 51, 108, 0.22);
+  position: relative;
+}
+
+.cake-floral-crown {
+  font-size: 1.6rem;
+  margin-bottom: 6px;
+  animation: pulseFlower 2s infinite ease-in-out;
+}
+
+@keyframes pulseFlower {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.1); }
+}
+
+.cake-badge {
+  display: inline-block;
+  background: linear-gradient(135deg, #d4af37, #b8860b);
+  color: #fff;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  padding: 4px 16px;
+  border-radius: 20px;
+  box-shadow: 0 3px 8px rgba(184, 134, 11, 0.3);
+  margin-bottom: 10px;
+}
+
+.cake-title {
+  font-family: var(--font-hand);
+  font-size: 2.1rem;
+  color: var(--deep-rose);
+  font-weight: 700;
+  margin-bottom: 6px;
+  line-height: 1.2;
+}
+
+.cake-instruction {
+  font-size: 0.96rem;
+  font-weight: 600;
+  color: #55414e;
+  margin-bottom: 18px;
+  transition: all 0.4s ease;
+}
+
+.cake-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  margin: 0 auto;
+  width: 100%;
+  max-width: 320px;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+  transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.cake-container:hover,
+.cake-container:active { transform: scale(1.04); }
+
+.cake-svg {
+  width: 100%;
+  max-width: 295px;
+  height: auto;
+  filter: drop-shadow(0 12px 24px rgba(214, 51, 108, 0.22));
+}
+
+.flame {
+  animation: flameFlicker 1.1s infinite alternate ease-in-out;
+  transform-origin: center bottom;
+}
+.flame-1 { animation-delay: 0.05s; }
+.flame-2 { animation-delay: 0.35s; }
+.flame-3 { animation-delay: 0.2s; }
+
+.flame-halo { animation: haloPulse 1.4s infinite alternate ease-in-out; }
+@keyframes haloPulse {
+  0% { transform: scale(0.9); opacity: 0.25; }
+  100% { transform: scale(1.15); opacity: 0.45; }
+}
+
+@keyframes flameFlicker {
+  0% { transform: scale(1) rotate(-2deg); }
+  50% { transform: scale(1.1, 0.95) rotate(2deg); }
+  100% { transform: scale(0.92, 1.08) rotate(-1deg); }
+}
+
+/* APAGADO DE VELITAS */
+.candles.blown .flame,
+.candles.blown .flame-halo {
+  display: none !important;
+  opacity: 0 !important;
+  visibility: hidden !important;
+  animation: none !important;
+}
+
+.candles.blown .smoke path {
+  opacity: 0.85 !important;
+  animation: smokeRise 2.2s forwards ease-out !important;
+}
+
+@keyframes smokeRise {
+  0% { opacity: 0.85; transform: translateY(0) scaleX(1); }
+  50% { opacity: 0.6; transform: translateY(-22px) scaleX(1.8); }
+  100% { opacity: 0; transform: translateY(-45px) scaleX(2.8); }
+}
+
+.btn-blow-candles {
+  margin-top: 20px;
+  background: linear-gradient(135deg, #ff4d6d 0%, #c9184a 100%);
+  color: #ffffff;
+  border: none;
+  padding: 13px 26px;
+  border-radius: 30px;
+  font-family: var(--font-sans);
+  font-size: 0.98rem;
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: 0 6px 20px rgba(201, 24, 74, 0.38);
+  animation: pulseBlowBtn 2s infinite ease-in-out;
+  transition: transform 0.2s, background 0.3s;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  user-select: none;
+}
+
+.btn-blow-candles:hover,
+.btn-blow-candles:active {
+  transform: scale(1.06);
+  box-shadow: 0 8px 26px rgba(201, 24, 74, 0.48);
+}
+
+.btn-blow-candles.blown {
+  background: #6c757d;
+  box-shadow: none;
+  animation: none;
+  cursor: default;
+  opacity: 0.85;
+}
+
+@keyframes pulseBlowBtn {
+  0%, 100% { transform: scale(1); box-shadow: 0 6px 20px rgba(201, 24, 74, 0.35); }
+  50% { transform: scale(1.05); box-shadow: 0 10px 28px rgba(201, 24, 74, 0.5); }
+}
+
+.btn-replay {
+  background: rgba(255, 255, 255, 0.85);
+  border: 1.5px solid var(--primary-pink);
+  color: var(--deep-rose);
+  padding: 10px 20px;
+  border-radius: 25px;
+  font-family: var(--font-sans);
+  font-size: 0.85rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+
+.btn-replay:hover,
+.btn-replay:active {
+  background: #ffe3ec;
+  transform: scale(1.04);
+}
+
+/* Firma y dedicatoria final al pie del pastel */
+.cake-signature-box {
+  margin: 18px auto 6px;
+  text-align: center;
+}
+
+.cake-signature-text {
+  font-size: 0.95rem;
+  color: var(--text-muted);
+  letter-spacing: 0.5px;
+}
+
+.cake-signature-name {
+  font-family: var(--font-hand);
+  font-size: 1.85rem;
+  color: var(--deep-rose);
+  font-weight: 700;
+  margin-top: 2px;
+}
+
+/* ========================================================
+   ADAPTACIONES MÓVILES
+   ======================================================== */
+@media (max-width: 480px) {
+  .envelope-wrapper { max-width: 320px; }
+  .envelope { height: 220px; }
+
+  .flap.top-flap {
+    border-left-width: 160px;
+    border-right-width: 160px;
+    border-top-width: 120px;
+  }
+
+  .pocket.front-pocket {
+    border-left-width: 160px;
+    border-right-width: 160px;
+    border-bottom-width: 115px;
+    border-top-width: 105px;
+  }
+
+  .seal { top: 95px; width: 60px; height: 60px; }
+
+  .envelope-wrapper.open { margin-top: 260px; }
+  .envelope-wrapper.open .letter { top: -270px; padding: 20px 16px; }
+
+  .letter-title { font-size: 2.1rem; }
+  .letter-content { font-size: 0.9rem; }
+  .polaroid-card { max-width: 220px; }
+  
+  .side-vines { width: 45px; opacity: 0.7; }
+  .garden-decor { width: 110px; height: 160px; }
+}

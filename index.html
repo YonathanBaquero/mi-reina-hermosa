@@ -1,0 +1,518 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>¡Feliz Cumpleaños, Mi Reina Hermosa! 🎂🌻</title>
+  
+  <!-- Fuentes románticas y elegantes -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600;700&family=Great+Vibes&family=Montserrat:ital,wght@0,300;0,400;0,600;0,700;1,300&display=swap" rel="stylesheet">
+  
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <!-- Luces de hadas (Fairy Lights) románticas y titilantes -->
+  <div class="fairy-lights">
+    <div class="light light-1"></div>
+    <div class="light light-2"></div>
+    <div class="light light-3"></div>
+    <div class="light light-4"></div>
+    <div class="light light-5"></div>
+    <div class="light light-6"></div>
+    <div class="light light-7"></div>
+    <div class="light light-8"></div>
+  </div>
+
+  <!-- Guirnalda floral superior exuberante -->
+  <div class="top-flower-garland" id="topGarland"></div>
+
+  <!-- Marcos florales laterales (enredaderas de rosas y flores) -->
+  <div class="side-vines side-vine-left" id="vineLeft"></div>
+  <div class="side-vines side-vine-right" id="vineRight"></div>
+
+  <!-- Contenedor de partículas flotantes (corazones, rosas y pétalos que caen) -->
+  <div id="particles-container"></div>
+
+  <!-- Jardín floral inferior exuberante -->
+  <div class="garden-decor garden-left" id="gardenLeft"></div>
+  <div class="garden-decor garden-right" id="gardenRight"></div>
+
+  <!-- Botón de música: Caminar de tu mano - Río Roma ft. Fonseca -->
+  <button id="musicBtn" class="music-toggle" aria-label="Reproducir música" title="Caminar de tu mano - Río Roma ft. Fonseca">
+    <span class="icon">🎵</span>
+  </button>
+  <audio id="bgMusic" loop preload="auto">
+    <source src="musica.mp3" type="audio/mpeg">
+  </audio>
+
+  <!-- Escenario principal con los 3 actos -->
+  <main class="scene">
+    
+    <!-- ========================================================
+         ACTO 1: PRIMER SOBRE (CARTA, PUERCOESPÍN Y FOTOS)
+         ======================================================== -->
+    <section class="stage stage-active" id="stage1">
+      <div class="envelope-wrapper" id="envelopeWrapper1">
+        <div class="envelope" id="envelope1">
+          <div class="flap top-flap"></div>
+          <div class="envelope-back"></div>
+
+          <!-- Carta 1 -->
+          <article class="letter" id="letter1">
+            <div class="letter-inner">
+              <header class="letter-header">
+                <span class="letter-date">Para el amor de mi vida</span>
+                <h1 class="letter-title">¡Feliz Cumpleaños!</h1>
+                <div class="divider">🌻 ❤️ 🌻</div>
+              </header>
+
+              <div class="letter-content">
+                <p class="greeting">Mi reina hermosa,</p>
+                
+                <!-- Puercoespín animado tierno con gorrito de fiesta -->
+                <div class="hedgehog-container" id="hedgehog" title="¡Tócame para un abrazo!">
+                  <div class="hedgehog-tooltip">¡Te amo mucho! 🦔💕</div>
+                  <svg class="hedgehog-svg" viewBox="0 0 200 170" xmlns="http://www.w3.org/2000/svg">
+                    <g class="quills-back" fill="#8c5835">
+                      <path d="M40,110 Q20,95 28,75 Q15,65 32,50 Q25,35 48,30 Q45,15 70,18 Q75,5 98,12 Q115,5 125,20 Q145,15 152,32 Q170,35 168,52 Q185,65 172,78 Q182,95 162,110 Z" />
+                    </g>
+                    <g class="quills-front" fill="#a4683f">
+                      <path d="M45,105 Q30,90 38,75 Q26,62 42,50 Q36,38 56,33 Q55,22 75,24 Q82,12 100,18 Q118,14 125,25 Q140,22 145,36 Q160,40 156,56 Q170,68 158,80 Q168,95 150,105 Z" />
+                    </g>
+                    <ellipse cx="102" cy="112" rx="54" ry="44" fill="#faebd7" />
+                    <circle cx="65" cy="80" r="10" fill="#a4683f" />
+                    <circle cx="65" cy="80" r="6" fill="#ffb4a2" />
+                    <circle cx="138" cy="80" r="10" fill="#a4683f" />
+                    <circle cx="138" cy="80" r="6" fill="#ffb4a2" />
+
+                    <!-- Gorrito de Fiesta -->
+                    <g class="party-hat">
+                      <polygon points="102,15 82,65 122,65" fill="#ff4d6d" />
+                      <line x1="88" y1="52" x2="116" y2="52" stroke="#ffd166" stroke-width="3" />
+                      <line x1="93" y1="36" x2="111" y2="36" stroke="#ffd166" stroke-width="3" />
+                      <circle cx="102" cy="14" r="8" fill="#ffd166" class="hat-pom" />
+                    </g>
+
+                    <circle cx="72" cy="106" r="8" fill="#ff8fab" opacity="0.65" />
+                    <circle cx="132" cy="106" r="8" fill="#ff8fab" opacity="0.65" />
+
+                    <g class="hedgehog-eyes">
+                      <circle cx="82" cy="95" r="5.5" fill="#2b2d42" />
+                      <circle cx="80.5" cy="93" r="2" fill="#ffffff" />
+                      <circle cx="122" cy="95" r="5.5" fill="#2b2d42" />
+                      <circle cx="120.5" cy="93" r="2" fill="#ffffff" />
+                    </g>
+
+                    <g class="hedgehog-snout">
+                      <ellipse cx="102" cy="104" rx="7" ry="5.5" fill="#3d261a" />
+                      <path d="M96,113 Q102,118 108,113" fill="none" stroke="#3d261a" stroke-width="2" stroke-linecap="round" />
+                    </g>
+
+                    <g class="hedgehog-heart-group">
+                      <path class="held-heart" d="M102,122 C92,110 75,116 75,129 C75,142 102,154 102,154 C102,154 129,142 129,129 C129,116 112,110 102,122 Z" fill="#ff2a5f" />
+                      <ellipse cx="86" cy="128" rx="6" ry="5" fill="#faebd7" stroke="#e0c3a8" stroke-width="1.5" />
+                      <ellipse cx="118" cy="128" rx="6" ry="5" fill="#faebd7" stroke="#e0c3a8" stroke-width="1.5" />
+                    </g>
+
+                    <ellipse cx="74" cy="148" rx="9" ry="5" fill="#faebd7" stroke="#e0c3a8" stroke-width="1.5" />
+                    <ellipse cx="130" cy="148" rx="9" ry="5" fill="#faebd7" stroke="#e0c3a8" stroke-width="1.5" />
+                  </svg>
+                </div>
+
+                <p class="body-text">
+                  Hoy celebro el día en que nació la persona que llena mis días de luz, sonrisas y amor infinito. Gracias por ser mi compañera, mi cómplice y mi mayor felicidad en este mundo.
+                </p>
+                
+                <!-- Galería de Fotos Polaroid interactiva con giro 3D -->
+                <div class="photo-section-header">
+                  <div class="photo-section-title">Nuestros Recuerdos Favoritos 📸</div>
+                  <p class="photo-subtitle">✨ Toca cada foto para voltearla y leer lo que siento por ti ✨</p>
+                </div>
+                
+                <div class="polaroid-flip-gallery">
+                  <!-- Foto 1 -->
+                  <div class="polaroid-flip-card" data-card="1">
+                    <div class="polaroid-card-inner">
+                      <div class="polaroid-front">
+                        <div class="polaroid-img-wrapper">
+                          <img src="fotos/foto 1.jpg" alt="Donde empezó la magia" loading="lazy">
+                        </div>
+                        <p class="polaroid-caption">Donde empezó nuestra magia ✨</p>
+                      </div>
+                      <div class="polaroid-back">
+                        <div class="back-content">
+                          <span class="back-icon">💌</span>
+                          <h4>Capítulo 1</h4>
+                          <p>"El día que supe que mi lugar favorito en el mundo siempre sería a tu lado. Eres mi mejor decisión."</p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Foto 2 -->
+                  <div class="polaroid-flip-card" data-card="2">
+                    <div class="polaroid-card-inner">
+                      <div class="polaroid-front">
+                        <div class="polaroid-img-wrapper">
+                          <img src="fotos/foto 3.jpg" alt="Tu hermosa sonrisa" loading="lazy" style="object-position: center 15%;">
+                        </div>
+                        <p class="polaroid-caption">Tu hermosa sonrisa 🥰</p>
+                      </div>
+                      <div class="polaroid-back">
+                        <div class="back-content">
+                          <span class="back-icon">💖</span>
+                          <h4>Pura Luz</h4>
+                          <p>"Esa sonrisa tuya que ilumina hasta el día más difícil y me llena de paz absoluta. Jamás dejes de brillar."</p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Foto 3 -->
+                  <div class="polaroid-flip-card" data-card="3">
+                    <div class="polaroid-card-inner">
+                      <div class="polaroid-front">
+                        <div class="polaroid-img-wrapper">
+                          <img src="fotos/foto 2.jpg" alt="Nuestras mejores aventuras" loading="lazy" style="object-position: center center;">
+                        </div>
+                        <p class="polaroid-caption">Nuestra complicidad 🔥</p>
+                      </div>
+                      <div class="polaroid-back">
+                        <div class="back-content">
+                          <span class="back-icon">✨</span>
+                          <h4>Cómplices</h4>
+                          <p>"Cada risa compartida, cada viaje y cada momento a tu lado hacen que la vida sea una aventura maravillosa."</p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Foto 4 -->
+                  <div class="polaroid-flip-card" data-card="4">
+                    <div class="polaroid-card-inner">
+                      <div class="polaroid-front">
+                        <div class="polaroid-img-wrapper">
+                          <img src="fotos/foto 4.jpg" alt="Mi lugar favorito" loading="lazy" style="object-position: center 20%;">
+                        </div>
+                        <p class="polaroid-caption">Mi lugar favorito: contigo 💑</p>
+                      </div>
+                      <div class="polaroid-back">
+                        <div class="back-content">
+                          <span class="back-icon">🏡</span>
+                          <h4>Mi Hogar</h4>
+                          <p>"No importa el lugar ni la tormenta que haya afuera: mi paz y mi felicidad siempre están en tus brazos."</p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Foto 5 -->
+                  <div class="polaroid-flip-card" data-card="5">
+                    <div class="polaroid-card-inner">
+                      <div class="polaroid-front">
+                        <div class="polaroid-img-wrapper">
+                          <img src="fotos/foto 5.jpg" alt="Momentos inolvidables" loading="lazy" style="object-position: center 20%;">
+                        </div>
+                        <p class="polaroid-caption">Momentos inolvidables 💫</p>
+                      </div>
+                      <div class="polaroid-back">
+                        <div class="back-content">
+                          <span class="back-icon">💐</span>
+                          <h4>Bendición</h4>
+                          <p>"Gracias por tu apoyo incondicional, por ser mi fuerza y mi mayor orgullo. Te admiro tanto, mi reina."</p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Foto 6 -->
+                  <div class="polaroid-flip-card" data-card="6">
+                    <div class="polaroid-card-inner">
+                      <div class="polaroid-front">
+                        <div class="polaroid-img-wrapper">
+                          <img src="fotos/foto 6.jpg" alt="Por siempre tú y yo" loading="lazy" style="object-position: center 20%;">
+                        </div>
+                        <p class="polaroid-caption">Por toda una vida juntos 💍</p>
+                      </div>
+                      <div class="polaroid-back">
+                        <div class="back-content">
+                          <span class="back-icon">❤️</span>
+                          <h4>Amor Eterno</h4>
+                          <p>"Te amo con toda mi alma hoy más que ayer y muchísimo menos que mañana. ¡Feliz cumpleaños, mi amor!"</p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Botón de Transición al Segundo Sobre -->
+                <div class="stage-transition-area">
+                  <p class="transition-hint">¿Lista para la siguiente sorpresa? 🌸</p>
+                  <button type="button" class="btn-next-stage" id="btnGoToStage2">
+                    <span>💌 Guardar recuerdos y abrir: "10 Razones por las que te amo" ✨</span>
+                  </button>
+                </div>
+
+              </div>
+            </div>
+          </article>
+
+          <div class="pocket front-pocket"></div>
+
+          <!-- Sello Sobre 1 -->
+          <div class="seal" id="sealBtn1" role="button" tabindex="0">
+            <div class="seal-inner">
+              <span class="seal-heart">💖</span>
+              <span class="seal-text">Tócame</span>
+            </div>
+            <div class="seal-pulse"></div>
+          </div>
+        </div>
+
+        <div class="open-instruction" id="openInstruction1">
+          <span>💌 Toca el sobre para abrir 💌</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========================================================
+         ACTO 2: SEGUNDO SOBRE (RAZONES POR LAS QUE TE AMO)
+         ======================================================== -->
+    <section class="stage stage-hidden" id="stage2">
+      <div class="envelope-wrapper envelope-theme-rose" id="envelopeWrapper2">
+        <div class="envelope" id="envelope2">
+          <div class="flap top-flap"></div>
+          <div class="envelope-back"></div>
+
+          <!-- Carta 2 -->
+          <article class="letter" id="letter2">
+            <div class="letter-inner">
+              <header class="letter-header">
+                <span class="letter-date">Nuestra Historia de Amor</span>
+                <h2 class="letter-title">10 Razones Por Las Que Te Amo</h2>
+                <div class="divider">🌻 ✨ 🌻</div>
+              </header>
+
+              <div class="letter-content">
+                
+                <!-- Placa Romántica / Contador -->
+                <div class="love-counter-box">
+                  <div class="counter-stars">✦ ✦ ✦</div>
+                  <div class="counter-title">Nuestra Historia Juntos</div>
+                  <div class="counter-stat">
+                    <span class="counter-highlight">Infinitos momentos</span> y cada segundo a tu lado vale la vida entera.
+                  </div>
+                  <p class="counter-footer">¡Y apenas estamos comenzando este viaje juntos! ✨</p>
+                </div>
+
+                <p class="body-text" style="text-align: center; font-style: italic; color: #55414e;">
+                  "Si tuviera que elegirte un millón de veces más, en todas te buscaría sin dudarlo."
+                </p>
+
+                <!-- Generador interactivo de 10 Razones de Amor -->
+                <div class="reasons-box">
+                  <div class="reasons-header">
+                    <span class="reasons-badge" id="reasonBadge">💖 Razón 1 de 10 💖</span>
+                  </div>
+                  <div class="reason-display" id="reasonDisplay">
+                    "Por tu hermosa sonrisa que ilumina hasta el día más gris y llena mi corazón de una paz infinita."
+                  </div>
+                  
+                  <div class="reasons-controls">
+                    <button type="button" class="btn-reason-nav" id="prevReasonBtn" aria-label="Razón anterior" title="Razón anterior">◀</button>
+                    <button type="button" class="btn-new-reason" id="newReasonBtn">
+                      <span id="nextBtnText">✨ Siguiente razón (2 de 10) ✨</span>
+                    </button>
+                    <button type="button" class="btn-reason-nav" id="nextReasonBtn" aria-label="Siguiente razón" title="Siguiente razón">▶</button>
+                  </div>
+
+                  <!-- Indicadores de los 10 puntos -->
+                  <div class="reasons-dots" id="reasonsDots"></div>
+
+                  <!-- Botón para ver las 10 juntas -->
+                  <div style="margin-top: 15px;">
+                    <button type="button" class="btn-toggle-all-reasons" id="btnToggleAllReasons">
+                      <span>📜 Ver las 10 razones juntas</span>
+                    </button>
+                  </div>
+
+                  <!-- Lista desplegable con las 10 razones completas -->
+                  <ol class="reasons-full-list" id="reasonsFullList" style="display: none;">
+                  </ol>
+                </div>
+
+                <footer class="letter-footer" style="margin-top: 24px; text-align: right;">
+                  <p class="signature">Con amor,</p>
+                  <p class="signature-name">Tu ingeniero ❤️</p>
+                </footer>
+
+                <!-- Botón de Transición al Pastel Final -->
+                <div class="stage-transition-area" style="margin-top: 30px;">
+                  <p class="transition-hint">Tengo una última sorpresa preparada para ti... 🎂</p>
+                  <button type="button" class="btn-next-stage btn-gold-stage" id="btnGoToStage3">
+                    <span>🎂 Guardar sobre y ver tu Pastel de Cumpleaños 🎉</span>
+                  </button>
+                </div>
+
+              </div>
+            </div>
+          </article>
+
+          <div class="pocket front-pocket"></div>
+
+          <!-- Sello Sobre 2 -->
+          <div class="seal seal-gold" id="sealBtn2" role="button" tabindex="0">
+            <div class="seal-inner">
+              <span class="seal-heart">🌹</span>
+              <span class="seal-text">Razones</span>
+            </div>
+            <div class="seal-pulse"></div>
+          </div>
+        </div>
+
+        <div class="open-instruction" id="openInstruction2">
+          <span>💌 Toca este sobre: "Razones por las que te amo" 💌</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========================================================
+         ACTO 3: GRAN FINAL (EL PASTEL GIGANTE DE CUMPLEAÑOS)
+         ======================================================== -->
+    <section class="stage stage-hidden" id="stage3">
+      <div class="final-cake-wrapper">
+        <div class="cake-card-frame">
+          <!-- Flores decorativas del pastel -->
+          <div class="cake-floral-crown">🌻 🎂 🌻</div>
+          <div class="cake-badge">✨ MOMENTO MÁS ESPECIAL ✨</div>
+          <h2 class="cake-title">¡Pide un Deseo, Mi Reina!</h2>
+          <div class="cake-instruction" id="cakeHint">Toca el pastel o el botón para soplar las velitas 🎂</div>
+          
+          <div class="cake-container" id="birthdayCake" role="button" tabindex="0" title="¡Toca para soplar las velitas!">
+            <svg class="cake-svg" viewBox="0 0 240 210" xmlns="http://www.w3.org/2000/svg">
+              <circle cx="120" cy="110" r="95" fill="url(#cakeGlow)" opacity="0.45" />
+              
+              <defs>
+                <radialGradient id="cakeGlow" cx="50%" cy="50%" r="50%">
+                  <stop offset="0%" stop-color="#ffd166" stop-opacity="0.85"/>
+                  <stop offset="100%" stop-color="#ffd166" stop-opacity="0"/>
+                </radialGradient>
+              </defs>
+
+              <!-- Base / Plato decorado de porcelana con oro -->
+              <ellipse cx="120" cy="188" rx="100" ry="14" fill="#ffffff" stroke="#d4af37" stroke-width="3" />
+              <ellipse cx="120" cy="188" rx="88" ry="9" fill="#f8f9fa" />
+
+              <!-- Piso inferior (Grande) -->
+              <rect x="35" y="125" width="170" height="58" rx="14" fill="#ffe5ec" stroke="#f4978e" stroke-width="2.5" />
+              <path d="M35,140 Q48,156 62,140 Q76,158 90,140 Q104,158 118,140 Q132,158 146,140 Q160,158 174,140 Q188,156 205,140 L205,125 L35,125 Z" fill="#ff4d6d" />
+              
+              <circle cx="55" cy="165" r="4.5" fill="#ffd166" stroke="#fff" stroke-width="1" />
+              <circle cx="85" cy="168" r="4.5" fill="#ffd166" stroke="#fff" stroke-width="1" />
+              <circle cx="120" cy="165" r="5" fill="#ffd166" stroke="#fff" stroke-width="1" />
+              <circle cx="155" cy="168" r="4.5" fill="#ffd166" stroke="#fff" stroke-width="1" />
+              <circle cx="185" cy="165" r="4.5" fill="#ffd166" stroke="#fff" stroke-width="1" />
+
+              <!-- Piso superior (Medio) -->
+              <rect x="60" y="78" width="120" height="50" rx="12" fill="#fff0f3" stroke="#f4978e" stroke-width="2.5" />
+              <path d="M60,92 Q72,106 84,92 Q96,108 108,92 Q120,108 132,92 Q144,108 156,92 Q168,106 180,92 L180,78 L60,78 Z" fill="#ff758f" />
+
+              <!-- Fresitas -->
+              <g transform="translate(80, 74)">
+                <circle cx="0" cy="0" r="7" fill="#e63946" />
+                <path d="M-3,-6 Q0,-10 3,-6 Z" fill="#2a9d8f" />
+              </g>
+              <g transform="translate(120, 74)">
+                <circle cx="0" cy="0" r="7.5" fill="#e63946" />
+                <path d="M-3,-6 Q0,-10 3,-6 Z" fill="#2a9d8f" />
+              </g>
+              <g transform="translate(160, 74)">
+                <circle cx="0" cy="0" r="7" fill="#e63946" />
+                <path d="M-3,-6 Q0,-10 3,-6 Z" fill="#2a9d8f" />
+              </g>
+
+              <!-- GRUPO DE VELITAS -->
+              <g class="candles" id="cakeCandles">
+                <!-- Vela Izquierda -->
+                <g class="candle-single candle-left">
+                  <rect x="85" y="32" width="10" height="46" rx="4" fill="#ffd166" stroke="#f4a261" stroke-width="1.5" />
+                  <line x1="86" y1="42" x2="94" y2="46" stroke="#ff4d6d" stroke-width="2" />
+                  <line x1="86" y1="54" x2="94" y2="58" stroke="#ff4d6d" stroke-width="2" />
+                  <line x1="90" y1="26" x2="90" y2="32" stroke="#222" stroke-width="2.5" />
+                  <g class="flame flame-1">
+                    <circle cx="90" cy="18" r="14" fill="#ffd166" opacity="0.3" class="flame-halo" />
+                    <path d="M90,6 Q97,16 90,24 Q83,16 90,6 Z" fill="#ffb703" />
+                    <path d="M90,10 Q94,17 90,22 Q86,17 90,10 Z" fill="#fb8500" />
+                    <circle cx="90" cy="20" r="2.5" fill="#fff" />
+                  </g>
+                  <g class="smoke smoke-1">
+                    <path d="M90,22 Q82,10 94,0 Q84,-10 92,-20" stroke="#8d99ae" stroke-width="3" fill="none" stroke-linecap="round" stroke-dasharray="4" />
+                  </g>
+                </g>
+
+                <!-- Vela Central -->
+                <g class="candle-single candle-center">
+                  <rect x="115" y="24" width="10" height="54" rx="4" fill="#ffccd5" stroke="#f4978e" stroke-width="1.5" />
+                  <line x1="116" y1="36" x2="124" y2="40" stroke="#d6336c" stroke-width="2" />
+                  <line x1="116" y1="48" x2="124" y2="52" stroke="#d6336c" stroke-width="2" />
+                  <line x1="120" y1="18" x2="120" y2="24" stroke="#222" stroke-width="2.5" />
+                  <g class="flame flame-2">
+                    <circle cx="120" cy="10" r="16" fill="#ffd166" opacity="0.35" class="flame-halo" />
+                    <path d="M120,-2 Q128,9 120,17 Q112,9 120,-2 Z" fill="#ffb703" />
+                    <path d="M120,3 Q125,10 120,15 Q115,10 120,3 Z" fill="#fb8500" />
+                    <circle cx="120" cy="13" r="2.5" fill="#fff" />
+                  </g>
+                  <g class="smoke smoke-2">
+                    <path d="M120,15 Q128,2 114,-8 Q126,-18 118,-28" stroke="#8d99ae" stroke-width="3.5" fill="none" stroke-linecap="round" stroke-dasharray="4" />
+                  </g>
+                </g>
+
+                <!-- Vela Derecha -->
+                <g class="candle-single candle-right">
+                  <rect x="145" y="32" width="10" height="46" rx="4" fill="#ffd166" stroke="#f4a261" stroke-width="1.5" />
+                  <line x1="146" y1="42" x2="154" y2="46" stroke="#ff4d6d" stroke-width="2" />
+                  <line x1="146" y1="54" x2="154" y2="58" stroke="#ff4d6d" stroke-width="2" />
+                  <line x1="150" y1="26" x2="150" y2="32" stroke="#222" stroke-width="2.5" />
+                  <g class="flame flame-3">
+                    <circle cx="150" cy="18" r="14" fill="#ffd166" opacity="0.3" class="flame-halo" />
+                    <path d="M150,6 Q157,16 150,24 Q143,16 150,6 Z" fill="#ffb703" />
+                    <path d="M150,10 Q154,17 150,22 Q146,17 150,10 Z" fill="#fb8500" />
+                    <circle cx="150" cy="20" r="2.5" fill="#fff" />
+                  </g>
+                  <g class="smoke smoke-3">
+                    <path d="M150,22 Q158,10 146,0 Q156,-10 148,-20" stroke="#8d99ae" stroke-width="3" fill="none" stroke-linecap="round" stroke-dasharray="4" />
+                  </g>
+                </g>
+              </g>
+            </svg>
+          </div>
+
+          <button type="button" class="btn-blow-candles" id="blowCandlesBtn">
+            <span>💨 ¡Pide un deseo y sopla aquí! 🎂</span>
+          </button>
+
+          <!-- Dedicatoria final al pie del pastel -->
+          <div class="cake-signature-box">
+            <div class="divider" style="margin: 20px 0 8px;">🌻 ❤️ 🌻</div>
+            <p class="cake-signature-text">Con amor,</p>
+            <p class="cake-signature-name">Tu ingeniero ❤️</p>
+          </div>
+
+          <!-- Botón para revivir toda la experiencia -->
+          <div class="replay-wrapper" style="margin-top: 25px;">
+            <button type="button" class="btn-replay" id="btnReplay">
+              <span>🌻 Volver a ver todas tus sorpresas 💌</span>
+            </button>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>
