@@ -29,7 +29,7 @@ body {
   align-items: center;
   background: 
     linear-gradient(rgba(24, 15, 10, 0.22), rgba(15, 8, 5, 0.38)),
-    url('fondo-madera.jpg') center center / cover no-repeat fixed;
+    url('fondo-madera.jpg?v=20260929v1') center center / cover no-repeat fixed;
   background-color: #4a3728;
   font-family: var(--font-sans);
   color: var(--text-dark);
