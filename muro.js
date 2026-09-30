@@ -33,6 +33,19 @@ document.addEventListener('DOMContentLoaded', () => {
   initConfigModal();
   initShareWhatsApp();
   loadNotes();
+
+  // Sincronización periódica automática (cada 20 segundos) y al reactivar la pestaña
+  setInterval(() => {
+    if (GOOGLE_SCRIPT_URL && !document.hidden) {
+      fetchNotesFromGoogleSheets(true);
+    }
+  }, 20000);
+
+  document.addEventListener('visibilitychange', () => {
+    if (!document.hidden && GOOGLE_SCRIPT_URL) {
+      fetchNotesFromGoogleSheets(true);
+    }
+  });
 });
 
 // ========================================================
@@ -65,21 +78,24 @@ function saveNotesToLocalStorage() {
   localStorage.setItem('muro_cumpleanos_notes', JSON.stringify(notes));
 }
 
-// Obtener notas desde Google Sheets
-async function fetchNotesFromGoogleSheets() {
+// Obtener notas desde Google Sheets (sin límite y sin problemas de caché en móvil)
+async function fetchNotesFromGoogleSheets(silent = false) {
   const syncInd = document.getElementById('syncIndicator');
-  if (syncInd) syncInd.style.display = 'block';
+  if (syncInd && !silent) syncInd.style.display = 'block';
 
   try {
-    const response = await fetch(GOOGLE_SCRIPT_URL, {
+    // Parámetro de tiempo para evitar respuestas cacheadas en móviles
+    const fetchUrl = `${GOOGLE_SCRIPT_URL}${GOOGLE_SCRIPT_URL.includes('?') ? '&' : '?'}t=${Date.now()}`;
+    const response = await fetch(fetchUrl, {
       method: 'GET',
-      mode: 'cors'
+      mode: 'cors',
+      cache: 'no-store'
     });
 
     if (response.ok) {
       const result = await response.json();
       if (result.status === 'success' && Array.isArray(result.data)) {
-        // Mapear filas de Google Sheets a notas
+        // Mapear todas las filas de Google Sheets a notas
         const remoteNotes = result.data.map((row, index) => {
           return {
             id: row.id || `remote_${index}`,
@@ -95,8 +111,14 @@ async function fetchNotesFromGoogleSheets() {
           };
         });
 
-        // El tablero muestra exclusivamente las notas reales de la hoja de cálculo
-        notes = remoteNotes;
+        // Conservar notas locales recién enviadas que aún no se hayan reflejado en Google Sheets
+        const pendingLocalNotes = notes.filter(localNote => 
+          String(localNote.id).startsWith('note_') && 
+          !remoteNotes.some(r => r.message === localNote.message && r.author === localNote.author)
+        );
+
+        // El tablero muestra todas las notas sin ningún límite
+        notes = [...pendingLocalNotes, ...remoteNotes];
         saveNotesToLocalStorage();
         renderNotes();
       }
@@ -394,6 +416,11 @@ function initFormInteractivity() {
 
     // Enviar en background a Google Sheets
     sendNoteToGoogleSheets(newNote);
+
+    // Re-sincronizar después de un momento para confirmar el guardado en Sheets
+    setTimeout(() => {
+      fetchNotesFromGoogleSheets(true);
+    }, 2500);
 
     // Cerrar modal y limpiar
     closeModal();

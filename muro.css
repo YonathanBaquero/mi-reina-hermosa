@@ -435,6 +435,7 @@ body {
   margin: 10px 0 16px;
   word-break: break-word;
   white-space: pre-line;
+  flex: 1;
 }
 
 .note-footer {
@@ -863,6 +864,10 @@ body {
    ADAPTACIONES MÓVILES (RESPONSIVE)
    ======================================================== */
 @media (max-width: 600px) {
+  body {
+    padding-bottom: 140px; /* Espacio extra inferior para que el botón flotante nunca tape la última nota */
+  }
+
   .board-top-bar {
     padding: 8px 12px;
   }
@@ -877,13 +882,17 @@ body {
 
   .board-wrapper {
     padding: 0 8px;
-    margin: 12px auto;
+    margin: 10px auto;
+    width: 100%;
   }
 
   .corkboard-frame {
     border-width: 10px;
-    padding: 16px 10px 30px;
+    padding: 16px 10px 35px;
     border-radius: 8px;
+    min-height: 420px;
+    height: auto;
+    overflow: visible;
   }
 
   .board-banner {
@@ -900,24 +909,41 @@ body {
   }
 
   .corkboard-surface {
-    grid-template-columns: 1fr;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
     gap: 22px;
-    padding: 6px 4px 20px;
+    padding: 6px 4px 30px;
+    height: auto;
+    overflow: visible;
   }
 
   .postit-note {
-    min-height: 190px;
-    padding: 24px 14px 14px;
+    width: 100%;
+    box-sizing: border-box;
+    min-height: 180px;
+    height: auto;
+    padding: 24px 16px 16px;
+    /* Reducir sutilmente la rotación en móvil para evitar desbordamientos horizontales */
+    transform: rotate(calc(var(--rot, 0deg) * 0.55));
+  }
+
+  .postit-note:hover,
+  .postit-note:focus-within,
+  .postit-note:active {
+    transform: translateY(-4px) scale(1.02) rotate(0deg) !important;
   }
 
   .fab-wrapper {
     bottom: 18px;
     right: 18px;
+    z-index: 100;
   }
 
   .btn-fab {
     padding: 12px 18px;
     font-size: 0.9rem;
+    box-shadow: 0 8px 24px rgba(214, 51, 108, 0.45);
   }
 
   .modal-card {
