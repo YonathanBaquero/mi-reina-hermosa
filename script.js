@@ -37,62 +37,200 @@ document.addEventListener('DOMContentLoaded', () => {
   // 1. GENERADORES DE GIRASOLES (SUNFLOWERS)
   // ========================================================
 
-  // Función constructora de Girasoles SVG ultra detallados y radiantes
-  function renderSunflower(cx, cy, scale = 1, rotate = 0) {
+  // ========================================================
+  // 1. GENERADORES DE GIRASOLES BOTÁNICOS PROFESIONALES
+  // ========================================================
+
+  const botanicalSvgDefs = `
+    <defs>
+      <!-- Gradiente pétalo capa trasera (ámbar profundo y dorado) -->
+      <linearGradient id="sfPetalBack" x1="0%" y1="100%" x2="0%" y2="0%">
+        <stop offset="0%" stop-color="#92400e" />
+        <stop offset="35%" stop-color="#b45309" />
+        <stop offset="70%" stop-color="#d97706" />
+        <stop offset="100%" stop-color="#f59e0b" />
+      </linearGradient>
+
+      <!-- Gradiente pétalo capa media (dorado miel vibrante) -->
+      <linearGradient id="sfPetalMid" x1="0%" y1="100%" x2="0%" y2="0%">
+        <stop offset="0%" stop-color="#b45309" />
+        <stop offset="25%" stop-color="#d97706" />
+        <stop offset="65%" stop-color="#f59e0b" />
+        <stop offset="90%" stop-color="#fbbf24" />
+        <stop offset="100%" stop-color="#fef08a" />
+      </linearGradient>
+
+      <!-- Gradiente pétalo capa frontal (luz solar radiante) -->
+      <linearGradient id="sfPetalFront" x1="0%" y1="100%" x2="0%" y2="0%">
+        <stop offset="0%" stop-color="#d97706" />
+        <stop offset="30%" stop-color="#f59e0b" />
+        <stop offset="75%" stop-color="#fde047" />
+        <stop offset="100%" stop-color="#fffbeb" />
+      </linearGradient>
+
+      <!-- Centro de semillas (disco aterciopelado con profundidad multicapa) -->
+      <radialGradient id="sfCenterDisk" cx="42%" cy="40%" r="58%">
+        <stop offset="0%" stop-color="#140702" />
+        <stop offset="30%" stop-color="#2a1106" />
+        <stop offset="55%" stop-color="#451c09" />
+        <stop offset="78%" stop-color="#71320c" />
+        <stop offset="90%" stop-color="#a1490d" />
+        <stop offset="95%" stop-color="#d97706" />
+        <stop offset="100%" stop-color="#1c0903" />
+      </radialGradient>
+
+      <!-- Follaje botánico sombreado -->
+      <linearGradient id="sfLeafGrad1" x1="0%" y1="100%" x2="100%" y2="0%">
+        <stop offset="0%" stop-color="#0f2619" />
+        <stop offset="40%" stop-color="#1b4332" />
+        <stop offset="85%" stop-color="#2d6a4f" />
+        <stop offset="100%" stop-color="#40916c" />
+      </linearGradient>
+
+      <linearGradient id="sfLeafGrad2" x1="100%" y1="100%" x2="0%" y2="0%">
+        <stop offset="0%" stop-color="#143622" />
+        <stop offset="50%" stop-color="#2d6a4f" />
+        <stop offset="100%" stop-color="#52b788" />
+      </linearGradient>
+
+      <!-- Capullos dorados jóvenes -->
+      <linearGradient id="sfBudGrad" x1="0%" y1="100%" x2="0%" y2="0%">
+        <stop offset="0%" stop-color="#1b4332" />
+        <stop offset="50%" stop-color="#ca8a04" />
+        <stop offset="85%" stop-color="#facc15" />
+        <stop offset="100%" stop-color="#fef08a" />
+      </linearGradient>
+
+      <!-- Sombra suave realista -->
+      <filter id="sfSoftShadow" x="-20%" y="-20%" width="140%" height="140%">
+        <feDropShadow dx="0" dy="2.5" stdDeviation="3" flood-color="#231006" flood-opacity="0.18" />
+      </filter>
+    </defs>
+  `;
+
+  // Constructor de Girasol Botánico Profesional
+  function renderSunflower(cx, cy, scale = 1, rotate = 0, hasLeaves = true) {
     let petalsBack = '';
+    let petalsMid = '';
     let petalsFront = '';
-    
-    // 12 pétalos traseros en dorado intenso
-    for (let a = 0; a < 360; a += 30) {
-      petalsBack += `<path d="M0,-8 C-6,-18 -5,-32 0,-40 C5,-32 6,-18 0,-8 Z" fill="#e08700" transform="rotate(${a})" />`;
-    }
-    // 12 pétalos frontales en amarillo brillante radiante
-    for (let a = 15; a < 360; a += 30) {
-      petalsFront += `<path d="M0,-8 C-5,-17 -4,-30 0,-37 C4,-30 5,-17 0,-8 Z" fill="#ffd000" transform="rotate(${a})" />`;
+    let floretRing = '';
+
+    // 14 pétalos traseros con curvas suaves
+    for (let a = 0; a < 360; a += (360 / 14)) {
+      petalsBack += `<path d="M0,-6 C-7,-16 -7.5,-33 0,-44 C7.5,-33 7,-16 0,-6 Z" fill="url(#sfPetalBack)" transform="rotate(${a.toFixed(1)})" />`;
     }
 
+    // 14 pétalos medios entrelazados con arista de brillo
+    for (let a = 12.8; a < 360; a += (360 / 14)) {
+      petalsMid += `
+        <g transform="rotate(${a.toFixed(1)})">
+          <path d="M0,-5 C-6,-15 -6.5,-29 0,-39 C6.5,-29 6,-15 0,-5 Z" fill="url(#sfPetalMid)" />
+          <path d="M0,-7 L0,-32" stroke="#fef08a" stroke-width="0.8" opacity="0.45" />
+        </g>`;
+    }
+
+    // 12 pétalos frontales radiantes
+    for (let a = 6; a < 360; a += (360 / 12)) {
+      petalsFront += `<path d="M0,-4 C-4.8,-12 -5,-24 0,-34 C5,-24 4.8,-12 0,-4 Z" fill="url(#sfPetalFront)" transform="rotate(${a.toFixed(1)})" />`;
+    }
+
+    // Corona de pequeñas florecillas doradas alrededor del disco central
+    for (let a = 0; a < 360; a += 15) {
+      const rad = (a * Math.PI) / 180;
+      const x = Math.cos(rad) * 14.5;
+      const y = Math.sin(rad) * 14.5;
+      floretRing += `<circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="1.1" fill="#fde047" opacity="0.9" />`;
+    }
+
+    // Hojas botánicas elegantes con venas realistas
+    const leaves = hasLeaves ? `
+      <!-- Hoja izquierda -->
+      <g transform="rotate(-38) translate(0, -6)">
+        <path d="M0,0 C-22,-12 -38,-34 -24,-58 C-8,-44 4,-24 0,0 Z" fill="url(#sfLeafGrad1)" />
+        <path d="M0,0 C-12,-20 -20,-38 -24,-58" stroke="#74c69d" stroke-width="1.2" fill="none" opacity="0.5" />
+        <path d="M-8,-16 C-15,-18 -20,-24 -24,-24" stroke="#74c69d" stroke-width="0.8" fill="none" opacity="0.4" />
+        <path d="M-14,-30 C-22,-32 -26,-38 -28,-40" stroke="#74c69d" stroke-width="0.8" fill="none" opacity="0.4" />
+      </g>
+      <!-- Hoja derecha -->
+      <g transform="rotate(38) translate(0, -6)">
+        <path d="M0,0 C22,-12 38,-34 24,-58 C8,-44 -4,-24 0,0 Z" fill="url(#sfLeafGrad2)" />
+        <path d="M0,0 C12,-20 20,-38 24,-58" stroke="#52b788" stroke-width="1.2" fill="none" opacity="0.5" />
+        <path d="M8,-16 C15,-18 20,-24 24,-24" stroke="#52b788" stroke-width="0.8" fill="none" opacity="0.4" />
+        <path d="M14,-30 C22,-32 26,-38 28,-40" stroke="#52b788" stroke-width="0.8" fill="none" opacity="0.4" />
+      </g>
+    ` : '';
+
     return `
-      <g transform="translate(${cx}, ${cy}) rotate(${rotate}) scale(${scale})">
-        <!-- Hojas de girasol verdes -->
-        <path d="M0,0 Q-30,-20 -20,-48 Q8,-30 0,0 Z" fill="#2d6a4f" />
-        <path d="M0,0 Q30,-20 20,-48 Q-8,-30 0,0 Z" fill="#40916c" />
-        <!-- Pétalos en 2 capas -->
+      <g transform="translate(${cx}, ${cy}) rotate(${rotate}) scale(${scale})" filter="url(#sfSoftShadow)">
+        ${leaves}
+        <!-- Capas de pétalos botánicos -->
         ${petalsBack}
+        ${petalsMid}
         ${petalsFront}
-        <!-- Centro oscuro de semillas de girasol -->
-        <circle cx="0" cy="0" r="16" fill="#3a1d0f" />
-        <circle cx="0" cy="0" r="13" fill="#4e2712" />
-        <circle cx="0" cy="0" r="9" fill="none" stroke="#75421c" stroke-width="2.5" stroke-dasharray="2 3" />
-        <circle cx="0" cy="0" r="4.5" fill="#241107" />
+        <!-- Centro aterciopelado del girasol -->
+        <circle cx="0" cy="0" r="16" fill="url(#sfCenterDisk)" />
+        <!-- Textura de semillas en anillos concéntricos -->
+        <circle cx="0" cy="0" r="12" fill="none" stroke="#92400e" stroke-width="2" stroke-dasharray="2 3" opacity="0.75" />
+        <circle cx="0" cy="0" r="8" fill="none" stroke="#b45309" stroke-width="1.5" stroke-dasharray="1.5 2.5" opacity="0.7" />
+        <circle cx="0" cy="0" r="4.5" fill="#140702" />
+        <!-- Corona perimetral de florecillas doradas -->
+        ${floretRing}
       </g>
     `;
   }
 
-  // Guirnalda superior de girasoles colgantes
+  // Guirnalda superior de girasoles (armónica, elegante y no distorsionada)
   if (topGarland) {
     topGarland.innerHTML = `
-      <svg viewBox="0 0 1000 70" width="100%" height="100%" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="M0,15 Q250,45 500,18 Q750,45 1000,15" fill="none" stroke="#2d6a4f" stroke-width="3.5"/>
-        <!-- Girasoles a lo largo de la guirnalda -->
-        ${renderSunflower(80, 26, 0.65, -15)}
-        ${renderSunflower(260, 36, 0.72, 10)}
-        ${renderSunflower(500, 24, 0.85, 0)}
-        ${renderSunflower(740, 36, 0.72, -10)}
-        ${renderSunflower(920, 26, 0.65, 15)}
+      <svg viewBox="0 0 1000 85" width="100%" height="100%" preserveAspectRatio="xMidYMin meet" xmlns="http://www.w3.org/2000/svg">
+        ${botanicalSvgDefs}
+        <!-- Guirnalda de ramas arqueadas y hojas de eucalipto -->
+        <path d="M0,15 Q250,42 500,20 Q750,42 1000,15" fill="none" stroke="#1b4332" stroke-width="2.8" stroke-linecap="round"/>
+        <path d="M50,18 Q300,50 500,22 Q700,50 950,18" fill="none" stroke="#40916c" stroke-width="1.6" stroke-linecap="round" opacity="0.6"/>
+
+        <!-- Hojitas decorativas -->
+        <ellipse cx="180" cy="30" rx="10" ry="5" fill="#52b788" transform="rotate(-15 180 30)" opacity="0.75" />
+        <ellipse cx="370" cy="32" rx="12" ry="5" fill="#52b788" transform="rotate(18 370 32)" opacity="0.75" />
+        <ellipse cx="630" cy="32" rx="12" ry="5" fill="#52b788" transform="rotate(-18 630 32)" opacity="0.75" />
+        <ellipse cx="820" cy="30" rx="10" ry="5" fill="#52b788" transform="rotate(15 820 30)" opacity="0.75" />
+
+        <!-- Pequeños capullos dorados -->
+        <circle cx="160" cy="28" r="5" fill="url(#sfBudGrad)" />
+        <circle cx="390" cy="33" r="6" fill="url(#sfBudGrad)" />
+        <circle cx="610" cy="33" r="6" fill="url(#sfBudGrad)" />
+        <circle cx="840" cy="28" r="5" fill="url(#sfBudGrad)" />
+
+        <!-- Girasoles botánicos proporcionados -->
+        ${renderSunflower(90, 26, 0.58, -12, true)}
+        ${renderSunflower(270, 36, 0.72, 8, true)}
+        ${renderSunflower(500, 26, 0.88, 0, true)}
+        ${renderSunflower(730, 36, 0.72, -8, true)}
+        ${renderSunflower(910, 26, 0.58, 12, true)}
       </svg>
     `;
   }
 
-  // Enredaderas laterales de girasoles trepadores
+  // Enredaderas laterales delicadas y orgánicas (no deformadas)
   function createSunflowerVineSVG() {
     return `
-      <svg viewBox="0 0 90 850" width="100%" height="100%" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="M20,0 Q50,220 25,430 Q55,640 20,850" fill="none" stroke="#2d6a4f" stroke-width="4" stroke-linecap="round"/>
-        <!-- Girasoles radiantes a lo largo del tallo -->
-        ${renderSunflower(42, 110, 0.7, 15)}
-        ${renderSunflower(45, 320, 0.78, -12)}
-        ${renderSunflower(42, 540, 0.72, 20)}
-        ${renderSunflower(46, 740, 0.78, -8)}
+      <svg viewBox="0 0 80 800" width="100%" height="100%" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg">
+        ${botanicalSvgDefs}
+        <!-- Tallo trepador orgánico -->
+        <path d="M22,0 Q50,200 25,400 Q48,600 22,800" fill="none" stroke="#1b4332" stroke-width="2.8" stroke-linecap="round"/>
+        <path d="M22,0 Q10,200 25,400 Q12,600 22,800" fill="none" stroke="#40916c" stroke-width="1.5" stroke-linecap="round" opacity="0.5"/>
+
+        <!-- Zarcillos botánicos delicados -->
+        <path d="M26,120 Q44,130 40,144 Q35,154 26,150" fill="none" stroke="#52b788" stroke-width="1.5" />
+        <path d="M25,360 Q44,370 42,384 Q35,394 24,390" fill="none" stroke="#52b788" stroke-width="1.5" />
+        <path d="M26,580 Q44,590 40,604 Q35,614 25,610" fill="none" stroke="#52b788" stroke-width="1.5" />
+
+        <!-- Girasoles botánicos en puntos clave -->
+        ${renderSunflower(42, 95, 0.65, 14, true)}
+        <circle cx="28" cy="220" r="7" fill="url(#sfBudGrad)" />
+        ${renderSunflower(45, 305, 0.74, -10, true)}
+        <circle cx="26" cy="440" r="7" fill="url(#sfBudGrad)" />
+        ${renderSunflower(40, 520, 0.68, 16, true)}
+        ${renderSunflower(44, 715, 0.72, -8, true)}
       </svg>
     `;
   }
@@ -100,23 +238,35 @@ document.addEventListener('DOMContentLoaded', () => {
   if (vineLeft) vineLeft.innerHTML = createSunflowerVineSVG();
   if (vineRight) vineRight.innerHTML = createSunflowerVineSVG();
 
-  // Jardín inferior de girasoles en esquinas
+  // Jardín inferior de girasoles en esquinas (ramillete exuberante y romántico)
   function createSunflowerGardenSVG() {
     return `
-      <svg viewBox="0 0 160 220" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
-        <!-- Tallos principales -->
-        <path d="M15,220 Q40,140 70,85 Q85,45 80,10" fill="none" stroke="#2d6a4f" stroke-width="4.5" stroke-linecap="round" />
-        <path d="M15,220 Q55,160 105,120 Q125,100 130,70" fill="none" stroke="#40916c" stroke-width="4" stroke-linecap="round" />
-        <path d="M10,220 Q25,170 30,135" fill="none" stroke="#2d6a4f" stroke-width="3.5" stroke-linecap="round" />
+      <svg viewBox="0 0 170 210" width="100%" height="100%" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg">
+        ${botanicalSvgDefs}
+        <!-- Tallos principales que emergen de la esquina -->
+        <path d="M15,210 Q45,140 75,85 Q88,50 82,15" fill="none" stroke="#1b4332" stroke-width="4.2" stroke-linecap="round" />
+        <path d="M15,210 Q60,155 110,120 Q130,100 135,70" fill="none" stroke="#2d6a4f" stroke-width="3.6" stroke-linecap="round" />
+        <path d="M10,210 Q28,165 35,135" fill="none" stroke="#40916c" stroke-width="3" stroke-linecap="round" />
 
-        <!-- Gran Girasol Principal -->
-        ${renderSunflower(80, 50, 1.05, 5)}
-        
+        <!-- Capullo lateral con sépalos -->
+        <g transform="translate(140, 60) rotate(-25)">
+          <path d="M0,0 C-10,-12 -12,-26 0,-34 C12,-26 10,-12 0,0 Z" fill="url(#sfBudGrad)" />
+          <path d="M-6,-2 C-14,-10 -10,-22 -4,-28" stroke="#1b4332" stroke-width="1.8" fill="none" />
+          <path d="M6,-2 C14,-10 10,-22 4,-28" stroke="#1b4332" stroke-width="1.8" fill="none" />
+        </g>
+
+        <!-- Hojas de fondo frondosas -->
+        <path d="M30,170 C0,135 15,95 45,115 C35,145 32,165 30,170 Z" fill="url(#sfLeafGrad1)" />
+        <path d="M50,150 C85,120 115,135 105,160 C75,165 55,155 50,150 Z" fill="url(#sfLeafGrad2)" />
+
         <!-- Girasol Secundario Lateral -->
-        ${renderSunflower(125, 95, 0.85, -20)}
-        
+        ${renderSunflower(125, 95, 0.78, -22, true)}
+
         <!-- Girasol Pequeño Inferior -->
-        ${renderSunflower(35, 125, 0.72, 25)}
+        ${renderSunflower(36, 125, 0.68, 22, true)}
+
+        <!-- Gran Girasol Principal Radiante -->
+        ${renderSunflower(82, 52, 0.98, 4, true)}
       </svg>
     `;
   }
@@ -124,28 +274,45 @@ document.addEventListener('DOMContentLoaded', () => {
   if (gardenLeft) gardenLeft.innerHTML = createSunflowerGardenSVG();
   if (gardenRight) gardenRight.innerHTML = createSunflowerGardenSVG();
 
-  // Caída continua de pétalos dorados de girasol
+  // Caída continua de pétalos dorados de girasol y destellos sutiles
   function createFallingPetal() {
     const petal = document.createElement('div');
     petal.className = 'falling-petal';
-    
-    const sunflowerIcons = ['🌻', '💛', '🌻', '✨', '🌼', '🐝', '💖'];
-    petal.textContent = sunflowerIcons[Math.floor(Math.random() * sunflowerIcons.length)];
-    
+
+    const isSparkle = Math.random() < 0.28;
+    if (isSparkle) {
+      petal.innerHTML = `<span style="font-size: ${(Math.random() * 0.6 + 0.7).toFixed(2)}rem; filter: drop-shadow(0 0 5px rgba(245,158,11,0.8));">✨</span>`;
+    } else {
+      const petalW = Math.floor(Math.random() * 8 + 14); // 14px a 22px
+      const petalH = Math.floor(petalW * 1.6);
+      const rot = Math.floor(Math.random() * 360);
+      petal.innerHTML = `
+        <svg width="${petalW}" height="${petalH}" viewBox="0 0 18 30" style="transform: rotate(${rot}deg); filter: drop-shadow(0 2px 4px rgba(180,83,9,0.35));">
+          <defs>
+            <linearGradient id="pGrad_${Date.now()}_${Math.floor(Math.random()*1000)}" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0%" stop-color="#fef08a" />
+              <stop offset="50%" stop-color="#f59e0b" />
+              <stop offset="100%" stop-color="#b45309" />
+            </linearGradient>
+          </defs>
+          <path d="M9,0 C15,8 18,18 9,30 C0,18 3,8 9,0 Z" fill="url(#sfPetalMid)" />
+          <path d="M9,4 L9,24" stroke="#fffbeb" stroke-width="0.75" opacity="0.55" />
+        </svg>
+      `;
+    }
+
     const startX = Math.random() * window.innerWidth;
-    const duration = Math.random() * 4 + 4.5;
-    const size = Math.random() * 0.95 + 0.85;
-    
+    const duration = Math.random() * 3.5 + 5;
+
     petal.style.left = `${startX}px`;
-    petal.style.top = `-30px`;
-    petal.style.fontSize = `${size}rem`;
+    petal.style.top = `-35px`;
     petal.style.animationDuration = `${duration}s`;
-    
+
     particlesContainer.appendChild(petal);
     setTimeout(() => petal.remove(), duration * 1000);
   }
 
-  setInterval(createFallingPetal, 650);
+  setInterval(createFallingPetal, 700);
 
   // ========================================================
   // 2. SISTEMA DE PARTÍCULAS INTERACTIVAS (CON GIRASOLES)
