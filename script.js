@@ -1,4 +1,11 @@
 document.addEventListener('DOMContentLoaded', () => {
+  // Precarga inmediata de fotos en la memoria del navegador
+  const photoCache = ['fotos/foto 1.jpg', 'fotos/foto 2.jpg', 'fotos/foto 3.jpg', 'fotos/foto 4.jpg', 'fotos/foto 5.jpg', 'fotos/foto 6.jpg'].map(src => {
+    const img = new Image();
+    img.src = src;
+    return img;
+  });
+
   // Contenedores y etapas
   const stage1 = document.getElementById('stage1');
   const stage2 = document.getElementById('stage2');

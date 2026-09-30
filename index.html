@@ -10,6 +10,14 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600;700&family=Great+Vibes&family=Montserrat:ital,wght@0,300;0,400;0,600;0,700;1,300&display=swap" rel="stylesheet">
   
+  <!-- Precarga inmediata de fotos para aparición instantánea -->
+  <link rel="preload" as="image" href="fotos/foto 1.jpg">
+  <link rel="preload" as="image" href="fotos/foto 2.jpg">
+  <link rel="preload" as="image" href="fotos/foto 3.jpg">
+  <link rel="preload" as="image" href="fotos/foto 4.jpg">
+  <link rel="preload" as="image" href="fotos/foto 5.jpg">
+  <link rel="preload" as="image" href="fotos/foto 6.jpg">
+
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
@@ -137,7 +145,7 @@
                     <div class="polaroid-card-inner">
                       <div class="polaroid-front">
                         <div class="polaroid-img-wrapper">
-                          <img src="fotos/foto 1.jpg" alt="Donde empezó la magia" loading="lazy">
+                          <img src="fotos/foto 1.jpg" alt="Donde empezó la magia" loading="eager" decoding="async">
                         </div>
                         <p class="polaroid-caption">Donde empezó nuestra magia ✨</p>
                       </div>
@@ -156,7 +164,7 @@
                     <div class="polaroid-card-inner">
                       <div class="polaroid-front">
                         <div class="polaroid-img-wrapper">
-                          <img src="fotos/foto 3.jpg" alt="Tu hermosa sonrisa" loading="lazy" style="object-position: center 15%;">
+                          <img src="fotos/foto 3.jpg" alt="Tu hermosa sonrisa" loading="eager" decoding="async" style="object-position: center 15%;">
                         </div>
                         <p class="polaroid-caption">Tu hermosa sonrisa 🥰</p>
                       </div>
@@ -175,7 +183,7 @@
                     <div class="polaroid-card-inner">
                       <div class="polaroid-front">
                         <div class="polaroid-img-wrapper">
-                          <img src="fotos/foto 2.jpg" alt="Nuestras mejores aventuras" loading="lazy" style="object-position: center center;">
+                          <img src="fotos/foto 2.jpg" alt="Nuestras mejores aventuras" loading="eager" decoding="async" style="object-position: center center;">
                         </div>
                         <p class="polaroid-caption">Nuestra complicidad 🔥</p>
                       </div>
@@ -194,7 +202,7 @@
                     <div class="polaroid-card-inner">
                       <div class="polaroid-front">
                         <div class="polaroid-img-wrapper">
-                          <img src="fotos/foto 4.jpg" alt="Mi lugar favorito" loading="lazy" style="object-position: center 20%;">
+                          <img src="fotos/foto 4.jpg" alt="Mi lugar favorito" loading="eager" decoding="async" style="object-position: center 20%;">
                         </div>
                         <p class="polaroid-caption">Mi lugar favorito: contigo 💑</p>
                       </div>
@@ -213,7 +221,7 @@
                     <div class="polaroid-card-inner">
                       <div class="polaroid-front">
                         <div class="polaroid-img-wrapper">
-                          <img src="fotos/foto 5.jpg" alt="Momentos inolvidables" loading="lazy" style="object-position: center 20%;">
+                          <img src="fotos/foto 5.jpg" alt="Momentos inolvidables" loading="eager" decoding="async" style="object-position: center 20%;">
                         </div>
                         <p class="polaroid-caption">Momentos inolvidables 💫</p>
                       </div>
@@ -232,7 +240,7 @@
                     <div class="polaroid-card-inner">
                       <div class="polaroid-front">
                         <div class="polaroid-img-wrapper">
-                          <img src="fotos/foto 6.jpg" alt="Por siempre tú y yo" loading="lazy" style="object-position: center 20%;">
+                          <img src="fotos/foto 6.jpg" alt="Por siempre tú y yo" loading="eager" decoding="async" style="object-position: center 20%;">
                         </div>
                         <p class="polaroid-caption">Por toda una vida juntos 💍</p>
                       </div>
