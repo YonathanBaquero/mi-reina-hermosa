@@ -15,20 +15,13 @@
   <!-- Librería ligera de confeti para celebrar cada mensaje -->
   <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
 
-  <link rel="stylesheet" href="muro.css?v=v2026-muro2">
+  <link rel="stylesheet" href="muro.css?v=v2026-muro3">
 </head>
 <body>
 
   <!-- Barra de navegación y accesos superiores -->
   <header class="board-top-bar">
     <div class="top-bar-left">
-      <a href="index.html" class="btn-back-letter" title="Volver a la carta interactiva">
-        <span class="icon">💌</span>
-        <span class="text">Ver Carta y Sorpresas</span>
-      </a>
-    </div>
-
-    <div class="top-bar-center">
       <span class="board-badge">🌻 Muro de Cumpleaños 🌻</span>
     </div>
 
@@ -38,9 +31,6 @@
       </button>
       <button id="musicToggleBtn" class="btn-icon-top" aria-label="Música de fondo" title="Música de fondo">
         <span class="icon">🎵</span>
-      </button>
-      <button id="btnOpenConfig" class="btn-icon-top" aria-label="Conectar Google Sheets" title="Configurar Google Sheets">
-        <span class="icon">⚙️</span>
       </button>
     </div>
   </header>
@@ -64,12 +54,8 @@
         </div>
       </header>
 
-      <!-- Barra de Filtros y Búsqueda -->
+      <!-- Contador de Mensajes -->
       <section class="board-controls">
-        <div class="search-box">
-          <span class="search-icon">🔍</span>
-          <input type="text" id="searchInput" placeholder="Buscar por nombre o mensaje..." aria-label="Buscar notas">
-        </div>
         <div class="stats-counter" id="statsCounter">
           <span class="badge-count" id="notesCount">0</span> mensajes en el corcho 📌
         </div>
@@ -255,6 +241,6 @@
   </div>
 
   <!-- Script principal del Muro -->
-  <script src="muro.js?v=v2026-muro2"></script>
+  <script src="muro.js?v=v2026-muro3"></script>
 </body>
 </html>

@@ -17,81 +17,8 @@ const FONTS = [
   'shadows', 'gochi', 'pacifico', 'marck', 'sacramento'
 ];
 
-// Mensajes de bienvenida y de amor predeterminados (para que el muro siempre tenga vida)
-const DEFAULT_SAMPLE_NOTES = [
-  {
-    id: 'sample_1',
-    author: 'Yonathan (Tu esposo que te adora) ❤️',
-    message: '¡Feliz cumpleaños, amor de mi vida! Gracias por llenar cada uno de mis días de felicidad, complicidad y amor verdadero. Eres mi reina hermosa, hoy y por siempre.',
-    color: 'pink',
-    font: 'dancing',
-    pin: 'pin-red',
-    sticker: '👑',
-    rotation: -1.8,
-    date: 'Hoy',
-    likes: 12
-  },
-  {
-    id: 'sample_2',
-    author: 'Mamá & Papá 💐',
-    message: 'Hija de nuestro corazón, verte crecer y convertirte en la mujer tan maravillosa que eres es nuestro mayor orgullo. ¡Que Dios te bendiga siempre! Te amamos.',
-    color: 'yellow',
-    font: 'caveat',
-    pin: 'pin-yellow',
-    sticker: '🌻',
-    rotation: 2.2,
-    date: 'Hoy',
-    likes: 8
-  },
-  {
-    id: 'sample_3',
-    author: 'Tus Amigos de Siempre 🎉',
-    message: '¡A celebrar la vida de la más alegre del grupo! Que vengan muchísimos años más llenos de risas, viajes y momentos inolvidables. ¡Feliz cumple!',
-    color: 'green',
-    font: 'gochi',
-    pin: 'pin-green',
-    sticker: '🥂',
-    rotation: -2.5,
-    date: 'Hoy',
-    likes: 6
-  },
-  {
-    id: 'sample_4',
-    author: 'Tu Puercoespín Tierno 🦔',
-    message: '¡Piqui piqui de abrazos para la cumpleañera más linda del mundo! No pincho hoy, solo doy besitos de amor 💖',
-    color: 'peach',
-    font: 'patrick',
-    pin: 'pin-orange',
-    sticker: '🦔',
-    rotation: 1.5,
-    date: 'Hoy',
-    likes: 15
-  },
-  {
-    id: 'sample_5',
-    author: 'Familia Baquero ✨',
-    message: '¡Feliz cumpleaños querida! Que este nuevo año de vida venga cargado de salud, éxitos, paz y bendiciones infinitas en tu hogar.',
-    color: 'blue',
-    font: 'kalam',
-    pin: 'pin-blue',
-    sticker: '⭐',
-    rotation: -1.2,
-    date: 'Hoy',
-    likes: 5
-  },
-  {
-    id: 'sample_6',
-    author: 'Tu Cómpice Favorita 🌸',
-    message: '¡Feliz vuelta al sol reina hermosa! Que nunca se apague esa luz tan bonita y contagiosa que tienes. ¡A brindar y gozar tu día!',
-    color: 'purple',
-    font: 'indie',
-    pin: 'pin-purple',
-    sticker: '🎂',
-    rotation: 2.8,
-    date: 'Hoy',
-    likes: 9
-  }
-];
+// No hay notas predeterminadas; el muro comienza limpio y solo muestra notas reales
+const DEFAULT_SAMPLE_NOTES = [];
 
 // Estado local de notas
 let notes = [];
@@ -104,7 +31,6 @@ document.addEventListener('DOMContentLoaded', () => {
   initMusicPlayer();
   initFormInteractivity();
   initConfigModal();
-  initSearch();
   initShareWhatsApp();
   loadNotes();
 });
@@ -118,23 +44,18 @@ function loadNotes() {
 
   if (localNotesJson) {
     try {
-      localNotes = JSON.parse(localNotesJson);
+      const parsed = JSON.parse(localNotesJson);
+      // Descartar cualquier nota de ejemplo antigua
+      localNotes = parsed.filter(n => n && !String(n.id).startsWith('sample_'));
     } catch (e) {
       console.error('Error parseando notas locales:', e);
     }
   }
 
-  // Si no hay notas guardadas, cargar las notas de ejemplo
-  if (!localNotes || localNotes.length === 0) {
-    notes = [...DEFAULT_SAMPLE_NOTES];
-    saveNotesToLocalStorage();
-  } else {
-    notes = localNotes;
-  }
-
+  notes = localNotes;
   renderNotes();
 
-  // Si hay URL de Google Sheets, sincronizar en segundo plano
+  // Sincronizar con Google Sheets para traer todas las notas reales
   if (GOOGLE_SCRIPT_URL) {
     fetchNotesFromGoogleSheets();
   }
@@ -174,14 +95,10 @@ async function fetchNotesFromGoogleSheets() {
           };
         });
 
-        if (remoteNotes.length > 0) {
-          // Fusionar notas remotas: primero los mensajes reales recibidos de amigos y familiares
-          const existingIds = new Set(remoteNotes.map(n => n.id));
-          const keepLocal = notes.filter(n => !existingIds.has(n.id) && n.id.startsWith('sample_'));
-          notes = [...remoteNotes, ...keepLocal];
-          saveNotesToLocalStorage();
-          renderNotes();
-        }
+        // El tablero muestra exclusivamente las notas reales de la hoja de cálculo
+        notes = remoteNotes;
+        saveNotesToLocalStorage();
+        renderNotes();
       }
     }
   } catch (error) {
