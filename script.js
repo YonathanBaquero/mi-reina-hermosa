@@ -24,6 +24,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const vineRight = document.getElementById('vineRight');
   const gardenLeft = document.getElementById('gardenLeft');
   const gardenRight = document.getElementById('gardenRight');
+  const bottomSunflowerRow = document.getElementById('bottomSunflowerRow');
 
   const particlesContainer = document.getElementById('particles-container');
   const musicBtn = document.getElementById('musicBtn');
@@ -292,6 +293,50 @@ document.addEventListener('DOMContentLoaded', () => {
 
   if (gardenLeft) gardenLeft.innerHTML = createSunflowerGardenSVG();
   if (gardenRight) gardenRight.innerHTML = createSunflowerGardenSVG();
+
+  // Franja horizontal inferior continua de girasoles (estilo mesa de madera rústica con girasoles de la foto)
+  function createBottomSunflowerRowSVG() {
+    return `
+      <svg viewBox="0 0 1200 135" width="100%" height="100%" preserveAspectRatio="xMidYMax slice" xmlns="http://www.w3.org/2000/svg">
+        ${botanicalSvgDefs}
+        
+        <!-- Capa de hojas verdes frondosas de fondo que asoman entre los girasoles -->
+        <g opacity="0.92">
+          <!-- Hojas entre girasoles -->
+          <path d="M70,120 C45,70 15,65 5,90 C35,115 55,120 70,120 Z" fill="url(#sfLeafGrad1)" />
+          <path d="M120,120 C140,65 175,60 185,85 C160,110 135,120 120,120 Z" fill="url(#sfLeafGrad2)" />
+          <path d="M230,120 C205,70 175,65 165,90 C195,115 215,120 230,120 Z" fill="url(#sfLeafGrad1)" />
+          <path d="M280,120 C300,65 335,60 345,85 C320,110 295,120 280,120 Z" fill="url(#sfLeafGrad2)" />
+          <path d="M390,120 C365,70 335,65 325,90 C355,115 375,120 390,120 Z" fill="url(#sfLeafGrad1)" />
+          <path d="M440,120 C460,65 495,60 505,85 C480,110 455,120 440,120 Z" fill="url(#sfLeafGrad2)" />
+          <path d="M550,120 C525,70 495,65 485,90 C515,115 535,120 550,120 Z" fill="url(#sfLeafGrad1)" />
+          <path d="M600,120 C620,65 655,60 665,85 C640,110 615,120 600,120 Z" fill="url(#sfLeafGrad2)" />
+          <path d="M710,120 C685,70 655,65 645,90 C675,115 695,120 710,120 Z" fill="url(#sfLeafGrad1)" />
+          <path d="M760,120 C780,65 815,60 825,85 C800,110 775,120 760,120 Z" fill="url(#sfLeafGrad2)" />
+          <path d="M870,120 C845,70 815,65 805,90 C835,115 855,120 870,120 Z" fill="url(#sfLeafGrad1)" />
+          <path d="M920,120 C940,65 975,60 985,85 C960,110 935,120 920,120 Z" fill="url(#sfLeafGrad2)" />
+          <path d="M1030,120 C1005,70 975,65 965,90 C995,115 1015,120 1030,120 Z" fill="url(#sfLeafGrad1)" />
+          <path d="M1080,120 C1100,65 1135,60 1145,85 C1120,110 1095,120 1080,120 Z" fill="url(#sfLeafGrad2)" />
+          <path d="M1170,120 C1155,75 1130,68 1120,90 C1145,115 1160,120 1170,120 Z" fill="url(#sfLeafGrad1)" />
+        </g>
+
+        <!-- Fila de 11 grandes girasoles radiantes que cubren todo el ancho de la mesa de madera -->
+        ${renderSunflower(45, 78, 0.98, -10, false)}
+        ${renderSunflower(155, 70, 1.10, 8, false)}
+        ${renderSunflower(265, 74, 1.04, -6, false)}
+        ${renderSunflower(375, 68, 1.15, 12, false)}
+        ${renderSunflower(490, 72, 1.06, -8, false)}
+        ${renderSunflower(600, 66, 1.18, 4, false)}
+        ${renderSunflower(710, 72, 1.06, -10, false)}
+        ${renderSunflower(825, 68, 1.15, 8, false)}
+        ${renderSunflower(935, 74, 1.04, -6, false)}
+        ${renderSunflower(1045, 70, 1.10, 10, false)}
+        ${renderSunflower(1155, 78, 0.98, -8, false)}
+      </svg>
+    `;
+  }
+
+  if (bottomSunflowerRow) bottomSunflowerRow.innerHTML = createBottomSunflowerRowSVG();
 
   // Caída continua de pétalos dorados, destellos y pequeños girasoles flotantes
   function createFallingPetal() {

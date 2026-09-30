@@ -27,7 +27,10 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
-  background: linear-gradient(135deg, #fffdf4 0%, #fff2f5 35%, #fffbe6 70%, #ffeaf0 100%);
+  background: 
+    linear-gradient(rgba(24, 15, 10, 0.22), rgba(15, 8, 5, 0.38)),
+    url('fondo-madera.jpg') center center / cover no-repeat fixed;
+  background-color: #4a3728;
   font-family: var(--font-sans);
   color: var(--text-dark);
   overflow-x: hidden;
@@ -74,17 +77,9 @@ body {
   transform: scaleX(-1);
 }
 
-/* 3. Jardín de girasoles en las esquinas inferiores */
+/* 3. Jardín de girasoles en las esquinas inferiores (integrado en la franja continua) */
 .garden-decor {
-  position: fixed;
-  bottom: 0;
-  width: 195px;
-  height: 235px;
-  pointer-events: none;
-  z-index: 7;
-  opacity: 0.95;
-  filter: drop-shadow(0 6px 18px rgba(45, 20, 5, 0.14));
-  transition: opacity 1.2s ease-in, transform 1.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  display: none;
 }
 
 .garden-left {
@@ -104,6 +99,22 @@ body {
 
 .garden-right.bloomed {
   transform: translateY(0) scaleX(-1) scale(1);
+}
+
+/* 4. Franja continua de girasoles al pie de la pantalla (estilo mesa rústica de madera) */
+.bottom-sunflower-row {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 120px;
+  pointer-events: none;
+  z-index: 7;
+  filter: drop-shadow(0 -5px 16px rgba(18, 8, 3, 0.45));
+  opacity: 1;
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
 }
 
 /* ========================================================
@@ -1495,4 +1506,5 @@ body {
   .side-vines { width: 38px; opacity: 0.75; left: -2px; }
   .side-vine-right { right: -2px; left: auto; }
   .garden-decor { width: 125px; height: 165px; }
+  .bottom-sunflower-row { height: 74px; }
 }
