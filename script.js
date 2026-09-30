@@ -29,6 +29,12 @@ document.addEventListener('DOMContentLoaded', () => {
   const musicBtn = document.getElementById('musicBtn');
   const bgMusic = document.getElementById('bgMusic');
 
+  // Precarga inmediata del buffer de música para inicio sin retraso
+  if (bgMusic) {
+    bgMusic.preload = 'auto';
+    bgMusic.load();
+  }
+
   let isEnvelope1Open = false;
   let isEnvelope2Open = false;
   let continuousParticles = null;
@@ -364,22 +370,36 @@ document.addEventListener('DOMContentLoaded', () => {
     if (isEnvelope1Open) return;
     isEnvelope1Open = true;
 
+    // Reproducir 'Caminar de tu mano' inmediatamente en el microsegundo 0
+    playSong();
+
     envelopeWrapper1.classList.add('open');
     if (gardenLeft) gardenLeft.classList.add('bloomed');
     if (gardenRight) gardenRight.classList.add('bloomed');
 
     burstParticles(40);
-
-    // Reproducir 'Caminar de tu mano' al abrir el sobre
-    playSong();
   }
 
+  // Disparo ultra-rápido en touch/pointerdown (elimina los 300ms de retraso táctil móvil)
+  sealBtn1.addEventListener('pointerdown', (e) => {
+    e.stopPropagation();
+    openEnvelope1();
+  });
+  sealBtn1.addEventListener('touchstart', (e) => {
+    e.stopPropagation();
+    openEnvelope1();
+  }, { passive: true });
   sealBtn1.addEventListener('click', (e) => {
     e.stopPropagation();
     openEnvelope1();
   });
 
-  envelopeWrapper1.addEventListener('click', (e) => {
+  envelopeWrapper1.addEventListener('pointerdown', (e) => {
+    if (isEnvelope1Open) return;
+    if (e.target.closest('#sealBtn1')) return;
+    openEnvelope1();
+  });
+  envelopeWrapper1.addEventListener('click', () => {
     if (!isEnvelope1Open) openEnvelope1();
   });
 
@@ -464,23 +484,71 @@ document.addEventListener('DOMContentLoaded', () => {
   const cakeHint = document.getElementById('cakeHint');
   let candlesBlown = false;
 
+  // Generador de humo abundante, denso y ondulante que brota de cada una de las 3 velitas
+  function spawnCandleSmokeClouds() {
+    const cakeSvg = document.querySelector('.cake-svg');
+    if (!cakeSvg) return;
+
+    const rect = cakeSvg.getBoundingClientRect();
+    // Coordenadas relativas de las 3 mechas en el SVG (viewBox 0 0 240 210)
+    const wickPositions = [
+      { x: rect.left + rect.width * 0.375, y: rect.top + rect.height * 0.124 },
+      { x: rect.left + rect.width * 0.500, y: rect.top + rect.height * 0.086 },
+      { x: rect.left + rect.width * 0.625, y: rect.top + rect.height * 0.124 }
+    ];
+
+    // Emitir ráfagas abundantes de humo durante varios segundos (36 bocanadas densas)
+    for (let i = 0; i < 36; i++) {
+      setTimeout(() => {
+        const wick = wickPositions[i % 3];
+        const puff = document.createElement('div');
+        puff.className = 'candle-smoke-puff';
+
+        const size = Math.floor(Math.random() * 20 + 20); // 20px a 40px
+        const jitterX = (Math.random() * 24 - 12);
+        const jitterY = (Math.random() * 12 - 6);
+        const duration = (Math.random() * 1.2 + 2.8).toFixed(2); // 2.8s a 4.0s
+
+        puff.style.width = `${size}px`;
+        puff.style.height = `${size}px`;
+        puff.style.left = `${wick.x - size / 2 + jitterX}px`;
+        puff.style.top = `${wick.y - size / 2 + jitterY}px`;
+        puff.style.animationDuration = `${duration}s`;
+
+        document.body.appendChild(puff);
+        setTimeout(() => puff.remove(), duration * 1000 + 200);
+      }, i * 85);
+    }
+  }
+
   function blowOutCandles(e) {
-    if (e) e.stopPropagation();
+    if (e) {
+      if (typeof e.stopPropagation === 'function') e.stopPropagation();
+      if (e.cancelable && typeof e.preventDefault === 'function') e.preventDefault();
+    }
     if (candlesBlown) return;
     candlesBlown = true;
 
     if (cakeCandles) cakeCandles.classList.add('blown');
+    if (birthdayCake) birthdayCake.classList.add('blown');
     if (blowCandlesBtn) {
       blowCandlesBtn.classList.add('blown');
       blowCandlesBtn.innerHTML = '<span>✨ ¡Deseo pedido con amor! ❤️</span>';
     }
 
-    // Ocultar llamas 100%
+    // Ocultar llamas con transición visual contundente
     document.querySelectorAll('.flame, .flame-halo').forEach(el => {
-      el.style.display = 'none';
       el.style.opacity = '0';
-      el.style.visibility = 'hidden';
+      el.style.transform = 'scale(0.05) translateY(-15px)';
+      el.style.transition = 'all 0.35s ease-out';
+      setTimeout(() => {
+        el.style.display = 'none';
+        el.style.visibility = 'hidden';
+      }, 350);
     });
+
+    // Bote de humo denso y abundante desde las velitas
+    spawnCandleSmokeClouds();
 
     if (cakeHint) {
       cakeHint.innerHTML = '✨ ¡FELIZ CUMPLEAÑOS, MI REINA HERMOSA! ✨<br>¡Que todos tus anhelos se hagan realidad! 🎂🎉💖<br><span style="display:inline-block; margin-top:8px; font-family:var(--font-hand); font-size:1.35rem; color:#d6336c; font-weight:700;">Con amor, tu ingeniero ❤️</span>';
@@ -751,10 +819,14 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // Desbloqueo universal en el primer toque de la pantalla (iOS / Android / Desktop)
+  // Desbloqueo y precarga universal en el primer toque de la pantalla (iOS / Android / Desktop)
   const unlockAudioOnTouch = () => {
-    if (bgMusic && bgMusic.paused && !userExplicitlyPaused && isEnvelope1Open) {
-      playSong();
+    if (bgMusic && bgMusic.paused && !userExplicitlyPaused) {
+      if (isEnvelope1Open) {
+        playSong();
+      } else {
+        bgMusic.load();
+      }
     }
   };
   window.addEventListener('pointerdown', unlockAudioOnTouch, { passive: true });

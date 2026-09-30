@@ -10,13 +10,14 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600;700&family=Great+Vibes&family=Montserrat:ital,wght@0,300;0,400;0,600;0,700;1,300&display=swap" rel="stylesheet">
   
-  <!-- Precarga inmediata de fotos para aparición instantánea -->
+  <!-- Precarga inmediata de fotos y música para inicio ultra rápido -->
   <link rel="preload" as="image" href="fotos/foto 1.jpg">
   <link rel="preload" as="image" href="fotos/foto 2.jpg">
   <link rel="preload" as="image" href="fotos/foto 3.jpg">
   <link rel="preload" as="image" href="fotos/foto 4.jpg">
   <link rel="preload" as="image" href="fotos/foto 5.jpg">
   <link rel="preload" as="image" href="fotos/foto 6.jpg">
+  <link rel="preload" as="fetch" href="musica.mp3" crossorigin>
 
   <link rel="stylesheet" href="styles.css">
 </head>
@@ -51,7 +52,7 @@
   <button id="musicBtn" class="music-toggle" aria-label="Reproducir música" title="Caminar de tu mano - Río Roma ft. Fonseca">
     <span class="icon">🎵</span>
   </button>
-  <audio id="bgMusic" loop preload="auto">
+  <audio id="bgMusic" src="musica.mp3" loop preload="auto">
     <source src="musica.mp3" type="audio/mpeg">
   </audio>
 
@@ -80,52 +81,219 @@
                 <p class="greeting">Mi reina hermosa,</p>
                 
                 <!-- Puercoespín animado tierno con gorrito de fiesta -->
+                <!-- Puercoespín 3D animado y tierno con gorrito de fiesta -->
                 <div class="hedgehog-container" id="hedgehog" title="¡Tócame para un abrazo!">
-                  <div class="hedgehog-tooltip">¡Te amo mucho! 🦔💕</div>
-                  <svg class="hedgehog-svg" viewBox="0 0 200 170" xmlns="http://www.w3.org/2000/svg">
-                    <g class="quills-back" fill="#8c5835">
-                      <path d="M40,110 Q20,95 28,75 Q15,65 32,50 Q25,35 48,30 Q45,15 70,18 Q75,5 98,12 Q115,5 125,20 Q145,15 152,32 Q170,35 168,52 Q185,65 172,78 Q182,95 162,110 Z" />
-                    </g>
-                    <g class="quills-front" fill="#a4683f">
-                      <path d="M45,105 Q30,90 38,75 Q26,62 42,50 Q36,38 56,33 Q55,22 75,24 Q82,12 100,18 Q118,14 125,25 Q140,22 145,36 Q160,40 156,56 Q170,68 158,80 Q168,95 150,105 Z" />
-                    </g>
-                    <ellipse cx="102" cy="112" rx="54" ry="44" fill="#faebd7" />
-                    <circle cx="65" cy="80" r="10" fill="#a4683f" />
-                    <circle cx="65" cy="80" r="6" fill="#ffb4a2" />
-                    <circle cx="138" cy="80" r="10" fill="#a4683f" />
-                    <circle cx="138" cy="80" r="6" fill="#ffb4a2" />
+                  <div class="hedgehog-tooltip">¡Te amo con todo mi corazón, mi reina! 🦔💖</div>
+                  <svg class="hedgehog-svg" viewBox="0 0 220 195" xmlns="http://www.w3.org/2000/svg">
+                    <defs>
+                      <!-- Sombra de suelo 3D -->
+                      <radialGradient id="hgGroundShadow" cx="50%" cy="50%" r="50%">
+                        <stop offset="0%" stop-color="#3d261a" stop-opacity="0.32" />
+                        <stop offset="60%" stop-color="#3d261a" stop-opacity="0.12" />
+                        <stop offset="100%" stop-color="#3d261a" stop-opacity="0" />
+                      </radialGradient>
 
-                    <!-- Gorrito de Fiesta -->
-                    <g class="party-hat">
-                      <polygon points="102,15 82,65 122,65" fill="#ff4d6d" />
-                      <line x1="88" y1="52" x2="116" y2="52" stroke="#ffd166" stroke-width="3" />
-                      <line x1="93" y1="36" x2="111" y2="36" stroke="#ffd166" stroke-width="3" />
-                      <circle cx="102" cy="14" r="8" fill="#ffd166" class="hat-pom" />
+                      <!-- Púas traseras (3D con volumen oscuro) -->
+                      <linearGradient id="hgSpinesBackGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+                        <stop offset="0%" stop-color="#542c14" />
+                        <stop offset="50%" stop-color="#3b1d0d" />
+                        <stop offset="100%" stop-color="#241107" />
+                      </linearGradient>
+
+                      <!-- Púas intermedias y frontales (3D caramelo con brillo) -->
+                      <linearGradient id="hgSpinesMidGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+                        <stop offset="0%" stop-color="#8c4f24" />
+                        <stop offset="40%" stop-color="#6f3d1b" />
+                        <stop offset="100%" stop-color="#43210d" />
+                      </linearGradient>
+
+                      <linearGradient id="hgSpineTipGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                        <stop offset="0%" stop-color="#b86b36" />
+                        <stop offset="100%" stop-color="#5a2d12" />
+                      </linearGradient>
+
+                      <!-- Cuerpo 3D esférico (almond peach con luz direccional) -->
+                      <radialGradient id="hgBody3D" cx="40%" cy="38%" r="62%">
+                        <stop offset="0%" stop-color="#fff5eb" />
+                        <stop offset="25%" stop-color="#faebd7" />
+                        <stop offset="60%" stop-color="#f2d5bd" />
+                        <stop offset="85%" stop-color="#d8ab8a" />
+                        <stop offset="100%" stop-color="#b07d5b" />
+                      </radialGradient>
+
+                      <!-- Hocico 3D redondeado -->
+                      <radialGradient id="hgSnout3D" cx="45%" cy="35%" r="65%">
+                        <stop offset="0%" stop-color="#ffffff" />
+                        <stop offset="40%" stop-color="#faebd7" />
+                        <stop offset="80%" stop-color="#e8cbb0" />
+                        <stop offset="100%" stop-color="#c99c78" />
+                      </radialGradient>
+
+                      <!-- Nariz húmeda brillante -->
+                      <radialGradient id="hgNose3D" cx="35%" cy="30%" r="70%">
+                        <stop offset="0%" stop-color="#4a3b32" />
+                        <stop offset="40%" stop-color="#2a1b12" />
+                        <stop offset="100%" stop-color="#120904" />
+                      </radialGradient>
+
+                      <!-- Ojos 3D con profundidad y brillo -->
+                      <radialGradient id="hgEyeGrad" cx="35%" cy="35%" r="65%">
+                        <stop offset="0%" stop-color="#3d2b38" />
+                        <stop offset="60%" stop-color="#1f141d" />
+                        <stop offset="100%" stop-color="#0a0509" />
+                      </radialGradient>
+
+                      <!-- Mejillas sonrojadas -->
+                      <radialGradient id="hgBlush" cx="50%" cy="50%" r="50%">
+                        <stop offset="0%" stop-color="#ff758f" stop-opacity="0.75" />
+                        <stop offset="60%" stop-color="#ff758f" stop-opacity="0.3" />
+                        <stop offset="100%" stop-color="#ff758f" stop-opacity="0" />
+                      </radialGradient>
+
+                      <!-- Corazón 3D con volumen y specular -->
+                      <radialGradient id="hgHeartGrad" cx="35%" cy="30%" r="70%">
+                        <stop offset="0%" stop-color="#ff758f" />
+                        <stop offset="35%" stop-color="#ff2a5f" />
+                        <stop offset="75%" stop-color="#c9184a" />
+                        <stop offset="100%" stop-color="#800f2f" />
+                      </radialGradient>
+
+                      <!-- Gorro de fiesta 3D -->
+                      <linearGradient id="hgHatGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+                        <stop offset="0%" stop-color="#ff758f" />
+                        <stop offset="40%" stop-color="#ff4d6d" />
+                        <stop offset="75%" stop-color="#c9184a" />
+                        <stop offset="100%" stop-color="#800f2f" />
+                      </linearGradient>
+
+                      <!-- Pom-pom 3D dorado -->
+                      <radialGradient id="hgPomGrad" cx="35%" cy="35%" r="65%">
+                        <stop offset="0%" stop-color="#fffbeb" />
+                        <stop offset="30%" stop-color="#fde047" />
+                        <stop offset="75%" stop-color="#eab308" />
+                        <stop offset="100%" stop-color="#a16207" />
+                      </radialGradient>
+
+                      <!-- Orejitas 3D -->
+                      <radialGradient id="hgEarInner" cx="40%" cy="40%" r="60%">
+                        <stop offset="0%" stop-color="#ffd5cc" />
+                        <stop offset="70%" stop-color="#f8ad9d" />
+                        <stop offset="100%" stop-color="#c97c6b" />
+                      </radialGradient>
+
+                      <filter id="hgDropShadow" x="-15%" y="-15%" width="130%" height="130%">
+                        <feDropShadow dx="0" dy="4" stdDeviation="4" flood-color="#3d261a" flood-opacity="0.18" />
+                      </filter>
+                    </defs>
+
+                    <!-- Sombra sobre el papel -->
+                    <ellipse cx="110" cy="178" rx="68" ry="12" fill="url(#hgGroundShadow)" />
+
+                    <!-- CAPA 1: Púas traseras (3D silueta dentada esculpida) -->
+                    <g class="quills-back-3d" filter="url(#hgDropShadow)">
+                      <path d="M42,122 C22,110 18,88 28,70 C16,56 26,40 42,34 C34,20 54,12 72,16 C78,4 100,6 112,12 C126,5 146,12 152,24 C168,20 184,36 178,54 C192,68 186,88 178,102 C186,118 172,135 155,138 C140,146 80,148 42,122 Z" fill="url(#hgSpinesBackGrad)" />
                     </g>
 
-                    <circle cx="72" cy="106" r="8" fill="#ff8fab" opacity="0.65" />
-                    <circle cx="132" cy="106" r="8" fill="#ff8fab" opacity="0.65" />
-
-                    <g class="hedgehog-eyes">
-                      <circle cx="82" cy="95" r="5.5" fill="#2b2d42" />
-                      <circle cx="80.5" cy="93" r="2" fill="#ffffff" />
-                      <circle cx="122" cy="95" r="5.5" fill="#2b2d42" />
-                      <circle cx="120.5" cy="93" r="2" fill="#ffffff" />
+                    <!-- CAPA 2: Púas intermedias con degradado y relieve -->
+                    <g class="quills-mid-3d">
+                      <path d="M48,116 C34,102 32,84 40,70 C30,56 42,42 56,38 C52,26 68,20 84,24 C92,14 110,16 120,22 C132,16 148,22 154,34 C166,32 176,46 170,62 C180,74 174,90 166,102 C172,114 160,128 146,130 C130,136 78,138 48,116 Z" fill="url(#hgSpinesMidGrad)" />
+                      <!-- Púas individuales con puntas brillantes -->
+                      <path d="M55,42 L42,32 L60,35 Z" fill="url(#hgSpineTipGrad)" />
+                      <path d="M82,26 L76,14 L88,20 Z" fill="url(#hgSpineTipGrad)" />
+                      <path d="M110,22 L110,8 L118,18 Z" fill="url(#hgSpineTipGrad)" />
+                      <path d="M138,24 L146,12 L142,26 Z" fill="url(#hgSpineTipGrad)" />
+                      <path d="M162,40 L174,30 L166,45 Z" fill="url(#hgSpineTipGrad)" />
+                      <path d="M172,66 L186,60 L174,74 Z" fill="url(#hgSpineTipGrad)" />
+                      <path d="M168,95 L182,92 L168,104 Z" fill="url(#hgSpineTipGrad)" />
+                      <path d="M38,72 L24,68 L36,80 Z" fill="url(#hgSpineTipGrad)" />
+                      <path d="M42,98 L28,96 L40,106 Z" fill="url(#hgSpineTipGrad)" />
                     </g>
 
-                    <g class="hedgehog-snout">
-                      <ellipse cx="102" cy="104" rx="7" ry="5.5" fill="#3d261a" />
-                      <path d="M96,113 Q102,118 108,113" fill="none" stroke="#3d261a" stroke-width="2" stroke-linecap="round" />
+                    <!-- CAPA 3: Orejitas 3D -->
+                    <g class="hedgehog-ear ear-left" transform-origin="68 84">
+                      <ellipse cx="68" cy="84" rx="13" ry="12" fill="#5a2d12" />
+                      <ellipse cx="69" cy="84" rx="9" ry="8" fill="url(#hgEarInner)" />
+                      <circle cx="67" cy="82" r="3" fill="#fff" opacity="0.3" />
+                    </g>
+                    <g class="hedgehog-ear ear-right" transform-origin="152 84">
+                      <ellipse cx="152" cy="84" rx="13" ry="12" fill="#5a2d12" />
+                      <ellipse cx="151" cy="84" rx="9" ry="8" fill="url(#hgEarInner)" />
+                      <circle cx="150" cy="82" r="3" fill="#fff" opacity="0.3" />
                     </g>
 
-                    <g class="hedgehog-heart-group">
-                      <path class="held-heart" d="M102,122 C92,110 75,116 75,129 C75,142 102,154 102,154 C102,154 129,142 129,129 C129,116 112,110 102,122 Z" fill="#ff2a5f" />
-                      <ellipse cx="86" cy="128" rx="6" ry="5" fill="#faebd7" stroke="#e0c3a8" stroke-width="1.5" />
-                      <ellipse cx="118" cy="128" rx="6" ry="5" fill="#faebd7" stroke="#e0c3a8" stroke-width="1.5" />
+                    <!-- CAPA 4: Cuerpo esférico 3D -->
+                    <ellipse cx="110" cy="116" rx="58" ry="48" fill="url(#hgBody3D)" filter="url(#hgDropShadow)" />
+
+                    <!-- CAPA 5: Patitas inferiores 3D -->
+                    <g class="hedgehog-feet">
+                      <!-- Pata izquierda -->
+                      <ellipse cx="78" cy="156" rx="12" ry="7" fill="url(#hgBody3D)" />
+                      <circle cx="72" cy="158" r="2.5" fill="#eddcd2" />
+                      <circle cx="77" cy="159" r="2.5" fill="#eddcd2" />
+                      <circle cx="82" cy="158" r="2.5" fill="#eddcd2" />
+                      <!-- Pata derecha -->
+                      <ellipse cx="142" cy="156" rx="12" ry="7" fill="url(#hgBody3D)" />
+                      <circle cx="138" cy="158" r="2.5" fill="#eddcd2" />
+                      <circle cx="143" cy="159" r="2.5" fill="#eddcd2" />
+                      <circle cx="148" cy="158" r="2.5" fill="#eddcd2" />
                     </g>
 
-                    <ellipse cx="74" cy="148" rx="9" ry="5" fill="#faebd7" stroke="#e0c3a8" stroke-width="1.5" />
-                    <ellipse cx="130" cy="148" rx="9" ry="5" fill="#faebd7" stroke="#e0c3a8" stroke-width="1.5" />
+                    <!-- CAPA 6: Gorrito de fiesta 3D festivo -->
+                    <g class="party-hat-3d" transform-origin="110 50">
+                      <polygon points="110,12 86,66 134,66" fill="url(#hgHatGrad)" />
+                      <ellipse cx="110" cy="66" rx="24" ry="5.5" fill="#800f2f" />
+                      <path d="M92,54 Q110,60 128,54" stroke="#ffd166" stroke-width="3" fill="none" stroke-linecap="round" />
+                      <path d="M98,40 Q110,45 122,40" stroke="#ffd166" stroke-width="2.5" fill="none" stroke-linecap="round" />
+                      <path d="M104,26 Q110,29 116,26" stroke="#ffd166" stroke-width="2" fill="none" stroke-linecap="round" />
+                      <!-- Pom-pom dorado esponjoso -->
+                      <circle cx="110" cy="11" r="9" fill="url(#hgPomGrad)" class="hat-pom-3d" />
+                      <circle cx="108" cy="9" r="3" fill="#ffffff" opacity="0.65" />
+                    </g>
+
+                    <!-- CAPA 7: Mejillas sonrojadas -->
+                    <circle cx="76" cy="116" r="13" fill="url(#hgBlush)" />
+                    <circle cx="144" cy="116" r="13" fill="url(#hgBlush)" />
+
+                    <!-- CAPA 8: Ojos 3D adorables y brillantes -->
+                    <g class="hedgehog-eyes-3d">
+                      <!-- Ojo izquierdo -->
+                      <ellipse cx="88" cy="100" rx="7" ry="8" fill="url(#hgEyeGrad)" class="eye-left" />
+                      <ellipse cx="86" cy="97" rx="3" ry="3.5" fill="#ffffff" />
+                      <circle cx="91" cy="103" r="1.5" fill="#ffffff" opacity="0.75" />
+                      <path d="M82,92 Q88,88 94,91" stroke="#4a2e1b" stroke-width="1.8" stroke-linecap="round" fill="none" />
+
+                      <!-- Ojo derecho -->
+                      <ellipse cx="132" cy="100" rx="7" ry="8" fill="url(#hgEyeGrad)" class="eye-right" />
+                      <ellipse cx="130" cy="97" rx="3" ry="3.5" fill="#ffffff" />
+                      <circle cx="135" cy="103" r="1.5" fill="#ffffff" opacity="0.75" />
+                      <path d="M126,91 Q132,88 138,92" stroke="#4a2e1b" stroke-width="1.8" stroke-linecap="round" fill="none" />
+                    </g>
+
+                    <!-- CAPA 9: Hocico y Naricita 3D húmeda -->
+                    <g class="hedgehog-snout-3d">
+                      <ellipse cx="110" cy="112" rx="14" ry="10" fill="url(#hgSnout3D)" />
+                      <ellipse cx="110" cy="108" rx="8" ry="6" fill="url(#hgNose3D)" />
+                      <ellipse cx="108" cy="106" rx="3.5" ry="2" fill="#ffffff" opacity="0.75" transform="rotate(-10 108 106)" />
+                      <path d="M103,116 Q110,122 117,116" fill="none" stroke="#3d261a" stroke-width="2.2" stroke-linecap="round" />
+                    </g>
+
+                    <!-- CAPA 10: Corazón 3D brillante sostenido con amor -->
+                    <g class="hedgehog-heart-group-3d">
+                      <ellipse cx="110" cy="142" rx="18" ry="6" fill="#3d261a" opacity="0.15" />
+                      <path class="held-heart-3d" d="M110,126 C98,110 76,118 76,134 C76,150 110,165 110,165 C110,165 144,150 144,134 C144,118 122,110 110,126 Z" fill="url(#hgHeartGrad)" filter="url(#hgDropShadow)" />
+                      <path d="M85,124 C82,130 84,138 90,140 C86,136 86,128 92,125 C89,124 87,124 85,124 Z" fill="#ffffff" opacity="0.45" />
+
+                      <!-- Patitas 3D abrazando el corazón -->
+                      <ellipse cx="90" cy="138" rx="8" ry="6.5" fill="url(#hgBody3D)" stroke="#e0c3a8" stroke-width="1.2" transform="rotate(20 90 138)" />
+                      <circle cx="85" cy="136" r="2" fill="#fcd5ce" />
+                      <circle cx="88" cy="140" r="2" fill="#fcd5ce" />
+                      <circle cx="92" cy="142" r="2" fill="#fcd5ce" />
+
+                      <ellipse cx="130" cy="138" rx="8" ry="6.5" fill="url(#hgBody3D)" stroke="#e0c3a8" stroke-width="1.2" transform="rotate(-20 130 138)" />
+                      <circle cx="135" cy="136" r="2" fill="#fcd5ce" />
+                      <circle cx="132" cy="140" r="2" fill="#fcd5ce" />
+                      <circle cx="128" cy="142" r="2" fill="#fcd5ce" />
+                    </g>
                   </svg>
                 </div>
 
@@ -400,7 +568,7 @@
           
           <div class="cake-container" id="birthdayCake" role="button" tabindex="0" title="¡Toca para soplar las velitas!">
             <svg class="cake-svg" viewBox="0 0 240 210" xmlns="http://www.w3.org/2000/svg">
-              <circle cx="120" cy="110" r="95" fill="url(#cakeGlow)" opacity="0.45" />
+              <circle cx="120" cy="110" r="95" fill="url(#cakeGlow)" opacity="0.45" class="cake-main-glow" id="cakeGlowCircle" />
               
               <defs>
                 <radialGradient id="cakeGlow" cx="50%" cy="50%" r="50%">
@@ -449,6 +617,7 @@
                   <line x1="86" y1="42" x2="94" y2="46" stroke="#ff4d6d" stroke-width="2" />
                   <line x1="86" y1="54" x2="94" y2="58" stroke="#ff4d6d" stroke-width="2" />
                   <line x1="90" y1="26" x2="90" y2="32" stroke="#222" stroke-width="2.5" />
+                  <circle class="wick-ember ember-left" cx="90" cy="26" r="3" fill="#ff3b00" />
                   <g class="flame flame-1">
                     <circle cx="90" cy="18" r="14" fill="#ffd166" opacity="0.3" class="flame-halo" />
                     <path d="M90,6 Q97,16 90,24 Q83,16 90,6 Z" fill="#ffb703" />
@@ -456,7 +625,9 @@
                     <circle cx="90" cy="20" r="2.5" fill="#fff" />
                   </g>
                   <g class="smoke smoke-1">
-                    <path d="M90,22 Q82,10 94,0 Q84,-10 92,-20" stroke="#8d99ae" stroke-width="3" fill="none" stroke-linecap="round" stroke-dasharray="4" />
+                    <path class="smoke-line-1" d="M90,24 Q78,10 94,-4 Q80,-18 92,-34 Q78,-48 94,-64" stroke="#cbd5e1" stroke-width="4.5" fill="none" stroke-linecap="round" />
+                    <path class="smoke-line-2" d="M90,24 Q100,8 86,-8 Q100,-24 88,-40" stroke="#94a3b8" stroke-width="3" fill="none" stroke-linecap="round" />
+                    <path class="smoke-line-3" d="M90,24 Q84,14 96,2 Q86,-12 94,-26" stroke="#e2e8f0" stroke-width="2" fill="none" stroke-linecap="round" />
                   </g>
                 </g>
 
@@ -466,6 +637,7 @@
                   <line x1="116" y1="36" x2="124" y2="40" stroke="#d6336c" stroke-width="2" />
                   <line x1="116" y1="48" x2="124" y2="52" stroke="#d6336c" stroke-width="2" />
                   <line x1="120" y1="18" x2="120" y2="24" stroke="#222" stroke-width="2.5" />
+                  <circle class="wick-ember ember-center" cx="120" cy="18" r="3.2" fill="#ff3b00" />
                   <g class="flame flame-2">
                     <circle cx="120" cy="10" r="16" fill="#ffd166" opacity="0.35" class="flame-halo" />
                     <path d="M120,-2 Q128,9 120,17 Q112,9 120,-2 Z" fill="#ffb703" />
@@ -473,7 +645,9 @@
                     <circle cx="120" cy="13" r="2.5" fill="#fff" />
                   </g>
                   <g class="smoke smoke-2">
-                    <path d="M120,15 Q128,2 114,-8 Q126,-18 118,-28" stroke="#8d99ae" stroke-width="3.5" fill="none" stroke-linecap="round" stroke-dasharray="4" />
+                    <path class="smoke-line-1" d="M120,16 Q134,-2 116,-18 Q132,-34 116,-52 Q130,-68 116,-84" stroke="#cbd5e1" stroke-width="5" fill="none" stroke-linecap="round" />
+                    <path class="smoke-line-2" d="M120,16 Q108,0 124,-16 Q110,-32 124,-48" stroke="#94a3b8" stroke-width="3.5" fill="none" stroke-linecap="round" />
+                    <path class="smoke-line-3" d="M120,16 Q128,4 114,-8 Q126,-22 116,-36" stroke="#e2e8f0" stroke-width="2" fill="none" stroke-linecap="round" />
                   </g>
                 </g>
 
@@ -483,6 +657,7 @@
                   <line x1="146" y1="42" x2="154" y2="46" stroke="#ff4d6d" stroke-width="2" />
                   <line x1="146" y1="54" x2="154" y2="58" stroke="#ff4d6d" stroke-width="2" />
                   <line x1="150" y1="26" x2="150" y2="32" stroke="#222" stroke-width="2.5" />
+                  <circle class="wick-ember ember-right" cx="150" cy="26" r="3" fill="#ff3b00" />
                   <g class="flame flame-3">
                     <circle cx="150" cy="18" r="14" fill="#ffd166" opacity="0.3" class="flame-halo" />
                     <path d="M150,6 Q157,16 150,24 Q143,16 150,6 Z" fill="#ffb703" />
@@ -490,7 +665,9 @@
                     <circle cx="150" cy="20" r="2.5" fill="#fff" />
                   </g>
                   <g class="smoke smoke-3">
-                    <path d="M150,22 Q158,10 146,0 Q156,-10 148,-20" stroke="#8d99ae" stroke-width="3" fill="none" stroke-linecap="round" stroke-dasharray="4" />
+                    <path class="smoke-line-1" d="M150,24 Q164,10 148,-4 Q162,-18 150,-34 Q164,-48 148,-64" stroke="#cbd5e1" stroke-width="4.5" fill="none" stroke-linecap="round" />
+                    <path class="smoke-line-2" d="M150,24 Q138,8 154,-8 Q140,-24 152,-40" stroke="#94a3b8" stroke-width="3" fill="none" stroke-linecap="round" />
+                    <path class="smoke-line-3" d="M150,24 Q156,14 144,2 Q154,-12 146,-26" stroke="#e2e8f0" stroke-width="2" fill="none" stroke-linecap="round" />
                   </g>
                 </g>
               </g>

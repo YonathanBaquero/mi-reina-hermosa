@@ -633,89 +633,110 @@ body {
 }
 
 /* ========================================================
-   PUERCOESPÍN ANIMADO
+   PUERCOESPÍN 3D ESCULPIDO Y ANIMADO
    ======================================================== */
 .hedgehog-container {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  margin: 10px auto 16px;
+  margin: 12px auto 18px;
   position: relative;
   cursor: pointer;
   user-select: none;
   width: fit-content;
+  perspective: 700px;
 }
 
 .hedgehog-svg {
-  width: 130px;
+  width: 145px;
   height: auto;
-  filter: drop-shadow(0 6px 12px rgba(140, 88, 53, 0.15));
-  animation: hedgehogBreathe 3.5s ease-in-out infinite;
+  filter: drop-shadow(0 8px 18px rgba(61, 38, 26, 0.22));
+  animation: hgBreathe3D 3.2s ease-in-out infinite, hgSway3D 4.8s ease-in-out infinite alternate;
   transform-origin: bottom center;
-  transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  transition: transform 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
 .hedgehog-container:hover .hedgehog-svg,
 .hedgehog-container:active .hedgehog-svg {
-  transform: scale(1.08);
+  transform: translateY(-8px) scale(1.08);
 }
 
 .hedgehog-container.bounce .hedgehog-svg {
-  animation: hedgehogJump 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  animation: hgJump3D 0.7s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
-@keyframes hedgehogBreathe {
-  0%, 100% { transform: translateY(0) scale(1, 1); }
-  50% { transform: translateY(-4px) scale(1.02, 0.98); }
+/* Animaciones 3D vivas del puercoespín */
+@keyframes hgBreathe3D {
+  0%, 100% { transform: scale(1, 1); }
+  50% { transform: scale(1.03, 0.97) translateY(2px); }
 }
 
-@keyframes hedgehogJump {
+@keyframes hgSway3D {
+  0% { transform: rotate(-2.5deg); }
+  100% { transform: rotate(2.5deg); }
+}
+
+@keyframes hgJump3D {
   0% { transform: translateY(0) scale(1); }
-  35% { transform: translateY(-18px) scale(1.12, 0.9); }
-  65% { transform: translateY(-4px) scale(0.95, 1.05); }
+  35% { transform: translateY(-22px) scale(1.14, 0.92) rotate(-3deg); }
+  65% { transform: translateY(-5px) scale(0.96, 1.04) rotate(2deg); }
   100% { transform: translateY(0) scale(1); }
 }
 
-.hedgehog-eyes {
-  animation: hedgehogBlink 4s infinite;
-  transform-origin: center;
+/* Latido y brillo del corazón 3D */
+.held-heart-3d {
+  animation: heartPulse3D 1.3s ease-in-out infinite;
+  transform-origin: 110px 135px;
 }
 
-@keyframes hedgehogBlink {
-  0%, 94%, 98%, 100% { transform: scaleY(1); }
+@keyframes heartPulse3D {
+  0%, 100% { transform: scale(1); filter: drop-shadow(0 2px 6px rgba(201, 24, 74, 0.3)); }
+  50% { transform: scale(1.08); filter: drop-shadow(0 4px 12px rgba(255, 42, 95, 0.55)); }
+}
+
+/* Movimiento juguetón del pom-pom */
+.hat-pom-3d {
+  animation: pomWobble3D 2.5s ease-in-out infinite alternate;
+  transform-origin: 110px 11px;
+}
+
+@keyframes pomWobble3D {
+  0% { transform: translateY(0) rotate(-6deg); }
+  100% { transform: translateY(-2px) rotate(6deg); }
+}
+
+/* Parpadeo tierno de los ojos 3D */
+.hedgehog-eyes-3d {
+  animation: eyeBlink3D 4.2s infinite;
+  transform-origin: 110px 100px;
+}
+
+@keyframes eyeBlink3D {
+  0%, 94%, 100% { transform: scaleY(1); }
   96% { transform: scaleY(0.08); }
 }
 
-.hedgehog-snout {
-  animation: snoutWiggle 2.5s infinite ease-in-out;
-  transform-origin: 102px 104px;
+/* Movimiento tierno de las orejitas */
+.ear-left {
+  animation: earTwitchLeft 3.8s ease-in-out infinite alternate;
+}
+.ear-right {
+  animation: earTwitchRight 4.2s ease-in-out infinite alternate;
 }
 
-@keyframes snoutWiggle {
-  0%, 100% { transform: translateY(0) rotate(0deg); }
-  25% { transform: translateY(-1.5px) rotate(-2deg); }
-  75% { transform: translateY(-1.5px) rotate(2deg); }
+@keyframes earTwitchLeft {
+  0%, 85% { transform: rotate(0deg); }
+  90% { transform: rotate(-8deg); }
+  95% { transform: rotate(4deg); }
+  100% { transform: rotate(0deg); }
 }
 
-.held-heart {
-  animation: heartPulse 1.8s infinite ease-in-out;
-  transform-origin: 102px 132px;
-}
-
-@keyframes heartPulse {
-  0%, 100% { transform: scale(1); }
-  50% { transform: scale(1.12); }
-}
-
-.hat-pom {
-  animation: pomWobble 2s infinite ease-in-out;
-  transform-origin: 102px 14px;
-}
-
-@keyframes pomWobble {
-  0%, 100% { transform: rotate(0); }
-  50% { transform: rotate(8deg); }
+@keyframes earTwitchRight {
+  0%, 85% { transform: rotate(0deg); }
+  90% { transform: rotate(8deg); }
+  95% { transform: rotate(-4deg); }
+  100% { transform: rotate(0deg); }
 }
 
 .hedgehog-tooltip {
@@ -1156,24 +1177,144 @@ body {
   100% { transform: scale(0.92, 1.08) rotate(-1deg); }
 }
 
-/* APAGADO DE VELITAS */
+/* APAGADO REALISTA DE VELITAS */
 .candles.blown .flame,
 .candles.blown .flame-halo {
-  display: none !important;
   opacity: 0 !important;
   visibility: hidden !important;
-  animation: none !important;
+  transform: scale(0.08) translateY(-12px) !important;
+  transition: opacity 0.35s ease-out, transform 0.35s ease-out !important;
+}
+
+/* La brasa ardiente en la mecha que se apaga poco a poco */
+.wick-ember {
+  opacity: 0;
+  transform-box: fill-box;
+  transform-origin: center;
+  transition: opacity 0.2s;
+}
+
+.candles.blown .wick-ember {
+  opacity: 1;
+  animation: emberCoolDown 3.8s forwards ease-out;
+}
+
+@keyframes emberCoolDown {
+  0% {
+    fill: #ff2200;
+    filter: drop-shadow(0 0 6px #ff5500);
+    opacity: 1;
+    transform: scale(1.3);
+  }
+  25% {
+    fill: #ff6600;
+    filter: drop-shadow(0 0 4px #ff9900);
+    opacity: 0.95;
+    transform: scale(1.1);
+  }
+  60% {
+    fill: #b32d00;
+    filter: drop-shadow(0 0 2px #cc3300);
+    opacity: 0.65;
+    transform: scale(0.9);
+  }
+  100% {
+    fill: #1a1a1a;
+    filter: none;
+    opacity: 0.35;
+    transform: scale(0.7);
+  }
+}
+
+/* Apagar el resplandor cálido del pastel al apagar las velas */
+.cake-container.blown .cake-main-glow {
+  opacity: 0.08 !important;
+  transition: opacity 1.8s ease-out;
+}
+
+/* Humo ondulante y abundante de las velitas */
+.candles .smoke {
+  opacity: 0;
+}
+
+.candles.blown .smoke {
+  opacity: 1;
 }
 
 .candles.blown .smoke path {
-  opacity: 0.85 !important;
-  animation: smokeRise 2.2s forwards ease-out !important;
+  stroke-dasharray: 90;
+  stroke-dashoffset: 90;
+  animation: smokeWaveBillow 4.2s forwards ease-out;
 }
 
-@keyframes smokeRise {
-  0% { opacity: 0.85; transform: translateY(0) scaleX(1); }
-  50% { opacity: 0.6; transform: translateY(-22px) scaleX(1.8); }
-  100% { opacity: 0; transform: translateY(-45px) scaleX(2.8); }
+.candles.blown .smoke-line-1 {
+  animation-delay: 0.05s !important;
+}
+
+.candles.blown .smoke-line-2 {
+  animation-delay: 0.22s !important;
+  opacity: 0.8;
+}
+
+.candles.blown .smoke-line-3 {
+  animation-delay: 0.4s !important;
+  opacity: 0.65;
+}
+
+@keyframes smokeWaveBillow {
+  0% {
+    stroke-dashoffset: 90;
+    opacity: 0;
+    transform: translateY(0) scaleX(0.85);
+  }
+  12% {
+    opacity: 0.95;
+    stroke-dashoffset: 45;
+  }
+  45% {
+    opacity: 0.8;
+    transform: translateY(-22px) scaleX(1.45);
+  }
+  80% {
+    opacity: 0.4;
+    stroke-dashoffset: 0;
+    transform: translateY(-50px) scaleX(2.3);
+  }
+  100% {
+    opacity: 0;
+    stroke-dashoffset: -25;
+    transform: translateY(-72px) scaleX(3);
+  }
+}
+
+/* Nubecitas dinámicas de humo flotante generadas en JS */
+.candle-smoke-puff {
+  position: fixed;
+  pointer-events: none;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(235, 240, 250, 0.9) 0%, rgba(200, 210, 225, 0.5) 50%, rgba(180, 195, 210, 0) 100%);
+  animation: floatSmokePuff 3.8s ease-out forwards;
+  z-index: 1000;
+  filter: blur(2.5px);
+}
+
+@keyframes floatSmokePuff {
+  0% {
+    opacity: 0.9;
+    transform: scale(0.3) translate(0, 0);
+  }
+  35% {
+    opacity: 0.75;
+    transform: scale(1.6) translate(-8px, -32px);
+  }
+  70% {
+    opacity: 0.4;
+    transform: scale(2.8) translate(14px, -68px);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(3.8) translate(6px, -115px);
+  }
 }
 
 .btn-blow-candles {
