@@ -6,10 +6,15 @@
 // ========================================================
 // 1. CONFIGURACIÓN DE GOOGLE SHEETS
 // ========================================================
-const DEFAULT_GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbz-7e60s9BHO2dnFEUECzf6AVyfPgk_gUuEP21J4VvXfeOTsZ244O61iZGEwSvHzAI6Fw/exec';
+const DEFAULT_GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyi8QXpqj3oZ9XUQA26P9qwRSgtzVJAIbewABI5OaKNA6AgtT-1SV-B_4RBMR4ogXzu/exec';
 let GOOGLE_SCRIPT_URL = DEFAULT_GOOGLE_SCRIPT_URL;
 try {
   localStorage.setItem('google_script_muro_url', DEFAULT_GOOGLE_SCRIPT_URL);
+  // Limpiar notas en caché de Armando si existían
+  const localNotesJson = localStorage.getItem('muro_cumpleanos_notes');
+  if (localNotesJson && localNotesJson.includes('RX-')) {
+    localStorage.removeItem('muro_cumpleanos_notes');
+  }
 } catch (e) {}
 
 // Paletas de colores y fuentes disponibles
@@ -175,12 +180,12 @@ function loadNotes() {
   if (localNotesJson) {
     try {
       const parsed = JSON.parse(localNotesJson);
-      // Descartar cualquier nota de ejemplo antigua o notas corruptas con mensaje vacío
+      // Descartar cualquier nota de ejemplo antigua, notas de Armando (RX-) o notas corruptas
       localNotes = parsed.filter(n => {
-        if (!n || String(n.id).startsWith('sample_')) return false;
+        if (!n || String(n.id).startsWith('sample_') || String(n.id).startsWith('RX-')) return false;
         if (!n.message || !n.message.toString().trim()) return false;
         const author = (n.author || '').toLowerCase().trim();
-        if (author === 'emerson' || String(n.id) === 'note_1790776348723') return false;
+        if (author.includes('emerson') || author.includes('emersson') || String(n.id) === 'note_1790776348723' || String(n.id) === 'note_1790779762663') return false;
         return true;
       });
     } catch (e) {
@@ -227,13 +232,14 @@ async function fetchNotesFromGoogleSheets(silent = false) {
     if (response.ok) {
       const result = await response.json();
       if (result.status === 'success' && Array.isArray(result.data)) {
-        // Mapear todas las filas de Google Sheets a notas (compatible con columnas sender/treatment o name/message)
+        // Mapear todas las filas de Google Sheets a las notas de felicitación de tu esposa
         const remoteNotes = result.data
           .filter(row => {
             if (!row) return false;
-            const author = (row.name || row.sender || row.author || '').toString().toLowerCase().trim();
             const id = String(row.id || '');
-            if (author === 'emerson' || id === 'note_1790776348723') {
+            if (id.startsWith('RX-')) return false; // Descartar notas del proyecto médico si existiesen
+            const author = (row.name || row.sender || row.author || '').toString().toLowerCase().trim();
+            if (author.includes('emerson') || author.includes('emersson') || id === 'note_1790776348723' || id === 'note_1790779762663') {
               return false;
             }
             const msg = (row.message || row.treatment || row.mensaje || row.diagnosis || '').toString().trim();
