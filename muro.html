@@ -15,13 +15,69 @@
   <!-- Librería ligera de confeti para celebrar cada mensaje -->
   <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
 
-  <link rel="stylesheet" href="muro.css?v=v2026-muro6">
+  <!-- Pre-verificación instantánea de seguridad anti-parpadeo -->
+  <script>
+    (function() {
+      try {
+        if (localStorage.getItem('esposa_auth_unlocked') !== 'true') {
+          document.documentElement.classList.add('page-locked');
+        }
+      } catch (e) {}
+    })();
+  </script>
+
+  <link rel="stylesheet" href="muro.css?v=v2026-auth1">
 </head>
 <body>
+
+  <!-- PANTALLA DE ACCESO ROMÁNTICA EXCLUSIVA PARA MI REINA (MURO) -->
+  <div id="romanticLockScreen" class="romantic-lock-screen" aria-modal="true" role="dialog">
+    <div class="lock-card">
+      <div class="lock-avatar-glow">
+        <span class="lock-crown-icon">👑</span>
+        <span class="lock-heart-icon">💖</span>
+      </div>
+      <h1 class="lock-title">Exclusivo para Mi Reina Hermosa</h1>
+      <p class="lock-message">
+        Este muro de amor y felicitaciones fue preparado especialmente para ti. Ingresa nuestra clave secreta para ver todos tus mensajes:
+      </p>
+      
+      <form id="lockForm" class="lock-form" onsubmit="return false;">
+        <div class="lock-input-group">
+          <span class="lock-input-icon">🔐</span>
+          <input 
+            type="password" 
+            id="lockPasswordInput" 
+            class="lock-input" 
+            placeholder="Escribe la clave secreta..." 
+            autocomplete="off" 
+            autocorrect="off" 
+            autocapitalize="none" 
+            spellcheck="false"
+            required
+          >
+          <button type="button" id="lockTogglePassword" class="lock-toggle-pwd" aria-label="Mostrar o esconder clave">👁️</button>
+        </div>
+
+        <div id="lockFeedback" class="lock-feedback" style="display: none;"></div>
+
+        <button type="submit" id="lockSubmitBtn" class="lock-btn-submit">
+          <span>🔓 Entrar al Muro 💖</span>
+        </button>
+      </form>
+
+      <div class="lock-footer-hint">
+        <span>🌻 Hecho con amor para el amor de mi vida 🌻</span>
+      </div>
+    </div>
+  </div>
 
   <!-- Barra de navegación y accesos superiores -->
   <header class="board-top-bar">
     <div class="top-bar-left">
+      <a href="index.html" class="btn-icon-top" aria-label="Volver a la Carta" title="Volver a la Carta Principal" style="text-decoration: none; display: inline-flex; align-items: center; justify-content: center;">
+        <span class="icon">💌</span>
+      </a>
       <span class="board-badge">🌻 Muro de Cumpleaños 🌻</span>
     </div>
 
@@ -31,6 +87,9 @@
       </button>
       <button id="musicToggleBtn" class="btn-icon-top" aria-label="Música de fondo" title="Música de fondo">
         <span class="icon">🎵</span>
+      </button>
+      <button id="btnRelockMuro" class="btn-icon-top" aria-label="Bloquear acceso con clave" title="Bloquear con clave secreta">
+        <span class="icon">🔒</span>
       </button>
     </div>
   </header>
@@ -241,6 +300,6 @@
   </div>
 
   <!-- Script principal del Muro -->
-  <script src="muro.js?v=v2026-muro6"></script>
+  <script src="muro.js?v=v2026-auth1"></script>
 </body>
 </html>

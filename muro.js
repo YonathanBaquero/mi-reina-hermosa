@@ -6,8 +6,12 @@
 // ========================================================
 // 1. CONFIGURACIÓN DE GOOGLE SHEETS
 // ========================================================
-const DEFAULT_GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyi8QXpqj3oZ9XUQA26P9qwRSgtzVJAIbewABI5OaKNA6AgtT-1SV-B_4RBMR4ogXzu/exec';
+const DEFAULT_GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbz-7e60s9BHO2dnFEUECzf6AVyfPgk_gUuEP21J4VvXfeOTsZ244O61iZGEwSvHzAI6Fw/exec';
 let GOOGLE_SCRIPT_URL = localStorage.getItem('google_script_muro_url') || DEFAULT_GOOGLE_SCRIPT_URL;
+if (!localStorage.getItem('google_script_muro_url') || localStorage.getItem('google_script_muro_url').includes('AKfycbyi8QXpqj3oZ9XUQA26P9qwRSgtzVJAIbewABI5OaKNA6AgtT-1SV-B_4RBMR4ogXzu')) {
+  localStorage.setItem('google_script_muro_url', DEFAULT_GOOGLE_SCRIPT_URL);
+  GOOGLE_SCRIPT_URL = DEFAULT_GOOGLE_SCRIPT_URL;
+}
 
 // Paletas de colores y fuentes disponibles
 const COLORS = ['yellow', 'pink', 'green', 'blue', 'purple', 'peach', 'lilac', 'lemon'];
@@ -28,6 +32,7 @@ let userLikedNotes = new Set(JSON.parse(localStorage.getItem('user_liked_notes')
 // 2. INICIALIZACIÓN AL CARGAR LA PÁGINA
 // ========================================================
 document.addEventListener('DOMContentLoaded', () => {
+  initRomanticLockScreen();
   initMusicPlayer();
   initFormInteractivity();
   initConfigModal();
@@ -47,6 +52,119 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 });
+
+// ========================================================
+// 2.1 CONTROL DE ACCESO ROMÁNTICO EXCLUSIVO (MURO)
+// ========================================================
+function initRomanticLockScreen() {
+  const lockScreen = document.getElementById('romanticLockScreen');
+  if (!lockScreen) return;
+
+  const isUnlocked = localStorage.getItem('esposa_auth_unlocked') === 'true';
+  if (isUnlocked) {
+    document.documentElement.classList.remove('page-locked');
+    lockScreen.style.display = 'none';
+    setupRelockButton();
+    return;
+  }
+
+  document.documentElement.classList.add('page-locked');
+  lockScreen.style.display = 'flex';
+
+  const form = document.getElementById('lockForm');
+  const input = document.getElementById('lockPasswordInput');
+  const feedback = document.getElementById('lockFeedback');
+  const submitBtn = document.getElementById('lockSubmitBtn');
+  const toggleBtn = document.getElementById('lockTogglePassword');
+
+  if (toggleBtn && input) {
+    toggleBtn.addEventListener('click', (e) => {
+      e.preventDefault();
+      if (input.type === 'password') {
+        input.type = 'text';
+        toggleBtn.textContent = '🙈';
+      } else {
+        input.type = 'password';
+        toggleBtn.textContent = '👁️';
+      }
+    });
+  }
+
+  function handleUnlock() {
+    if (!input) return;
+    const rawVal = input.value || '';
+    const cleanVal = rawVal.trim().toLowerCase().replace(/[\s\-_]+/g, '');
+
+    if (cleanVal === 'mireina') {
+      if (feedback) {
+        feedback.style.display = 'block';
+        feedback.className = 'lock-feedback success';
+        feedback.innerHTML = '¡Bienvenida, mi reina hermosa! 👑💖 Cargando tus mensajes...';
+      }
+      if (submitBtn) {
+        submitBtn.disabled = true;
+        submitBtn.classList.add('loading');
+        submitBtn.innerHTML = '<span>✨ ¡Bienvenida, Mi Reina! ✨</span>';
+      }
+
+      localStorage.setItem('esposa_auth_unlocked', 'true');
+
+      if (typeof confetti === 'function') {
+        confetti({
+          particleCount: 50,
+          spread: 70,
+          origin: { y: 0.6 }
+        });
+      }
+
+      setTimeout(() => {
+        lockScreen.classList.add('unlocking');
+        setTimeout(() => {
+          document.documentElement.classList.remove('page-locked');
+          lockScreen.style.display = 'none';
+          setupRelockButton();
+        }, 600);
+      }, 750);
+    } else {
+      if (feedback) {
+        feedback.style.display = 'block';
+        feedback.className = 'lock-feedback error shake';
+        feedback.innerHTML = 'Esa no es la clave secreta, mi cielo 🥺 Intenta de nuevo ❤️';
+      }
+      input.classList.add('input-shake');
+      setTimeout(() => {
+        input.classList.remove('input-shake');
+        if (feedback) feedback.classList.remove('shake');
+      }, 550);
+      input.select();
+    }
+  }
+
+  if (form) {
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+      handleUnlock();
+    });
+  }
+
+  setTimeout(() => {
+    if (input && !isUnlocked) input.focus();
+  }, 450);
+}
+
+function setupRelockButton() {
+  const relockBtn = document.getElementById('btnRelockMuro');
+  if (relockBtn && !relockBtn.dataset.bound) {
+    relockBtn.dataset.bound = 'true';
+    relockBtn.addEventListener('click', (e) => {
+      e.preventDefault();
+      if (confirm('¿Deseas bloquear de nuevo el muro con la clave secreta?')) {
+        localStorage.removeItem('esposa_auth_unlocked');
+        window.location.reload();
+      }
+    });
+  }
+}
 
 // ========================================================
 // 3. CARGA Y SINCRONIZACIÓN DE NOTAS
@@ -123,6 +241,11 @@ async function fetchNotesFromGoogleSheets(silent = false) {
             const noteId = String(row.id || `remote_${index}`);
             const existing = notes.find(n => String(n.id) === noteId);
 
+            const existingLikes = existing ? (Number(existing.likes) || 0) : 0;
+            const serverLikes = Number(row.likes) || 0;
+            const hasUserLiked = userLikedNotes.has(noteId);
+            const finalLikes = Math.max(serverLikes, existingLikes, hasUserLiked ? 1 : 0);
+
             return {
               id: noteId,
               author: row.name || 'Amigo/a',
@@ -133,7 +256,7 @@ async function fetchNotesFromGoogleSheets(silent = false) {
               sticker: (row.sticker && !row.sticker.includes('?')) ? row.sticker : (existing ? existing.sticker : '💖'),
               rotation: (existing && existing.rotation !== undefined) ? existing.rotation : getRandomRotation(),
               date: row.timestamp ? formatDate(row.timestamp) : (existing ? existing.date : 'Reciente'),
-              likes: Number(row.likes) || (existing ? existing.likes : 0)
+              likes: finalLikes
             };
           });
 
@@ -281,18 +404,38 @@ function toggleLike(noteId) {
   const note = notes.find(n => n.id === noteId);
   if (!note) return;
 
-  if (userLikedNotes.has(noteId)) {
-    userLikedNotes.delete(noteId);
-    note.likes = Math.max(0, (note.likes || 1) - 1);
-  } else {
+  const isAdding = !userLikedNotes.has(noteId);
+  if (isAdding) {
     userLikedNotes.add(noteId);
     note.likes = (note.likes || 0) + 1;
     triggerMiniHeartConfetti();
+  } else {
+    userLikedNotes.delete(noteId);
+    note.likes = Math.max(0, (note.likes || 1) - 1);
   }
 
   localStorage.setItem('user_liked_notes', JSON.stringify([...userLikedNotes]));
   saveNotesToLocalStorage();
   renderNotes(document.getElementById('searchInput')?.value || '');
+
+  // Sincronizar actualización de like con Google Sheets si está disponible
+  if (GOOGLE_SCRIPT_URL) {
+    try {
+      fetch(GOOGLE_SCRIPT_URL, {
+        method: 'POST',
+        mode: 'no-cors',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          action: 'like',
+          id: noteId,
+          increment: isAdding,
+          likes: note.likes
+        })
+      }).catch(err => console.warn('Error sincronizando like:', err));
+    } catch (e) {
+      console.warn(e);
+    }
+  }
 }
 
 // ========================================================

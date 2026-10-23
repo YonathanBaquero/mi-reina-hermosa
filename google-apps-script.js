@@ -72,6 +72,29 @@ function doPost(e) {
     
     var contents = e.postData.contents;
     var data = JSON.parse(contents);
+
+    // Si es una acción de like
+    if (data.action === 'like') {
+      var targetId = String(data.id || '');
+      var rows = sheet.getDataRange().getValues();
+      for (var i = 1; i < rows.length; i++) {
+        if (String(rows[i][0]) === targetId) {
+          var currentLikes = Number(rows[i][7]) || 0;
+          var newLikes = (data.increment === true) ? (currentLikes + 1) : Math.max(0, currentLikes - 1);
+          sheet.getRange(i + 1, 8).setValue(newLikes);
+          return ContentService.createTextOutput(JSON.stringify({
+            status: 'success',
+            action: 'like',
+            id: targetId,
+            likes: newLikes
+          })).setMimeType(ContentService.MimeType.JSON);
+        }
+      }
+      return ContentService.createTextOutput(JSON.stringify({
+        status: 'not_found',
+        message: 'Nota no encontrada para dar like'
+      })).setMimeType(ContentService.MimeType.JSON);
+    }
     
     var id = data.id || ('msg_' + new Date().getTime());
     var timestamp = Utilities.formatDate(new Date(), "America/Bogota", "dd/MM/yyyy, hh:mm a");

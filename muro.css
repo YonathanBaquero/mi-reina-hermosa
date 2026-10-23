@@ -959,3 +959,235 @@ body {
     padding: 16px;
   }
 }
+
+/* ========================================================
+   BLOQUEO ROMÁNTICO EXCLUSIVO PARA MI REINA (MURO)
+   ======================================================== */
+html.page-locked body > *:not(#romanticLockScreen) {
+  display: none !important;
+}
+
+#romanticLockScreen {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 9999999;
+  background: 
+    radial-gradient(circle at 50% 30%, rgba(255, 182, 193, 0.32), rgba(20, 10, 8, 0.88)),
+    url('fondo-madera.jpg?v=20260929v1') center center / cover no-repeat fixed;
+  background-color: #2b1810;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  align-items: center;
+  justify-content: center;
+  padding: 18px;
+  box-sizing: border-box;
+}
+
+html.page-locked #romanticLockScreen {
+  display: flex !important;
+}
+
+.romantic-lock-screen.unlocking {
+  opacity: 0;
+  transform: scale(1.04);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+  pointer-events: none;
+}
+
+.lock-card {
+  position: relative;
+  width: 100%;
+  max-width: 440px;
+  background: rgba(255, 253, 249, 0.96);
+  border: 2px solid rgba(214, 51, 108, 0.38);
+  box-shadow: 
+    0 24px 60px rgba(0, 0, 0, 0.45),
+    0 0 35px rgba(255, 107, 139, 0.28),
+    inset 0 0 20px rgba(255, 240, 245, 0.6);
+  border-radius: 28px;
+  padding: 34px 26px 28px;
+  text-align: center;
+  box-sizing: border-box;
+  animation: lockCardPop 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+@keyframes lockCardPop {
+  0% { opacity: 0; transform: scale(0.88) translateY(20px); }
+  100% { opacity: 1; transform: scale(1) translateY(0); }
+}
+
+.lock-avatar-glow {
+  width: 82px;
+  height: 82px;
+  margin: 0 auto 16px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #ffe3ec 0%, #ffd166 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  box-shadow: 0 8px 25px rgba(214, 51, 108, 0.3), inset 0 2px 4px rgba(255, 255, 255, 0.8);
+  animation: crownPulse 3s infinite ease-in-out;
+}
+
+@keyframes crownPulse {
+  0%, 100% { transform: translateY(0) scale(1); box-shadow: 0 8px 25px rgba(214, 51, 108, 0.3); }
+  50% { transform: translateY(-4px) scale(1.05); box-shadow: 0 14px 32px rgba(214, 51, 108, 0.45); }
+}
+
+.lock-crown-icon {
+  font-size: 2.3rem;
+  line-height: 1;
+}
+
+.lock-heart-icon {
+  position: absolute;
+  bottom: -4px;
+  right: -4px;
+  font-size: 1.3rem;
+  filter: drop-shadow(0 2px 4px rgba(0,0,0,0.25));
+}
+
+.lock-title {
+  font-family: 'Dancing Script', cursive;
+  font-size: 2.2rem;
+  font-weight: 700;
+  color: #7d1d3f;
+  margin: 0 0 10px;
+  line-height: 1.15;
+}
+
+.lock-message {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 0.92rem;
+  color: #5c4451;
+  line-height: 1.5;
+  margin: 0 0 22px;
+}
+
+.lock-form {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.lock-input-group {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.lock-input-icon {
+  position: absolute;
+  left: 16px;
+  font-size: 1.15rem;
+  pointer-events: none;
+  opacity: 0.75;
+}
+
+.lock-input {
+  width: 100%;
+  padding: 14px 46px 14px 46px;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: #4a2835;
+  background: #fff8fa;
+  border: 2px solid #f0a8b4;
+  border-radius: 50px;
+  outline: none;
+  transition: all 0.25s ease;
+  box-sizing: border-box;
+  text-align: center;
+}
+
+.lock-input:focus {
+  border-color: #d6336c;
+  background: #ffffff;
+  box-shadow: 0 0 0 4px rgba(214, 51, 108, 0.18);
+}
+
+.lock-toggle-pwd {
+  position: absolute;
+  right: 12px;
+  background: none;
+  border: none;
+  font-size: 1.2rem;
+  cursor: pointer;
+  padding: 6px;
+  border-radius: 50%;
+  transition: transform 0.2s;
+}
+
+.lock-toggle-pwd:active {
+  transform: scale(0.9);
+}
+
+.lock-feedback {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 0.88rem;
+  font-weight: 600;
+  padding: 11px 14px;
+  border-radius: 12px;
+  line-height: 1.4;
+}
+
+.lock-feedback.error {
+  background: #ffe3e3;
+  color: #b02a37;
+  border: 1px solid #f8d7da;
+}
+
+.lock-feedback.success {
+  background: #e6fcf5;
+  color: #0ca678;
+  border: 1px solid #c3fae8;
+}
+
+.lock-feedback.shake,
+.lock-input.input-shake {
+  animation: lockShake 0.45s ease;
+}
+
+.lock-btn-submit {
+  width: 100%;
+  padding: 14px 20px;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: #ffffff;
+  background: linear-gradient(135deg, #ff6b8b 0%, #d6336c 50%, #f59e0b 100%);
+  border: none;
+  border-radius: 50px;
+  cursor: pointer;
+  box-shadow: 0 8px 24px rgba(214, 51, 108, 0.38);
+  transition: transform 0.2s ease, box-shadow 0.2s ease, filter 0.2s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.lock-btn-submit:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 28px rgba(214, 51, 108, 0.48);
+  filter: brightness(1.05);
+}
+
+.lock-btn-submit:active {
+  transform: translateY(1px) scale(0.98);
+}
+
+.lock-btn-submit.loading {
+  pointer-events: none;
+  opacity: 0.9;
+}
+
+.lock-footer-hint {
+  margin-top: 18px;
+  font-family: 'Dancing Script', cursive;
+  font-size: 1.15rem;
+  color: #a0788d;
+}

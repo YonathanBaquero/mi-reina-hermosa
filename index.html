@@ -20,9 +20,61 @@
   <link rel="preload" as="image" href="fondo-madera.jpg">
   <link rel="preload" as="fetch" href="musica.mp3" crossorigin>
 
-  <link rel="stylesheet" href="styles.css?v=v2026-muro1">
+  <!-- Pre-verificación instantánea de seguridad anti-parpadeo -->
+  <script>
+    (function() {
+      try {
+        if (localStorage.getItem('esposa_auth_unlocked') !== 'true') {
+          document.documentElement.classList.add('page-locked');
+        }
+      } catch (e) {}
+    })();
+  </script>
+
+  <link rel="stylesheet" href="styles.css?v=v2026-auth1">
 </head>
 <body>
+  <!-- PANTALLA DE ACCESO ROMÁNTICA EXCLUSIVA PARA MI REINA -->
+  <div id="romanticLockScreen" class="romantic-lock-screen" aria-modal="true" role="dialog">
+    <div class="lock-card">
+      <div class="lock-avatar-glow">
+        <span class="lock-crown-icon">👑</span>
+        <span class="lock-heart-icon">💖</span>
+      </div>
+      <h1 class="lock-title">Exclusivo para Mi Reina Hermosa</h1>
+      <p class="lock-message">
+        Este rinconcito lleno de recuerdos y amor fue preparado exclusivamente para ti con todo mi corazón. Ingresa nuestra clave secreta para descubrir tu sorpresa:
+      </p>
+      
+      <form id="lockForm" class="lock-form" onsubmit="return false;">
+        <div class="lock-input-group">
+          <span class="lock-input-icon">🔐</span>
+          <input 
+            type="password" 
+            id="lockPasswordInput" 
+            class="lock-input" 
+            placeholder="Escribe la clave secreta..." 
+            autocomplete="off" 
+            autocorrect="off" 
+            autocapitalize="none" 
+            spellcheck="false"
+            required
+          >
+          <button type="button" id="lockTogglePassword" class="lock-toggle-pwd" aria-label="Mostrar o esconder clave">👁️</button>
+        </div>
+
+        <div id="lockFeedback" class="lock-feedback" style="display: none;"></div>
+
+        <button type="submit" id="lockSubmitBtn" class="lock-btn-submit">
+          <span>🔓 Entrar a mi sorpresa 💖</span>
+        </button>
+      </form>
+
+      <div class="lock-footer-hint">
+        <span>🌻 Hecho con amor para el amor de mi vida 🌻</span>
+      </div>
+    </div>
+  </div>
   <!-- Luces de hadas (Fairy Lights) románticas y titilantes -->
   <div class="fairy-lights">
     <div class="light light-1"></div>
@@ -699,6 +751,9 @@
             <button type="button" class="btn-replay" id="btnReplay">
               <span>🌻 Volver a ver todas tus sorpresas 💌</span>
             </button>
+            <button type="button" class="btn-relock-link" id="btnRelockIndex" title="Bloquear con clave secreta">
+              🔒 Bloquear de nuevo con clave secreta
+            </button>
           </div>
 
         </div>
@@ -707,6 +762,6 @@
 
   </main>
 
-  <script src="script.js?v=v2026-muro1"></script>
+  <script src="script.js?v=v2026-auth1"></script>
 </body>
 </html>

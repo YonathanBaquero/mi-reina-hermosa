@@ -1,4 +1,115 @@
 document.addEventListener('DOMContentLoaded', () => {
+  // ========================================================
+  // 0. CONTROL DE ACCESO ROMÁNTICO EXCLUSIVO
+  // ========================================================
+  function initRomanticLockScreen() {
+    const lockScreen = document.getElementById('romanticLockScreen');
+    if (!lockScreen) return;
+
+    const isUnlocked = localStorage.getItem('esposa_auth_unlocked') === 'true';
+    if (isUnlocked) {
+      document.documentElement.classList.remove('page-locked');
+      lockScreen.style.display = 'none';
+      setupRelockButton();
+      return;
+    }
+
+    // Asegurar pantalla de bloqueo activa
+    document.documentElement.classList.add('page-locked');
+    lockScreen.style.display = 'flex';
+
+    const form = document.getElementById('lockForm');
+    const input = document.getElementById('lockPasswordInput');
+    const feedback = document.getElementById('lockFeedback');
+    const submitBtn = document.getElementById('lockSubmitBtn');
+    const toggleBtn = document.getElementById('lockTogglePassword');
+
+    if (toggleBtn && input) {
+      toggleBtn.addEventListener('click', (e) => {
+        e.preventDefault();
+        if (input.type === 'password') {
+          input.type = 'text';
+          toggleBtn.textContent = '🙈';
+        } else {
+          input.type = 'password';
+          toggleBtn.textContent = '👁️';
+        }
+      });
+    }
+
+    function handleUnlock() {
+      if (!input) return;
+      const rawVal = input.value || '';
+      // Normalizar: minúsculas, sin espacios ni guiones
+      const cleanVal = rawVal.trim().toLowerCase().replace(/[\s\-_]+/g, '');
+
+      // Clave elegida por el usuario: 'mireina'
+      if (cleanVal === 'mireina') {
+        if (feedback) {
+          feedback.style.display = 'block';
+          feedback.className = 'lock-feedback success';
+          feedback.innerHTML = '¡Bienvenida, mi reina hermosa! 👑💖 Abriendo tu sorpresa...';
+        }
+        if (submitBtn) {
+          submitBtn.disabled = true;
+          submitBtn.classList.add('loading');
+          submitBtn.innerHTML = '<span>✨ ¡Bienvenida, Mi Reina! ✨</span>';
+        }
+
+        localStorage.setItem('esposa_auth_unlocked', 'true');
+
+        setTimeout(() => {
+          lockScreen.classList.add('unlocking');
+          setTimeout(() => {
+            document.documentElement.classList.remove('page-locked');
+            lockScreen.style.display = 'none';
+            setupRelockButton();
+          }, 600);
+        }, 750);
+      } else {
+        if (feedback) {
+          feedback.style.display = 'block';
+          feedback.className = 'lock-feedback error shake';
+          feedback.innerHTML = 'Esa no es la clave secreta, mi cielo 🥺 Intenta de nuevo ❤️';
+        }
+        input.classList.add('input-shake');
+        setTimeout(() => {
+          input.classList.remove('input-shake');
+          if (feedback) feedback.classList.remove('shake');
+        }, 550);
+        input.select();
+      }
+    }
+
+    if (form) {
+      form.addEventListener('submit', (e) => {
+        e.preventDefault();
+        handleUnlock();
+      });
+    }
+
+    // Autoenfoque en el input para comodidad
+    setTimeout(() => {
+      if (input && !isUnlocked) input.focus();
+    }, 450);
+  }
+
+  function setupRelockButton() {
+    const relockBtn = document.getElementById('btnRelockIndex');
+    if (relockBtn && !relockBtn.dataset.bound) {
+      relockBtn.dataset.bound = 'true';
+      relockBtn.addEventListener('click', (e) => {
+        e.preventDefault();
+        if (confirm('¿Deseas bloquear de nuevo la sorpresa con la clave secreta?')) {
+          localStorage.removeItem('esposa_auth_unlocked');
+          window.location.reload();
+        }
+      });
+    }
+  }
+
+  initRomanticLockScreen();
+
   // Precarga inmediata de fotos en la memoria del navegador
   const photoCache = ['fotos/foto 1.jpg', 'fotos/foto 2.jpg', 'fotos/foto 3.jpg', 'fotos/foto 4.jpg', 'fotos/foto 5.jpg', 'fotos/foto 6.jpg'].map(src => {
     const img = new Image();
