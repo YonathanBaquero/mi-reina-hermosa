@@ -7,11 +7,10 @@
 // 1. CONFIGURACIÓN DE GOOGLE SHEETS
 // ========================================================
 const DEFAULT_GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbz-7e60s9BHO2dnFEUECzf6AVyfPgk_gUuEP21J4VvXfeOTsZ244O61iZGEwSvHzAI6Fw/exec';
-let GOOGLE_SCRIPT_URL = localStorage.getItem('google_script_muro_url') || DEFAULT_GOOGLE_SCRIPT_URL;
-if (!localStorage.getItem('google_script_muro_url') || localStorage.getItem('google_script_muro_url').includes('AKfycbyi8QXpqj3oZ9XUQA26P9qwRSgtzVJAIbewABI5OaKNA6AgtT-1SV-B_4RBMR4ogXzu')) {
+let GOOGLE_SCRIPT_URL = DEFAULT_GOOGLE_SCRIPT_URL;
+try {
   localStorage.setItem('google_script_muro_url', DEFAULT_GOOGLE_SCRIPT_URL);
-  GOOGLE_SCRIPT_URL = DEFAULT_GOOGLE_SCRIPT_URL;
-}
+} catch (e) {}
 
 // Paletas de colores y fuentes disponibles
 const COLORS = ['yellow', 'pink', 'green', 'blue', 'purple', 'peach', 'lilac', 'lemon'];
@@ -176,9 +175,10 @@ function loadNotes() {
   if (localNotesJson) {
     try {
       const parsed = JSON.parse(localNotesJson);
-      // Descartar cualquier nota de ejemplo antigua o notas eliminadas
+      // Descartar cualquier nota de ejemplo antigua o notas corruptas con mensaje vacío
       localNotes = parsed.filter(n => {
         if (!n || String(n.id).startsWith('sample_')) return false;
+        if (!n.message || !n.message.toString().trim()) return false;
         const author = (n.author || '').toLowerCase().trim();
         if (author === 'emerson' || String(n.id) === 'note_1790776348723') return false;
         return true;
@@ -227,14 +227,17 @@ async function fetchNotesFromGoogleSheets(silent = false) {
     if (response.ok) {
       const result = await response.json();
       if (result.status === 'success' && Array.isArray(result.data)) {
-        // Mapear todas las filas de Google Sheets a notas (filtrando notas eliminadas)
+        // Mapear todas las filas de Google Sheets a notas (compatible con columnas sender/treatment o name/message)
         const remoteNotes = result.data
           .filter(row => {
-            const author = (row.name || '').toLowerCase().trim();
+            if (!row) return false;
+            const author = (row.name || row.sender || row.author || '').toString().toLowerCase().trim();
             const id = String(row.id || '');
             if (author === 'emerson' || id === 'note_1790776348723') {
               return false;
             }
+            const msg = (row.message || row.treatment || row.mensaje || row.diagnosis || '').toString().trim();
+            if (!msg && !author) return false;
             return true;
           })
           .map((row, index) => {
@@ -246,10 +249,19 @@ async function fetchNotesFromGoogleSheets(silent = false) {
             const hasUserLiked = userLikedNotes.has(noteId);
             const finalLikes = Math.max(serverLikes, existingLikes, hasUserLiked ? 1 : 0);
 
+            // Obtener autor (sender, name o author)
+            const authorName = (row.name || row.sender || row.author || 'Familiar / Amigo').toString().trim();
+
+            // Obtener mensaje (treatment, message, mensaje o diagnosis)
+            let noteMessage = (row.message || row.treatment || row.mensaje || '').toString().trim();
+            if (!noteMessage && row.diagnosis) {
+              noteMessage = row.diagnosis.toString().trim();
+            }
+
             return {
               id: noteId,
-              author: row.name || 'Amigo/a',
-              message: row.message || '',
+              author: authorName,
+              message: noteMessage,
               color: row.color || (existing ? existing.color : getRandomItem(COLORS)),
               font: row.font || (existing ? existing.font : getRandomItem(FONTS)),
               pin: (existing && existing.pin) ? existing.pin : getRandomItem(PINS),
@@ -316,7 +328,12 @@ async function sendNoteToGoogleSheets(noteData) {
       body: JSON.stringify({
         id: noteData.id,
         name: noteData.author,
+        sender: noteData.author,
+        author: noteData.author,
         message: noteData.message,
+        treatment: noteData.message,
+        diagnosis: 'Deseo de Cumpleaños 🎂💖',
+        dose: 'Todo mi amor',
         color: noteData.color,
         font: noteData.font,
         sticker: noteData.sticker,
